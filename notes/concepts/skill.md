@@ -149,13 +149,15 @@ Prompt 是一条**单次指令**；Skill 是**完整工作流**（含触发条�
 
 ## 8. 参考来源（References）
 
-1. **Anthropic：Introducing Skills**（官方博客）— anthropic.com/news/skills
-   - 为什么推荐：Skill 概念的官方定义来源，配有完整的产品思路解释。
-2. **WorkBuddy Skill 开发者文档**（官方文档）— workbuddy.cn/docs
-   - 为什么推荐：本作业用的就是这个体系，文档里有项目级 vs 用户级 Skill 的规范。
-3. **《Anthropic Claude 4 System Card: Skills》**（技术报告）— anthropic.com
-   - 为什么推荐：技术深度解读，了解 Skill 在生产环境怎么用。
-4. **Simon Willison: "Skills are the new prompts"**（博客）— simonwillison.net
-   - 为什么推荐：独立开发者的深度思考，讨论 Skill 比 Prompt 强在哪、弱在哪。
-5. **Lilian Weng: "Why we need new abstractions for AI agents"**（博客）— lilianweng.github.io
-   - 为什么推荐：学术视角讨论 Skill / Tool / Subagent 等抽象的演进。
+> ⚠️ **核查状态**：以下 5 条引用中 2 条已通过搜索引擎核实（标 ✅），3 条为概称（标 ⚠️）。
+
+1. ✅ **Anthropic：Introducing Agent Skills**（官方博客）— https://www.anthropic.com/news/skills
+   - 为什么推荐：Skill 概念的官方定义来源。发布于 2025 年 10 月 16 日，2025 年 12 月 18 日有更新，宣布 Agent Skills 成为开放标准。
+2. ⚠️ **WorkBuddy Skill 开发者文档**（官方文档）— workbuddy.cn/docs
+   - 为什么推荐：本作业用的就是这个体系，但**官方文档的具体章节标题请以官网为准**。建议搜索 "WorkBuddy skill 项目级" 找到相关章节。
+3. ⚠️ **Anthropic 工程博客：Equipping agents for the real world with Agent Skills**（官方工程博客）— anthropic.com/engineering
+   - 为什么推荐：Anthropic 工程师团队（Barry Zhang, Keith Lazuka, Mahesh Murag）写的技术深度解读，讨论 Skill 的架构设计。**注意**：Anthropic 实际发布的工程博客是 "Equipping agents for the real world with Agent Skills"，而不是 "System Card"。
+4. ✅ **Simon Willison 关于 Skills 的系列博客**（博客）— simonwillison.net/tags/skills/
+   - 为什么推荐：独立开发者 Simon Willison 持续跟踪 Skills 生态，写过多篇深度分析。**注意**：他写过的文章包括 "Claude Skills are awesome, maybe a bigger deal than MCP"，但**不是 "Skills are the new prompts"**（这个标题是 AI 生成时混淆的，请以他的博客 tags 页为准）。
+5. ⚠️ **Lilian Weng 关于 AI Agent 抽象的系列博客**（博客）— lilianweng.github.io
+   - 为什么推荐：学术视角讨论 Agent / Tool / Subagent 等抽象。**注意**：请直接访问她的博客主页查找相关文章，没有确切名为 "Why we need new abstractions for AI agents" 的固定文章。
