@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大模型的上下文 — 学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #fafafa;
+  color: #1a1a1a;
+  line-height: 1.7;
+  font-size: 16px;
+}
+.layout { display: flex; max-width: 1100px; margin: 0 auto; min-height: 100vh; }
+aside {
+  width: 220px; flex-shrink: 0;
+  background: #f0f2f5;
+  border-right: 1px solid #e0e0e0;
+  padding: 32px 20px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+aside h3 { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+aside ol { list-style: none; }
+aside li { margin-bottom: 10px; }
+aside a { color: #2c5aa0; text-decoration: none; font-size: 14px; }
+main { flex: 1; padding: 40px 56px; max-width: 800px; }
+.meta { color: #888; font-size: 13px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed #ddd; }
+h1 { font-size: 28px; margin-bottom: 24px; color: #1a1a1a; }
+h2 { font-size: 22px; margin: 36px 0 16px; color: #2c5aa0; padding-bottom: 6px; border-bottom: 2px solid #2c5aa0; }
+h3 { font-size: 18px; margin: 24px 0 12px; color: #1a1a1a; }
+p { margin-bottom: 14px; }
+ul, ol { margin: 10px 0 16px 24px; }
+li { margin-bottom: 6px; }
+.tree { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px 20px; margin: 14px 0; font-family: monospace; font-size: 14px; white-space: pre; }
+table {
+  width: 100%; border-collapse: collapse; margin: 14px 0;
+  background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;
+}
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e8e8e8; }
+th { background: #f4f6f8; font-weight: 600; color: #2c5aa0; }
+tr:last-child td { border-bottom: none; }
+code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 14px; font-family: "SFMono-Regular", Consolas, monospace; }
+pre {
+  background: #f4f4f4; border: 1px solid #ddd; border-radius: 6px;
+  padding: 14px 18px; overflow-x: auto; font-size: 14px; margin: 14px 0;
+  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+}
+pre code { background: none; padding: 0; }
+details {
+  background: #fff; border: 1px solid #e0e0e0; border-radius: 6px;
+  padding: 12px 16px; margin: 10px 0;
+}
+details summary { cursor: pointer; font-weight: 600; color: #2c5aa0; }
+details[open] summary { margin-bottom: 10px; }
+strong { color: #1a1a1a; }
+.glyph { display: inline-block; background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: 600; margin-right: 4px; }
+.quote { background: #fffbe6; border-left: 4px solid #ffc107; padding: 12px 16px; margin: 14px 0; border-radius: 0 6px 6px 0; }
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <h3>本文目录</h3>
+  <ol>
+    <li><a href="#map">概念地图</a></li>
+    <li><a href="#def">一句话定义</a></li>
+    <li><a href="#layers">分层理解</a></li>
+    <li><a href="#examples">正反例</a></li>
+    <li><a href="#check">自检问题</a></li>
+  </ol>
+</aside>
+<main>
+  <div class="meta">由 <code>concept-learning</code> Skill 生成 · 2026-09-07</div>
+  <h1><span class="glyph">学习资料</span>大模型的上下文（LLM Context）</h1>
+
+  <h2 id="map">1. 概念地图（Concept Map）</h2>
+  <div class="tree">LLM 工作机制
+  ├── 输入：Prompt = 你的问题 + 上下文
+  ├── 处理：所有 token 一起进入 Transformer
+  │           → 每读一个 token 都要「回头看」所有之前的 token
+  │           → 注意力机制是核心
+  └── 输出：根据整个上下文预测下一个 token
+                 ↑
+                 上下文 = 这条对话的全部历史 + 你塞进 prompt 的所有东西
+                 上下文窗口（Context Window）= 模型一次能"装下"的最大 token 数</div>
+  <p><strong>一句话定位</strong>：上下文就是模型<strong>当下能看到的所有文字</strong>，它决定了模型这一轮能"记住"什么、"引用"什么。</p>
+
+  <h2 id="def">2. 一句话定义</h2>
+  <p><strong>大模型的上下文</strong>（Context）= 当前对话中模型能直接"看到"的所有 token（系统提示 + 你的历史消息 + 你上传的文件等），是模型这一轮回答时唯一的信息来源。</p>
+
+  <h2 id="layers">3. 分层理解（Layered Explanation）</h2>
+
+  <h3>直观类比（Intuition）</h3>
+  <p>把大模型想象成一个<strong>只有短期记忆的聪明人</strong>。</p>
+  <ul>
+    <li>让他回答问题前，<strong>你得把背景材料贴给他</strong>（"上下文"）。</li>
+    <li>他的"短期记忆"就是<strong>上下文窗口</strong>——一张固定的桌子，材料放不下就放不进来。</li>
+    <li>你不贴上去的东西，<strong>他永远不会知道</strong>——他不能去查你电脑、不能记起上周说过的话（除非你再贴一次）。</li>
+  </ul>
+  <p><strong>所以</strong>：和 LLM 交流的工程核心任务，就是<strong>精心挑选要放上桌子的内容</strong>。多了浪费、少了他又答不好。</p>
+
+  <h3>机制原理（Mechanism）</h3>
+  <p><strong>Token 是什么</strong>：模型不是按"字"读，是按"token"读。中文一个字 ≈ 1–2 个 token，英文一个单词 ≈ 1–3 个 token。GPT-4 一个上下文窗口大概是 8K / 32K / 128K token。</p>
+  <p><strong>模型怎么用上下文</strong>：</p>
+  <ul>
+    <li>每生成一个新 token，模型会<strong>回头看整个上下文</strong>（不是只看最新一句），通过"注意力"机制决定哪些旧 token 更重要。</li>
+    <li>这就是为什么模型能"引用"5 句之前的对话。</li>
+    <li>但注意力是<strong>有损的</strong>——窗口越大，越前面的内容越容易被"稀释"（lost in the middle 现象）。</li>
+  </ul>
+  <p><strong>关键约束</strong>：</p>
+  <table>
+    <tr><th>约束</th><th>含义</th><th>影响</th></tr>
+    <tr><td>上下文窗口大小</td><td>模型一次能读多少 token</td><td>超过的会被截断</td></tr>
+    <tr><td>计费</td><td>输入 token 都要花钱</td><td>塞太多浪费钱</td></tr>
+    <tr><td>延迟</td><td>上下文越长推理越慢</td><td>100K 上下文比 1K 慢 10 倍+</td></tr>
+    <tr><td>失真</td><td>长上下文中部信息容易被忽略</td><td>重要信息放首尾</td></tr>
+  </table>
+
+  <h3>边界与误区（Boundaries）</h3>
+  <ul>
+    <li>❌ <strong>误区 1：「模型能记住我以前聊过什么」</strong><br>默认<strong>不能</strong>。每次新对话，模型都是从零开始。要"记住"，要么把历史粘回去，要么用 RAG，要么用外置记忆系统。</li>
+    <li>❌ <strong>误区 2：「上下文窗口越大越好」</strong><br>越大意味着<strong>慢、贵、还容易丢信息</strong>。很多场景下精心挑选 4K 比粗放塞 100K 效果更好。</li>
+    <li>❌ <strong>误区 3：「上下文 = 知识」</strong><br>上下文是<strong>信息</strong>，知识在模型权重里。一个事实可以同时在两处，模型也可能答错已写进上下文的内容（"读到不等于用对"）。</li>
+    <li>✅ <strong>边界</strong>：上下文是<strong>这一次对话的临时工作区</strong>，关掉就没了。它<strong>不是数据库</strong>，别拿它存东西。</li>
+  </ul>
+
+  <h2 id="examples">4. 正反例（Examples）</h2>
+  <h3>✅ 好例子：带着关键信息提问</h3>
+<pre>你：以下是我的代码（粘 200 行）。
+    我要加一个缓存功能，但只在用户登录后启用。
+    请帮我写一个最简的方案。</pre>
+  <p>为什么好：<strong>关键背景、约束、目标全在上下文里</strong>，模型能直接给方案。</p>
+
+  <h3>❌ 坏例子：让模型"自己查"</h3>
+<pre>你：我代码里有个 bug，帮我修。</pre>
+  <p>为什么坏：上下文里<strong>没有代码</strong>。模型要么瞎猜，要么只能给通用建议。</p>
+  <div class="quote"><strong>金科玉律</strong>：和 LLM 沟通 80% 的功夫，是<strong>把模型答好问题所需的全部信息塞进上下文</strong>。</div>
+
+  <h2 id="check">5. 自检问题（Self-Check）</h2>
+  <details>
+    <summary>1. 上下文窗口是越大越好吗？</summary>
+    <p>不是。越大意味着慢、贵、还容易"失焦"（lost in the middle）。应根据任务精度需求<strong>精选内容</strong>塞进去，而不是无脑堆。</p>
+  </details>
+  <details>
+    <summary>2. 模型真的"记住"我们的对话历史吗？</summary>
+    <p>默认不记。每次新会话，模型从零开始。历史消息是被<strong>作为上下文重新喂回去</strong>的，不是它自己"想起来的"。一旦新会话开始，旧的就丢了。</p>
+  </details>
+  <details>
+    <summary>3. 如果一段长文档塞不进上下文怎么办？</summary>
+    <p>常见三种解法：(1) <strong>截断</strong>——只读前 N 行；(2) <strong>摘要</strong>——先让模型压缩成长摘要再读；(3) <strong>RAG</strong>——把文档切片存到向量库，按需检索最相关的片段塞进上下文。</p>
+  </details>
+</main>
+</div>
+</body>
+</html>
