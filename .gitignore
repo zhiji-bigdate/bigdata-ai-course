@@ -24,3 +24,7 @@ Thumbs.db
 *.feather
 *.h5
 *.hdf5
+
+# WorkBuddy 项目 Skill 的临时打包产物
+*.zip
+!notes/**/*.zip
