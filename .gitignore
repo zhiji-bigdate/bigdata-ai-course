@@ -28,3 +28,41 @@ Thumbs.db
 # WorkBuddy 项目 Skill 的临时打包产物
 *.zip
 !notes/**/*.zip
+
+# ===== 敏感信息 / 凭据 / 隐私（绝不上传到 GitHub）=====
+# 环境变量文件
+.env
+.env.*
+*.env
+
+# 凭据与密钥
+credentials.json
+credentials.yml
+credentials.yaml
+secrets.*
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*.gpg
+
+# GitHub PAT / API token 类（文件名含 token/secret 字样的）
+*token*
+*secret*
+api_key.txt
+
+# 数据库 / 缓存里的敏感内容
+*.sqlite
+*.db
+
+# 日志（可能含敏感信息）
+*.log
+logs/
+
+# 个人隐私
+*.bak
+*.swp
