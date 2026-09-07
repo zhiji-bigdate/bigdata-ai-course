@@ -24,16 +24,24 @@ aside {
 aside h3 { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
 aside ol { list-style: none; }
 aside li { margin-bottom: 10px; }
-aside a { color: #2c5aa0; text-decoration: none; font-size: 14px; }
+aside a { color: #2c5aa0; text-decoration: none; font-size: 13px; display: block; }
 main { flex: 1; padding: 40px 56px; max-width: 800px; }
 .meta { color: #888; font-size: 13px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed #ddd; }
 h1 { font-size: 28px; margin-bottom: 24px; color: #1a1a1a; }
 h2 { font-size: 22px; margin: 36px 0 16px; color: #2c5aa0; padding-bottom: 6px; border-bottom: 2px solid #2c5aa0; }
 h3 { font-size: 18px; margin: 24px 0 12px; color: #1a1a1a; }
+h4 { font-size: 16px; margin: 18px 0 10px; color: #2c5aa0; }
 p { margin-bottom: 14px; }
 ul, ol { margin: 10px 0 16px 24px; }
 li { margin-bottom: 6px; }
 .tree { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px 20px; margin: 14px 0; font-family: monospace; font-size: 14px; white-space: pre; }
+pre {
+  background: #f4f4f4; border: 1px solid #ddd; border-radius: 6px;
+  padding: 14px 18px; overflow-x: auto; font-size: 14px; margin: 14px 0;
+  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+}
+code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 14px; font-family: "SFMono-Regular", Consolas, monospace; }
+pre code { background: none; padding: 0; }
 table {
   width: 100%; border-collapse: collapse; margin: 14px 0;
   background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;
@@ -41,13 +49,6 @@ table {
 th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e8e8e8; }
 th { background: #f4f6f8; font-weight: 600; color: #2c5aa0; }
 tr:last-child td { border-bottom: none; }
-code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 14px; font-family: "SFMono-Regular", Consolas, monospace; }
-pre {
-  background: #f4f4f4; border: 1px solid #ddd; border-radius: 6px;
-  padding: 14px 18px; overflow-x: auto; font-size: 14px; margin: 14px 0;
-  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
-}
-pre code { background: none; padding: 0; }
 details {
   background: #fff; border: 1px solid #e0e0e0; border-radius: 6px;
   padding: 12px 16px; margin: 10px 0;
@@ -57,25 +58,48 @@ details[open] summary { margin-bottom: 10px; }
 strong { color: #1a1a1a; }
 .glyph { display: inline-block; background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: 600; margin-right: 4px; }
 .quote { background: #fffbe6; border-left: 4px solid #ffc107; padding: 12px 16px; margin: 14px 0; border-radius: 0 6px 6px 0; }
+ol.refs { list-style: decimal; }
+ol.refs li { margin-bottom: 12px; }
 </style>
 </head>
 <body>
 <div class="layout">
 <aside>
-  <h3>本文目录</h3>
+  <h3>本文目录（8 节）</h3>
   <ol>
-    <li><a href="#map">概念地图</a></li>
-    <li><a href="#def">一句话定义</a></li>
-    <li><a href="#layers">分层理解</a></li>
-    <li><a href="#examples">正反例</a></li>
-    <li><a href="#check">自检问题</a></li>
+    <li><a href="#obj">1. 学习目标</a></li>
+    <li><a href="#qs">2. 核心问题</a></li>
+    <li><a href="#map">3. 概念地图</a></li>
+    <li><a href="#exp">4. 结构化解释</a></li>
+    <li><a href="#app">5. 应用案例</a></li>
+    <li><a href="#dis">6. 概念辨析</a></li>
+    <li><a href="#check">7. 自检问题</a></li>
+    <li><a href="#refs">8. 参考来源</a></li>
   </ol>
 </aside>
 <main>
   <div class="meta">由 <code>concept-learning</code> Skill 生成 · 2026-09-07</div>
   <h1><span class="glyph">学习资料</span>大模型的上下文（LLM Context）</h1>
 
-  <h2 id="map">1. 概念地图（Concept Map）</h2>
+  <h2 id="obj">1. 学习目标（Learning Objectives）</h2>
+  <p>学完这份资料，你将能够：</p>
+  <ul>
+    <li><strong>用一句话</strong>说出"上下文"是什么</li>
+    <li><strong>解释</strong> 上下文窗口（Context Window）的工作机制</li>
+    <li><strong>区分</strong> 上下文、知识、记忆三者的关系</li>
+    <li><strong>应用</strong> 上下文工程的基本原则来提问</li>
+    <li><strong>识别</strong> 关于上下文的 3 个最常见误区</li>
+  </ul>
+
+  <h2 id="qs">2. 核心问题（Driving Questions）</h2>
+  <ul>
+    <li>上下文窗口是越大越好吗？</li>
+    <li>大模型真的"记住"了我们之间的对话吗？</li>
+    <li>为什么长文档喂给 LLM 后，它会"忘记中间"？</li>
+    <li>当文档塞不进上下文时，工程上有哪些解决方案？</li>
+  </ul>
+
+  <h2 id="map">3. 概念地图（Concept Map）</h2>
   <div class="tree">LLM 工作机制
   ├── 输入：Prompt = 你的问题 + 上下文
   ├── 处理：所有 token 一起进入 Transformer
@@ -87,12 +111,12 @@ strong { color: #1a1a1a; }
                  上下文窗口（Context Window）= 模型一次能"装下"的最大 token 数</div>
   <p><strong>一句话定位</strong>：上下文就是模型<strong>当下能看到的所有文字</strong>，它决定了模型这一轮能"记住"什么、"引用"什么。</p>
 
-  <h2 id="def">2. 一句话定义</h2>
+  <h2 id="exp">4. 结构化解释（Structured Explanation）</h2>
+
+  <h4>4.1 一句话定义</h4>
   <p><strong>大模型的上下文</strong>（Context）= 当前对话中模型能直接"看到"的所有 token（系统提示 + 你的历史消息 + 你上传的文件等），是模型这一轮回答时唯一的信息来源。</p>
 
-  <h2 id="layers">3. 分层理解（Layered Explanation）</h2>
-
-  <h3>直观类比（Intuition）</h3>
+  <h4>4.2 直观类比（Intuition）</h4>
   <p>把大模型想象成一个<strong>只有短期记忆的聪明人</strong>。</p>
   <ul>
     <li>让他回答问题前，<strong>你得把背景材料贴给他</strong>（"上下文"）。</li>
@@ -101,7 +125,7 @@ strong { color: #1a1a1a; }
   </ul>
   <p><strong>所以</strong>：和 LLM 交流的工程核心任务，就是<strong>精心挑选要放上桌子的内容</strong>。多了浪费、少了他又答不好。</p>
 
-  <h3>机制原理（Mechanism）</h3>
+  <h4>4.3 机制原理（Mechanism）</h4>
   <p><strong>Token 是什么</strong>：模型不是按"字"读，是按"token"读。中文一个字 ≈ 1–2 个 token，英文一个单词 ≈ 1–3 个 token。GPT-4 一个上下文窗口大概是 8K / 32K / 128K token。</p>
   <p><strong>模型怎么用上下文</strong>：</p>
   <ul>
@@ -118,27 +142,43 @@ strong { color: #1a1a1a; }
     <tr><td>失真</td><td>长上下文中部信息容易被忽略</td><td>重要信息放首尾</td></tr>
   </table>
 
-  <h3>边界与误区（Boundaries）</h3>
+  <h4>4.4 边界与误区（Boundaries）</h4>
   <ul>
     <li>❌ <strong>误区 1：「模型能记住我以前聊过什么」</strong><br>默认<strong>不能</strong>。每次新对话，模型都是从零开始。要"记住"，要么把历史粘回去，要么用 RAG，要么用外置记忆系统。</li>
     <li>❌ <strong>误区 2：「上下文窗口越大越好」</strong><br>越大意味着<strong>慢、贵、还容易丢信息</strong>。很多场景下精心挑选 4K 比粗放塞 100K 效果更好。</li>
     <li>❌ <strong>误区 3：「上下文 = 知识」</strong><br>上下文是<strong>信息</strong>，知识在模型权重里。一个事实可以同时在两处，模型也可能答错已写进上下文的内容（"读到不等于用对"）。</li>
+    <li>❌ <strong>误区 4：「只要放进 prompt，模型就一定会用」</strong><br>注意力是<strong>有损且不均匀</strong>的。模型可能"看到"但没"用对"。重要信息需要显式强调、放在首尾。</li>
     <li>✅ <strong>边界</strong>：上下文是<strong>这一次对话的临时工作区</strong>，关掉就没了。它<strong>不是数据库</strong>，别拿它存东西。</li>
   </ul>
 
-  <h2 id="examples">4. 正反例（Examples）</h2>
-  <h3>✅ 好例子：带着关键信息提问</h3>
-<pre>你：以下是我的代码（粘 200 行）。
-    我要加一个缓存功能，但只在用户登录后启用。
-    请帮我写一个最简的方案。</pre>
-  <p>为什么好：<strong>关键背景、约束、目标全在上下文里</strong>，模型能直接给方案。</p>
+  <h2 id="app">5. 应用案例（Application Cases）</h2>
+  <h4>案例 1：Cursor / Copilot 的代码补全（真实场景）</h4>
+  <p>当你用 Cursor 编辑 Python 代码时，它把你"当前文件 + 引用文件 + 光标前 N 行"一起塞进上下文，模型据此补全下一行。</p>
+  <p><strong>上下文工程的真实商业场景</strong>：上下文装什么、装多少，直接决定产品体验。</p>
 
-  <h3>❌ 坏例子：让模型"自己查"</h3>
-<pre>你：我代码里有个 bug，帮我修。</pre>
-  <p>为什么坏：上下文里<strong>没有代码</strong>。模型要么瞎猜，要么只能给通用建议。</p>
-  <div class="quote"><strong>金科玉律</strong>：和 LLM 沟通 80% 的功夫，是<strong>把模型答好问题所需的全部信息塞进上下文</strong>。</div>
+  <h4>案例 2：动手做一个"上下文裁剪"小工具（课堂练习）</h4>
+  <p><strong>任务</strong>：写一个 Python 脚本 <code>truncate.py</code>，把一段长文本按 token 数截断。</p>
+<pre>import tiktoken
+enc = tiktoken.encoding_for_model("gpt-4o")
+def truncate_to_tokens(text, max_tokens=2000):
+    tokens = enc.encode(text)
+    if len(tokens) &lt;= max_tokens:
+        return text
+    return enc.decode(tokens[:max_tokens])</pre>
+  <p>跑一下，亲身感受"2000 token 大概能装多少字"。</p>
 
-  <h2 id="check">5. 自检问题（Self-Check）</h2>
+  <h2 id="dis">6. 概念辨析（Concept Disambiguation）</h2>
+  <table>
+    <tr><th>概念</th><th>本质</th><th>核心区别</th></tr>
+    <tr><td><strong>上下文 vs 知识</strong></td><td>信息 vs 权重</td><td>上下文是这一轮临时给的，知识是预训练烧进模型的</td></tr>
+    <tr><td><strong>上下文 vs 记忆</strong></td><td>输入 vs 状态</td><td>上下文是当前输入，记忆是跨会话持久化</td></tr>
+    <tr><td><strong>上下文窗口 vs 上下文工程</strong></td><td>容量 vs 策略</td><td>窗口是上限，工程是怎么塞</td></tr>
+    <tr><td><strong>RAG vs 长上下文</strong></td><td>检索 vs 暴力</td><td>RAG 按需取，长上下文全塞</td></tr>
+  </table>
+  <p><strong>最容易混的一对：上下文 vs 知识</strong></p>
+  <div class="quote">同一个事实，可以同时在<strong>训练数据</strong>（→ 知识，存进权重）和<strong>当前 prompt</strong>（→ 上下文，输入给模型）两处。但<strong>更新成本完全不同</strong>：改知识要重新训练（百万美元级），改上下文只要改 prompt（零成本）。</div>
+
+  <h2 id="check">7. 自检问题（Self-Check）</h2>
   <details>
     <summary>1. 上下文窗口是越大越好吗？</summary>
     <p>不是。越大意味着慢、贵、还容易"失焦"（lost in the middle）。应根据任务精度需求<strong>精选内容</strong>塞进去，而不是无脑堆。</p>
@@ -151,6 +191,15 @@ strong { color: #1a1a1a; }
     <summary>3. 如果一段长文档塞不进上下文怎么办？</summary>
     <p>常见三种解法：(1) <strong>截断</strong>——只读前 N 行；(2) <strong>摘要</strong>——先让模型压缩成长摘要再读；(3) <strong>RAG</strong>——把文档切片存到向量库，按需检索最相关的片段塞进上下文。</p>
   </details>
+
+  <h2 id="refs">8. 参考来源（References）</h2>
+  <ol class="refs">
+    <li><strong>OpenAI 官方：Managing Context</strong>（官方文档）— platform.openai.com/docs<br>为什么推荐：上下文窗口、token 计费等基础概念的最权威解释。</li>
+    <li><strong>Anthropic：Effective context engineering for AI agents</strong>（官方博客）— anthropic.com<br>为什么推荐：Anthropic 工程师写的实战经验，专门讲"怎么塞"上下文。</li>
+    <li><strong>《Lost in the Middle: How Language Models Use Long Contexts》</strong>（论文，Liu et al., 2023）— arXiv:2307.03172<br>为什么推荐：长上下文为什么"中间会丢"的原始研究，重要结论都有。</li>
+    <li><strong>Lil' Log: How to Build an LLM-powered Game</strong>（博客）— lilianweng.github.io<br>为什么推荐：用游戏项目当例子，展示上下文工程的全过程。</li>
+    <li><strong>《The Prompt Report: A Systematic Survey of Prompting Techniques》</strong>（综述论文，2024）<br>为什么推荐：系统梳理所有"上下文工程"技巧，是 prompt engineering 的学术总览。</li>
+  </ol>
 </main>
 </div>
 </body>
