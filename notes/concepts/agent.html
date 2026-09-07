@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent（智能体）— 学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #fafafa;
+  color: #1a1a1a;
+  line-height: 1.7;
+  font-size: 16px;
+}
+.layout { display: flex; max-width: 1100px; margin: 0 auto; min-height: 100vh; }
+aside {
+  width: 220px; flex-shrink: 0;
+  background: #f0f2f5;
+  border-right: 1px solid #e0e0e0;
+  padding: 32px 20px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+aside h3 { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+aside ol { list-style: none; }
+aside li { margin-bottom: 10px; }
+aside a { color: #2c5aa0; text-decoration: none; font-size: 14px; }
+aside a:hover { text-decoration: underline; }
+main { flex: 1; padding: 40px 56px; max-width: 800px; }
+.meta { color: #888; font-size: 13px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed #ddd; }
+h1 { font-size: 28px; margin-bottom: 24px; color: #1a1a1a; }
+h2 { font-size: 22px; margin: 36px 0 16px; color: #2c5aa0; padding-bottom: 6px; border-bottom: 2px solid #2c5aa0; }
+h3 { font-size: 18px; margin: 24px 0 12px; color: #1a1a1a; }
+p { margin-bottom: 14px; }
+ul, ol { margin: 10px 0 16px 24px; }
+li { margin-bottom: 6px; }
+pre {
+  background: #f4f4f4; border: 1px solid #ddd; border-radius: 6px;
+  padding: 14px 18px; overflow-x: auto; font-size: 14px; margin: 14px 0;
+  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+}
+code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 14px; font-family: "SFMono-Regular", Consolas, monospace; }
+pre code { background: none; padding: 0; }
+details {
+  background: #fff; border: 1px solid #e0e0e0; border-radius: 6px;
+  padding: 12px 16px; margin: 10px 0;
+}
+details summary { cursor: pointer; font-weight: 600; color: #2c5aa0; }
+details[open] summary { margin-bottom: 10px; }
+strong { color: #1a1a1a; }
+.tree { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px 20px; margin: 14px 0; font-family: monospace; font-size: 14px; white-space: pre; }
+.glyph { display: inline-block; background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: 600; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <h3>本文目录</h3>
+  <ol>
+    <li><a href="#map">概念地图</a></li>
+    <li><a href="#def">一句话定义</a></li>
+    <li><a href="#layers">分层理解</a></li>
+    <li><a href="#examples">正反例</a></li>
+    <li><a href="#check">自检问题</a></li>
+  </ol>
+</aside>
+<main>
+  <div class="meta">由 <code>concept-learning</code> Skill 生成 · 2026-09-07</div>
+  <h1><span class="glyph">学习资料</span>Agent（智能体）</h1>
+
+  <h2 id="map">1. 概念地图（Concept Map）</h2>
+  <div class="tree">AI 应用
+  ├── 单次问答型      → Chat 模式（用户问、模型答，一来一回）
+  └── Agent 模式      → 模型自主规划 + 多次调用工具，直到任务完成
+                         ├── 核心：LLM + 工具 + 循环
+                         ├── 关键能力：规划、记忆、工具使用
+                         └── 与 Chat 的最大区别：能「做事」而不只是「说话」</div>
+  <p><strong>一句话定位</strong>：Agent 是一种让大模型<strong>自主决定要做什么、调用什么工具、什么时候停下</strong>的运行模式。</p>
+
+  <h2 id="def">2. 一句话定义</h2>
+  <p><strong>Agent</strong>（智能体）= 大语言模型 + 一组可调用的工具 + 一个「目标未达成就继续」的循环。</p>
+
+  <h2 id="layers">3. 分层理解（Layered Explanation）</h2>
+
+  <h3>直观类比（Intuition）</h3>
+  <p>想象你雇了一个<strong>助理</strong>。你说：「帮我订明天从北京到上海的高铁。」</p>
+  <ul>
+    <li>普通 Chat：你问它「怎么订？」它告诉你流程，<strong>你自己去执行</strong>。</li>
+    <li>Agent：它<strong>自己去查时刻表 → 比对价格 → 调用订票接口 → 把订单号发给你</strong>。</li>
+  </ul>
+  <p>助理的「能力」来自三件事：</p>
+  <ol>
+    <li><strong>脑子能推理</strong>（LLM）</li>
+    <li><strong>手能操作真实工具</strong>（浏览器、API、文件）</li>
+    <li><strong>有任务没完成就继续干</strong>（循环控制）</li>
+  </ol>
+  <p>只要这三件齐了，就是 Agent，<strong>不管它叫 ReAct、AutoGPT 还是 LangGraph</strong>。</p>
+
+  <h3>机制原理（Mechanism）</h3>
+  <p>一个典型 Agent 的运行循环是这样的：</p>
+<pre>┌──────────────────────────────────────┐
+│  while 任务未完成 且 步数 &lt; 上限:      │
+│    1. 把"目标 + 历史 + 工具列表"塞给 LLM│
+│    2. LLM 输出: { 思考, 要调用的工具,  │
+│                  工具参数 }           │
+│    3. 执行工具调用, 得到结果           │
+│    4. 把结果写回历史                  │
+│  循环结束                            │
+│  输出最终答案                        │
+└──────────────────────────────────────┘</pre>
+  <p><strong>关键组件拆解</strong>：</p>
+  <ul>
+    <li><strong>LLM（大脑）</strong>：负责"现在该干嘛"。它读历史、选工具。</li>
+    <li><strong>工具（手脚）</strong>：模型本身干不了的事，比如读文件、查数据库、发请求。每个工具用一个 JSON schema 描述，模型按 schema 填参数。</li>
+    <li><strong>记忆（上下文）</strong>：所有过去的思考和工具结果都拼进下一次 prompt。这是为什么"上下文窗口"对 Agent 至关重要——装不下，Agent 就"失忆"。</li>
+    <li><strong>终止条件</strong>：要么 LLM 说"做完了"，要么达到最大步数（防止死循环），要么用户强制中断。</li>
+  </ul>
+
+  <h3>边界与误区（Boundaries）</h3>
+  <ul>
+    <li>❌ <strong>误区 1：「Agent = 比 Chat 更聪明的 AI」</strong><br>不是更聪明，是<strong>更主动</strong>。Chat 是被动应答，Agent 是主动做事。</li>
+    <li>❌ <strong>误区 2：「Agent 一定能完成任何任务」</strong><br>Agent 强依赖 LLM 推理能力 + 工具覆盖度。给一个只会算数的 LLM 一个"帮我写代码"任务，它做不了。</li>
+    <li>❌ <strong>误区 3：「Agent 是 AGI」</strong><br>Agent 是一种<strong>架构模式</strong>，AGI 是能力等级。今天所有 Agent 都很窄，工具只覆盖特定领域。</li>
+    <li>✅ <strong>边界</strong>：Agent <strong>自己</strong>不能访问它<strong>没有被赋予</strong>的工具。你不让它读邮件，它就读不了。</li>
+  </ul>
+
+  <h2 id="examples">4. 正反例（Examples）</h2>
+  <h3>✅ 好例子：研究型 Agent</h3>
+  <p><strong>任务</strong>：「帮我调研 2024 年大模型领域最火的 3 个研究方向，每个写 200 字总结。」</p>
+  <p><strong>流程</strong>：</p>
+  <ol>
+    <li>Agent 调用搜索工具 → 拿到候选方向</li>
+    <li>调用网页抓取工具 → 读 3 篇文章</li>
+    <li>调用排序/筛选工具 → 选 top 3</li>
+    <li>调用文本生成工具 → 写总结</li>
+    <li>输出最终报告</li>
+  </ol>
+  <p>为什么是好例子：<strong>多步、需要多个不同工具、有明确目标</strong>。</p>
+
+  <h3>❌ 坏例子：用 Agent 回答一个事实问题</h3>
+  <p><strong>任务</strong>：「Python 里 <code>len()</code> 是干嘛的？」</p>
+  <p><strong>为什么是坏例子</strong>：1 步就能答完的事，硬套 Agent 框架就是过度设计。直接问 Chat 就行。</p>
+  <p><strong>判断原则</strong>：任务能不能<strong>一步</strong>搞定？能 → Chat；需要<strong>自主决定下一步干什么</strong> → Agent。</p>
+
+  <h2 id="check">5. 自检问题（Self-Check）</h2>
+  <details>
+    <summary>1. Agent 和普通 Chat 的根本区别是什么？</summary>
+    <p><strong>关键不在聪明程度，而在主动性</strong>。Chat 被动应答；Agent 能自主决定调什么工具、什么时候停。但 Agent 也要靠 LLM 推理，模型差它也差。</p>
+  </details>
+  <details>
+    <summary>2. Agent 的三个核心组件是什么？</summary>
+    <p>LLM（大脑，决定下一步）+ 工具（手脚，访问外部世界）+ 循环（目标未达成继续）。少任何一个都不算真正的 Agent。</p>
+  </details>
+  <details>
+    <summary>3. 什么任务适合用 Agent，什么不适合？</summary>
+    <p>适合：需要<strong>多步、跨工具、自主决策</strong>的任务（调研、代码生成、复杂工作流）。<br>不适合：一句话就能答的事实问答、纯创意写作（无工具调用需求）。<br>判断标准：<strong>能否一步搞定？能→Chat；不能→Agent</strong>。</p>
+  </details>
+</main>
+</div>
+</body>
+</html>
