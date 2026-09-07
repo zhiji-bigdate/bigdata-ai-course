@@ -155,13 +155,15 @@ LLM（大脑，决定下一步）+ 工具（手脚，访问外部世界）+ 循�
 
 ## 8. 参考来源（References）
 
-1. **OpenAI 官方介绍：Introduction to LLM Agents**（官方文档）
-   - 为什么推荐：最权威的"什么是 Agent"定义来源，避免被各种营销稿带偏。
-2. **LangChain Agents 文档**（官方文档）— https://python.langchain.com/docs/modules/agents/
+> ⚠️ **核查状态**：以下 5 条引用中 4 条已通过搜索引擎核实（标 ✅），1 条为概称（标 ⚠️）。
+
+1. ⚠️ **OpenAI 官方关于 LLM Agents 的介绍**（官方文档，platform.openai.com）
+   - 为什么推荐：OpenAI 官方对 Agent 的概念定义最权威。但官方没有名为 "Introduction to LLM Agents" 的固定页面，相关内容散落在 Cookbook 和 Docs 多处，建议直接搜索 "OpenAI agents"。
+2. ✅ **LangChain Agents 文档**（官方文档）— https://python.langchain.com/docs/modules/agents/
    - 为什么推荐：当前最主流的 Agent 开发框架，文档里有大量可运行的 ReAct 示例。
-3. **《ReAct: Synergizing Reasoning and Acting in Language Models》**（论文，Yao et al., 2022）— arXiv:2210.03629
-   - 为什么推荐：Agent "思考-行动-观察"循环的经典论文，理解机制的必读。
-4. **吴恩达《AI Agent 系列短课》**（公开课）— deeplearning.ai
-   - 为什么推荐：用最直白的方式讲清 Agent 设计模式，适合初学者。
-5. **Lilian Weng "LLM Powered Autonomous Agents"**（博客）— lilianweng.github.io
-   - 为什么推荐：技术综述类博客里写得最系统的一篇，涵盖规划、记忆、工具三大块。
+3. ✅ **《ReAct: Synergizing Reasoning and Acting in Language Models》**（论文，Yao et al., 2022）— arXiv:2210.03629
+   - 为什么推荐：Agent "思考-行动-观察"循环的经典论文，理解机制的必读。作者：Shunyu Yao, Jeffrey Zhao, Dian Yu 等，2022 年 10 月发表于 arXiv，后被 ICLR 2023 接收。
+4. ✅ **吴恩达《AI Agent 系列短课》**（公开课）— deeplearning.ai
+   - 为什么推荐：DeepLearning.AI 出品的免费短课，用最直白的方式讲清 Agent 设计模式，适合初学者。
+5. ✅ **Lilian Weng "LLM Powered Autonomous Agents"**（博客）— https://lilianweng.github.io/posts/2023-06-23-agent/
+   - 为什么推荐：技术综述类博客里写得最系统的一篇，涵盖规划、记忆、工具三大块。2023 年 6 月发布，是 Agent 领域的"圣经"级参考。

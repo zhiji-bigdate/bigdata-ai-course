@@ -193,12 +193,13 @@ def truncate_to_tokens(text, max_tokens=2000):
   </details>
 
   <h2 id="refs">8. 参考来源（References）</h2>
+  <p style="background:#fffbe6;border-left:4px solid #ffc107;padding:10px 14px;border-radius:0 6px 6px 0;margin:14px 0;">⚠️ <strong>核查状态</strong>：以下 5 条引用中 3 条已通过搜索引擎核实（标 ✅），2 条为概称（标 ⚠️）。</p>
   <ol class="refs">
-    <li><strong>OpenAI 官方：Managing Context</strong>（官方文档）— platform.openai.com/docs<br>为什么推荐：上下文窗口、token 计费等基础概念的最权威解释。</li>
-    <li><strong>Anthropic：Effective context engineering for AI agents</strong>（官方博客）— anthropic.com<br>为什么推荐：Anthropic 工程师写的实战经验，专门讲"怎么塞"上下文。</li>
-    <li><strong>《Lost in the Middle: How Language Models Use Long Contexts》</strong>（论文，Liu et al., 2023）— arXiv:2307.03172<br>为什么推荐：长上下文为什么"中间会丢"的原始研究，重要结论都有。</li>
-    <li><strong>Lil' Log: How to Build an LLM-powered Game</strong>（博客）— lilianweng.github.io<br>为什么推荐：用游戏项目当例子，展示上下文工程的全过程。</li>
-    <li><strong>《The Prompt Report: A Systematic Survey of Prompting Techniques》</strong>（综述论文，2024）<br>为什么推荐：系统梳理所有"上下文工程"技巧，是 prompt engineering 的学术总览。</li>
+    <li>⚠️ <strong>OpenAI 官方关于 Context Window / Token 的文档</strong>（官方文档，platform.openai.com）<br>为什么推荐：上下文窗口、token 计费等基础概念的最权威解释。但官方文档页面经常调整，建议直接搜索 "OpenAI tokens context window"。</li>
+    <li>✅ <strong>Anthropic：Building effective agents</strong>（官方工程博客）— anthropic.com/engineering<br>为什么推荐：Anthropic 工程师写的实战经验，讨论"怎么塞"上下文和"什么时候该用 Agent"。发布于 2024 年 12 月。</li>
+    <li>✅ <strong>《Lost in the Middle: How Language Models Use Long Contexts》</strong>（论文，Liu et al., 2023）— arXiv:2307.03172<br>为什么推荐：长上下文为什么"中间会丢"的原始研究。作者：Nelson F. Liu, Kevin Lin 等（Stanford / Samaya AI），2023 年 7 月发表于 arXiv，后被 TACL 2024 接收。论文核心结论：模型对中间位置的信息利用度显著低于首尾（U 形曲线）。</li>
+    <li>⚠️ <strong>Lilian Weng 博客关于 LLM 应用的系列文章</strong>（博客）— lilianweng.github.io<br>为什么推荐：技术综述写得最系统，但<strong>具体文章标题请访问她的博客主页按需查找</strong>（不同文章涉及不同应用场景）。</li>
+    <li>✅ <strong>《The Prompt Report: A Systematic Survey of Prompting Techniques》</strong>（综述论文，Schulhoff et al., 2024）<br>为什么推荐：系统梳理所有"上下文工程"技巧，是 prompt engineering 的学术总览。2024 年发布。</li>
   </ol>
 </main>
 </div>
