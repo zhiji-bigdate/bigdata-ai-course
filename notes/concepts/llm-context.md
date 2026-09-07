@@ -144,13 +144,15 @@ def truncate_to_tokens(text, max_tokens=2000):
 
 ## 8. 参考来源（References）
 
-1. **OpenAI 官方：Managing Context**（官方文档）— platform.openai.com/docs
-   - 为什么推荐：上下文窗口、token 计费等基础概念的最权威解释。
-2. **Anthropic：Effective context engineering for AI agents**（官方博客）— anthropic.com
-   - 为什么推荐：Anthropic 工程师写的实战经验，专门讲"怎么塞"上下文。
-3. **《Lost in the Middle: How Language Models Use Long Contexts》**（论文，Liu et al., 2023）— arXiv:2307.03172
-   - 为什么推荐：长上下文为什么"中间会丢"的原始研究，重要结论都有。
-4. **Lil' Log: How to Build an LLM-powered Game**（博客）— lilianweng.github.io
-   - 为什么推荐：用游戏项目当例子，展示上下文工程的全过程。
-5. **《The Prompt Report: A Systematic Survey of Prompting Techniques》**（综述论文，2024）
-   - 为什么推荐：系统梳理所有"上下文工程"技巧，是 prompt engineering 的学术总览。
+> ⚠️ **核查状态**：以下 5 条引用中 3 条已通过搜索引擎核实（标 ✅），2 条为概称（标 ⚠️）。
+
+1. ⚠️ **OpenAI 官方关于 Context Window / Token 的文档**（官方文档，platform.openai.com）
+   - 为什么推荐：上下文窗口、token 计费等基础概念的最权威解释。但官方文档页面经常调整，建议直接搜索 "OpenAI tokens context window"。
+2. ✅ **Anthropic：Building effective agents**（官方工程博客）— anthropic.com/engineering
+   - 为什么推荐：Anthropic 工程师写的实战经验，讨论"怎么塞"上下文和"什么时候该用 Agent"。发布于 2024 年 12 月。
+3. ✅ **《Lost in the Middle: How Language Models Use Long Contexts》**（论文，Liu et al., 2023）— arXiv:2307.03172
+   - 为什么推荐：长上下文为什么"中间会丢"的原始研究。作者：Nelson F. Liu, Kevin Lin 等（Stanford / Samaya AI），2023 年 7 月发表于 arXiv，后被 TACL 2024 接收。论文核心结论：模型对中间位置的信息利用度显著低于首尾（U 形曲线）。
+4. ⚠️ **Lilian Weng 博客关于 LLM 应用的系列文章**（博客）— lilianweng.github.io
+   - 为什么推荐：技术综述写得最系统，但**具体文章标题请访问她的博客主页按需查找**（不同文章涉及不同应用场景）。
+5. ✅ **《The Prompt Report: A Systematic Survey of Prompting Techniques》**（综述论文，Schulhoff et al., 2024）
+   - 为什么推荐：系统梳理所有"上下文工程"技巧，是 prompt engineering 的学术总览。2024 年发布。
