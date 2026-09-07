@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill（技能）— 学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #fafafa;
+  color: #1a1a1a;
+  line-height: 1.7;
+  font-size: 16px;
+}
+.layout { display: flex; max-width: 1100px; margin: 0 auto; min-height: 100vh; }
+aside {
+  width: 220px; flex-shrink: 0;
+  background: #f0f2f5;
+  border-right: 1px solid #e0e0e0;
+  padding: 32px 20px;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+aside h3 { font-size: 13px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+aside ol { list-style: none; }
+aside li { margin-bottom: 10px; }
+aside a { color: #2c5aa0; text-decoration: none; font-size: 14px; }
+main { flex: 1; padding: 40px 56px; max-width: 800px; }
+.meta { color: #888; font-size: 13px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed #ddd; }
+h1 { font-size: 28px; margin-bottom: 24px; color: #1a1a1a; }
+h2 { font-size: 22px; margin: 36px 0 16px; color: #2c5aa0; padding-bottom: 6px; border-bottom: 2px solid #2c5aa0; }
+h3 { font-size: 18px; margin: 24px 0 12px; color: #1a1a1a; }
+p { margin-bottom: 14px; }
+ul, ol { margin: 10px 0 16px 24px; }
+li { margin-bottom: 6px; }
+.tree { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px 20px; margin: 14px 0; font-family: monospace; font-size: 14px; white-space: pre; }
+pre {
+  background: #f4f4f4; border: 1px solid #ddd; border-radius: 6px;
+  padding: 14px 18px; overflow-x: auto; font-size: 14px; margin: 14px 0;
+  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+}
+pre code { background: none; padding: 0; }
+code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 14px; font-family: "SFMono-Regular", Consolas, monospace; }
+details {
+  background: #fff; border: 1px solid #e0e0e0; border-radius: 6px;
+  padding: 12px 16px; margin: 10px 0;
+}
+details summary { cursor: pointer; font-weight: 600; color: #2c5aa0; }
+details[open] summary { margin-bottom: 10px; }
+strong { color: #1a1a1a; }
+.glyph { display: inline-block; background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: 600; margin-right: 4px; }
+.badge { display: inline-block; background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <h3>本文目录</h3>
+  <ol>
+    <li><a href="#map">概念地图</a></li>
+    <li><a href="#def">一句话定义</a></li>
+    <li><a href="#layers">分层理解</a></li>
+    <li><a href="#examples">正反例</a></li>
+    <li><a href="#check">自检问题</a></li>
+  </ol>
+</aside>
+<main>
+  <div class="meta">由 <code>concept-learning</code> Skill 生成 · 2026-09-07</div>
+  <h1><span class="glyph">学习资料</span>Skill（技能）</h1>
+
+  <h2 id="map">1. 概念地图（Concept Map）</h2>
+  <div class="tree">AI 助手能力来源
+  ├── 1. 模型权重（预训练学到的通用知识）       → 与生俱来
+  ├── 2. 工具（Tools / Functions）              → 临时调用，按需
+  ├── 3. Skill（技能包）                        → 持久化的"经验手册"
+  │       ├── 触发条件：满足某场景自动加载
+  │       ├── 内容：领域工作流 + 提示词模板 + 脚本资源
+  │       └── 作用：让通用 AI 变成"领域专家"
+  └── 4. 记忆 / 用户偏好                        → 跨会话</div>
+  <p><strong>一句话定位</strong>：Skill 是给 AI 助手的<strong>「工作手册」</strong>——把某类任务的最佳实践打包好，遇到相关场景就自动加载，让通用 AI 临时"变身"为该领域专家。</p>
+
+  <h2 id="def">2. 一句话定义</h2>
+  <p><strong>Skill</strong>（技能）= 一份<strong>结构化的领域工作流说明书</strong>（含触发条件、操作步骤、配套脚本和资源），AI 助手遇到匹配场景时自动加载并按其执行，从而在该领域达到接近专家的水平。</p>
+
+  <h2 id="layers">3. 分层理解（Layered Explanation）</h2>
+
+  <h3>直观类比（Intuition）</h3>
+  <p>想象你雇了一个<strong>多面手助理</strong>——他什么都懂一点，但具体到某件事就不一定专业。</p>
+  <ul>
+    <li><strong>没 Skill</strong>：你说"帮我做个 Excel 图表"，他可能用最笨的方法画。</li>
+    <li><strong>有 Excel 图表 Skill</strong>：他读完这份《Excel 图表最佳实践 10 条》后，<strong>临时</strong>变成了"图表专家"——知道什么场景用柱状、什么用折线、怎么配色、怎么避免 3D 饼图。</li>
+  </ul>
+  <p>Skill 的本质是：<strong>把"领域专家大脑里没说出来的隐性知识"显性化、文档化，让 AI 临时调用</strong>。</p>
+
+  <h3>机制原理（Mechanism）</h3>
+  <p>一个完整的 Skill 包通常包括：</p>
+<pre>my-skill/
+├── SKILL.md              ← 核心：触发条件 + 操作流程（必填）
+├── scripts/              ← 可执行代码（按需调用）
+│   └── do_thing.py
+├── references/           ← 详细文档（按需加载到上下文）
+│   └── api_schema.md
+└── assets/               ← 输出素材（模板、图片）
+    └── template.docx</pre>
+  <p><strong>触发流程</strong>：</p>
+  <ol>
+    <li><span class="badge">常驻</span><strong>元数据常驻</strong>：AI 启动时，所有已装 Skill 的「名字 + 一句话描述」都在它的视野里（约 100 字/个）。</li>
+    <li><span class="badge">匹配</span><strong>场景匹配</strong>：你提问时，AI 对比 Skill 描述和你的问题，<strong>判断要不要加载</strong>。</li>
+    <li><span class="badge">加载</span><strong>按需加载正文</strong>：触发后，AI 读 <code>SKILL.md</code> 主体（一般 &lt; 5K 字）学会怎么做。</li>
+    <li><span class="badge">执行</span><strong>边做边查资源</strong>：执行过程中可能再读 <code>references/</code>、跑 <code>scripts/</code>。</li>
+    <li><span class="badge">产出</span><strong>产出结果</strong>：可能用到 <code>assets/</code> 里的模板。</li>
+  </ol>
+  <p><strong>关键设计</strong>：</p>
+  <ul>
+    <li><strong>轻量元数据</strong>：触发要准，描述要写好。</li>
+    <li><strong>分级加载</strong>：不全塞进上下文，按需读 → 节省 token。</li>
+    <li><strong>可组合</strong>：多个 Skill 可同时启用，AI 协调。</li>
+  </ul>
+
+  <h3>边界与误区（Boundaries）</h3>
+  <ul>
+    <li>❌ <strong>误区 1：「Skill = 提示词 Prompt」</strong><br>不完全。Prompt 是单条指令；Skill 是<strong>完整工作流</strong>（含步骤、脚本、参考、模板）。Skill 可以包含多个 prompt。</li>
+    <li>❌ <strong>误区 2：「Skill 让 AI 永远变专家」</strong><br>Skill <strong>只能补充</strong>模型本身的能力。模型做不了的事，Skill 写得再细也做不了（除非 Skill 本身提供工具调用代码）。</li>
+    <li>❌ <strong>误区 3：「Skill 越多越好」</strong><br>每个 Skill 的元数据都常驻上下文。装 50 个 Skill，每个用 100 字，光元数据就吃 5K token。<strong>少而精</strong>比大而全更有效。</li>
+    <li>✅ <strong>边界</strong>：Skill 的内容<strong>不能修改模型权重</strong>。它只是文档和脚本，不是训练。</li>
+  </ul>
+
+  <h2 id="examples">4. 正反例（Examples）</h2>
+  <h3>✅ 好例子：项目级「提交信息」Skill</h3>
+  <p><strong>触发词</strong>：「提交代码」「commit」「git commit」</p>
+  <p><strong>Skill 内容</strong>（节选）：</p>
+  <ul>
+    <li>提交信息格式规范（<code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;</code>）</li>
+    <li>项目特有的 type 列表（feat/fix/chore/docs）</li>
+    <li>自动跑 <code>git diff --staged</code> 总结要写进 message</li>
+    <li>调用 <code>scripts/lint_commit.py</code> 校验格式</li>
+  </ul>
+  <p><strong>效果</strong>：每次 commit 信息都规范、可追溯，符合团队风格。</p>
+
+  <h3>❌ 坏例子：万能 Skill</h3>
+  <p><strong>设计</strong>：一个 Skill 涵盖「写代码 + 写文档 + 调 bug + 做 PPT + 写诗」。</p>
+  <p><strong>为什么坏</strong>：</p>
+  <ul>
+    <li>触发描述模糊，AI 不知道什么时候用</li>
+    <li>内容太杂，每一块都不深入</li>
+    <li>元数据太长，常驻开销高</li>
+    <li>真正用到的功能被淹没在搜索里</li>
+  </ul>
+  <p><strong>正确做法</strong>：拆成 5 个独立 Skill，每个精而深。</p>
+
+  <h2 id="check">5. 自检问题（Self-Check）</h2>
+  <details>
+    <summary>1. Skill 和 Prompt（提示词）有什么区别？</summary>
+    <p>Prompt 是一条<strong>单次指令</strong>；Skill 是<strong>完整工作流</strong>（含触发条件、步骤、脚本、模板、参考）。Skill 可以包含多个 prompt。Skill 还有"自动触发"机制，prompt 是用户每次手写。</p>
+  </details>
+  <details>
+    <summary>2. 为什么 Skill 不是越多越好？</summary>
+    <p>每个 Skill 的"名字+描述"都会<strong>常驻 AI 上下文</strong>（用于判断是否触发）。装 50 个 Skill，元数据就吃 5K+ token；还会互相干扰导致触发不准。<strong>少而精</strong>比大而全好。</p>
+  </details>
+  <details>
+    <summary>3. Skill 能让 AI 学会它原本不会的事吗？</summary>
+    <p>不能直接学会。Skill 提供<strong>操作流程和工具</strong>，让 AI 把已有能力用得更专业。但<strong>模型本身做不了的事</strong>（比如准确数清一张照片里的人数），Skill 写得再细也帮不了，除非 Skill 内置了专门的脚本或外部 API。</p>
+  </details>
+</main>
+</div>
+</body>
+</html>
