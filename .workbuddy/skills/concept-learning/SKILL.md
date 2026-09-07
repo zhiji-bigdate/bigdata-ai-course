@@ -1,6 +1,6 @@
 ---
 name: concept-learning
-description: This skill should be used when the user wants to deeply learn a technical concept (e.g., "Agent", "大模型的上下文", "Skill", "RAG", "Transformer") and produce a complete, structured study pack — not just a definition. Every study pack is organized in 8 mandatory sections: learning objectives, driving questions, concept map, structured explanation, application cases, concept disambiguation, self-check questions, and references. Output is saved as Markdown to `notes/concepts/SLUG.md` with a matching single-file HTML preview at `notes/concepts/SLUG.html`. Use this skill whenever the user says "学一下 X"、"给我讲讲 X"、"学习 X 这个概念"、"整理 X 的学习材料", or asks for a study note on a named concept.
+description: This skill generates a complete, structured study pack for ANY single technical concept (e.g., "Agent", "大模型的上下文", "Skill", "RAG", "Transformer") — not a one-paragraph definition. Input: a single concept name (Chinese or English). Output: a Markdown study pack in `notes/concepts/SLUG.md` plus a single-file HTML preview at `notes/concepts/SLUG.html`, both following a mandatory 8-section structure (learning objectives → driving questions → concept map → structured explanation → application cases → concept disambiguation → self-check → references). Use this skill whenever the user says "学一下 X"、"给我讲讲 X"、"学习 X 这个概念"、"整理 X 的学习材料" or asks for a study note on a named concept. NOT for cross-concept comparisons (use a separate comparison skill) and NOT for code implementation.
 agent_created: true
 ---
 
