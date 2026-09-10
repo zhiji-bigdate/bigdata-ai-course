@@ -38,6 +38,7 @@ Every study pack **must** contain the following 8 sections, in this exact order.
    - 一个**课堂/练习** where the learner can try it themselves (e.g., "打开 VS Code，新建一个 .py 文件…").
 6. **概念辨析（Concept Disambiguation）** — A short table or 2–3 mini-blocks that contrast this concept with **nearby concepts** the learner might confuse it with. Format: "X vs Y：X 是……，Y 是……；区别在于……".
 7. **自测问题（Self-Check）** — 3 questions, each in a `details` block with an answer hint (NOT the full answer — just a hint or one-line summary that the learner can reveal after thinking).
+7.5 **选择题练习（Multiple Choice with Feedback）— 可选扩展** — 3–5 multiple-choice questions, each with 4 options (A/B/C/D). For each option, give a concrete feedback (why it's right or wrong). End with a "考点" callout and a "你如果选了 X" tip for the most common wrong answer. The foldable `details` block holds the answer + feedback so the learner tries first, then reveals. This is great for fast self-testing and for concepts with strong "right vs wrong" boundaries (definitions, components, common mistakes).
 8. **参考来源（References）** — 3–5 references the learner can read next. Mix of:
    - Official docs (e.g., 官方文档链接)
    - Well-known articles / blog posts

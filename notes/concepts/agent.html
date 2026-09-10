@@ -60,6 +60,67 @@ strong { color: #1a1a1a; }
 .glyph { display: inline-block; background: #e3f2fd; color: #1565c0; padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: 600; margin-right: 4px; }
 ol.refs { list-style: decimal; }
 ol.refs li { margin-bottom: 12px; }
+
+/* ===== 选择题板块专用样式 ===== */
+.quiz-card {
+  background: #fff; border: 1px solid #e0e0e0; border-radius: 8px;
+  padding: 18px 22px; margin: 18px 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.quiz-card .q-num {
+  display: inline-block; background: #1565c0; color: #fff;
+  padding: 3px 10px; border-radius: 4px; font-size: 13px;
+  font-weight: 600; margin-bottom: 8px;
+}
+.quiz-card .q-type {
+  display: inline-block; background: #fff3cd; color: #856c00;
+  padding: 2px 8px; border-radius: 4px; font-size: 12px;
+  font-weight: 600; margin-left: 8px;
+}
+.quiz-card .q-stem {
+  font-size: 17px; font-weight: 600; color: #1a1a1a;
+  margin: 12px 0 10px; padding: 8px 12px;
+  background: #f8f9fa; border-left: 4px solid #2c5aa0; border-radius: 0 4px 4px 0;
+}
+.quiz-card ol.options {
+  list-style: none; padding: 0; margin: 12px 0;
+}
+.quiz-card ol.options li {
+  padding: 10px 14px; margin: 6px 0;
+  background: #fafafa; border: 1px solid #e8e8e8; border-radius: 6px;
+  font-size: 15px; line-height: 1.6;
+}
+.quiz-card ol.options li::before {
+  content: attr(data-label); display: inline-block;
+  width: 24px; height: 24px; line-height: 24px;
+  text-align: center; background: #e3f2fd; color: #1565c0;
+  border-radius: 50%; font-weight: 700; margin-right: 10px;
+}
+.quiz-card details.feedback { margin-top: 12px; }
+.quiz-card details.feedback > summary {
+  cursor: pointer; background: #e3f2fd; padding: 10px 14px;
+  border-radius: 6px; color: #1565c0; font-weight: 600;
+  list-style: none; transition: background 0.2s;
+}
+.quiz-card details.feedback > summary:hover { background: #bbdefb; }
+.quiz-card details.feedback[open] > summary { margin-bottom: 12px; }
+.quiz-card details.feedback[open] > summary::after { content: "（点击收起）"; font-weight: normal; font-size: 12px; color: #666; margin-left: 8px; }
+.quiz-card .fb-table { width: 100%; margin-top: 8px; }
+.quiz-card .fb-table td:first-child { width: 80px; font-weight: 600; text-align: center; }
+.quiz-card .fb-table .ok { color: #2e7d32; font-size: 18px; }
+.quiz-card .fb-table .no { color: #c62828; font-size: 18px; }
+.quiz-card .fb-table .partial { color: #ef6c00; font-size: 18px; }
+.quiz-card .point {
+  background: #fff3cd; border-left: 4px solid #ffc107;
+  padding: 8px 12px; border-radius: 0 4px 4px 0;
+  margin: 8px 0; font-size: 14px;
+}
+.quiz-card .tip {
+  background: #f3e5f5; border-left: 4px solid #8e24aa;
+  padding: 8px 12px; border-radius: 0 4px 4px 0;
+  margin: 8px 0; font-size: 14px;
+}
+.quiz-card .point strong, .quiz-card .tip strong { color: #1a1a1a; }
 </style>
 </head>
 <body>
@@ -74,6 +135,7 @@ ol.refs li { margin-bottom: 12px; }
     <li><a href="#app">5. 应用案例</a></li>
     <li><a href="#dis">6. 概念辨析</a></li>
     <li><a href="#check">7. 自检问题</a></li>
+    <li><a href="#quiz">7.5 选择题练习 ⭐</a></li>
     <li><a href="#refs">8. 参考来源</a></li>
   </ol>
 </aside>
@@ -203,6 +265,139 @@ ol.refs li { margin-bottom: 12px; }
     <summary>3. 什么任务适合用 Agent，什么不适合？</summary>
     <p>适合：需要<strong>多步、跨工具、自主决策</strong>的任务（调研、代码生成、复杂工作流）。<br>不适合：一句话就能答的事实问答、纯创意写作（无工具调用需求）。<br>判断标准：<strong>能否一步搞定？能→Chat；不能→Agent</strong>。</p>
   </details>
+
+  <h2 id="quiz">7.5 选择题练习（Multiple Choice with Feedback）⭐</h2>
+  <p style="background:#fff3cd;border-left:4px solid #ffc107;padding:10px 14px;border-radius:0 6px 6px 0;margin:14px 0;">
+    5 道题，每题 4 个选项。<strong>先自己想答案，再点开"反馈"看对错和原因</strong>。这部分用来巩固第 4 节"结构化解释"和第 4.4 节"边界与误区"。
+  </p>
+
+  <!-- 题 1：定义题 -->
+  <div class="quiz-card">
+    <span class="q-num">题 1</span><span class="q-type">定义题</span>
+    <div class="q-stem">下面哪个描述<strong>最准确</strong>地定义了 Agent？</div>
+    <ol class="options">
+      <li data-label="A">Agent 是比 ChatGPT 更聪明的 AI</li>
+      <li data-label="B">Agent 是一种让大模型<strong>自主决策、调用工具、循环执行</strong>直到任务完成的运行模式</li>
+      <li data-label="C">Agent 是一个独立于 LLM 的 AI 模型</li>
+      <li data-label="D">Agent 等同于 AGI（通用人工智能）</li>
+    </ol>
+    <details class="feedback">
+      <summary>✅ 正确答案与反馈（点开查看）</summary>
+      <table class="fb-table">
+        <tr><td class="no">A ❌</td><td><strong>错在"更聪明"</strong>——Agent 不一定更聪明，是<strong>更主动</strong>。Chat 答"怎么订票"，Agent 真的去订票。</td></tr>
+        <tr><td class="ok">B ✅</td><td><strong>准确</strong>：包含"自主决策""工具调用""循环"三个关键要素，正是第 4.1 节定义的三件套。</td></tr>
+        <tr><td class="no">C ❌</td><td>Agent 强依赖 LLM。<strong>没有 LLM 就没有 Agent</strong>，因为"自主决策"靠的是 LLM 推理。</td></tr>
+        <tr><td class="no">D ❌</td><td>Agent 是<strong>架构模式</strong>（怎么运行），AGI 是<strong>能力等级</strong>（能干什么）。今天所有 Agent 都很窄。</td></tr>
+      </table>
+      <div class="point">📌 <strong>考点</strong>：Agent 是<strong>架构</strong>而不是<strong>能力等级</strong>——这是第 1 个最常见的误区。</div>
+      <div class="tip">🤔 <strong>你如果选了 A</strong>：把"更主动"和"更聪明"混为一谈了。ChatGPT-4 比 GPT-3.5 更聪明，但不是 Agent；同样模型套上"工具+循环"就是 Agent。</div>
+    </details>
+  </div>
+
+  <!-- 题 2：核心组件题 -->
+  <div class="quiz-card">
+    <span class="q-num">题 2</span><span class="q-type">核心组件题</span>
+    <div class="q-stem">一个完整的 Agent <strong>至少</strong>需要以下哪 3 个核心组件？</div>
+    <ol class="options">
+      <li data-label="A">LLM + 数据库 + 用户界面</li>
+      <li data-label="B">LLM + 工具 + 循环（直到任务完成）</li>
+      <li data-label="C">神经网络 + 规则引擎 + 知识图谱</li>
+      <li data-label="D">聊天窗口 + API + 数据库连接</li>
+    </ol>
+    <details class="feedback">
+      <summary>✅ 正确答案与反馈（点开查看）</summary>
+      <table class="fb-table">
+        <tr><td class="no">A ❌</td><td>数据库和 UI <strong>不是核心</strong>——没有它们 Agent 也能跑（CLI 版的 Agent 同样有效）。</td></tr>
+        <tr><td class="ok">B ✅</td><td><strong>正确</strong>：大脑（LLM）+ 手脚（工具）+ 持续干活的循环。少任何一个都不算真正 Agent。</td></tr>
+        <tr><td class="no">C ❌</td><td>这是<strong>传统 AI 系统</strong>的组件，不是 Agent 的核心。Agent 强调"用 LLM 决策"，不是用规则。</td></tr>
+        <tr><td class="no">D ❌</td><td>聊天窗口是<strong>产品形态</strong>，API 是<strong>一种工具</strong>，数据库是<strong>数据源</strong>——都不是 Agent 的核心三件套。</td></tr>
+      </table>
+      <div class="point">📌 <strong>考点</strong>：Agent 三大组件 = LLM（决策）+ 工具（执行）+ 循环（持续）</div>
+      <div class="tip">🤔 <strong>你如果选了 C</strong>：这是用传统 AI 思维套 Agent。Agent 最大的特点是"由 LLM 自主决定下一步"，不是用写死的规则。</div>
+    </details>
+  </div>
+
+  <!-- 题 3：应用场景题 -->
+  <div class="quiz-card">
+    <span class="q-num">题 3</span><span class="q-type">应用场景题</span>
+    <div class="q-stem">以下 4 个任务，<strong>哪个最适合</strong>用 Agent 而不是普通 Chat？</div>
+    <ol class="options">
+      <li data-label="A">"法国的首都是哪里？"</li>
+      <li data-label="B">"帮我写一首关于秋天的诗"</li>
+      <li data-label="C">"调研 2024 年大模型领域 3 大研究方向，每个写 200 字总结"</li>
+      <li data-label="D">"把这段中文翻译成英文"</li>
+    </ol>
+    <details class="feedback">
+      <summary>✅ 正确答案与反馈（点开查看）</summary>
+      <table class="fb-table">
+        <tr><td class="no">A ❌</td><td>一步就能答的<strong>事实问答</strong>。Chat 0.5 秒搞定，Agent 反而是杀鸡用牛刀。</td></tr>
+        <tr><td class="no">B ❌</td><td>纯<strong>创意写作</strong>——不需要调任何外部工具，LLM 自己就能干。</td></tr>
+        <tr><td class="ok">C ✅</td><td><strong>典型 Agent 场景</strong>：需要搜索工具 + 网页抓取 + 排序 + 生成——<strong>多步、跨工具、需要决策</strong>。</td></tr>
+        <tr><td class="no">D ❌</td><td>单步翻译，Chat 一步搞定，<strong>没有工具调用需求</strong>。</td></tr>
+      </table>
+      <div class="point">📌 <strong>考点</strong>：判断标准 = <strong>能否一步搞定？能 → Chat；不能 → Agent</strong></div>
+      <div class="tip">🤔 <strong>你如果选了 B</strong>：写诗虽然"难"，但<strong>不需要外部工具</strong>，让 LLM 直接生成即可。Agent 的价值在于"做事"（调用真实工具），不在于"写得更好"。</div>
+    </details>
+  </div>
+
+  <!-- 题 4：误区题 -->
+  <div class="quiz-card">
+    <span class="q-num">题 4</span><span class="q-type">误区题</span>
+    <div class="q-stem">下列关于 Agent 的说法，<strong>哪一个是错误的</strong>（即常见的误区）？</div>
+    <ol class="options">
+      <li data-label="A">Agent 的能力等于 "LLM 能力 ∪ 工具能力"</li>
+      <li data-label="B">Agent 必须有一个"目标未完成就继续"的循环</li>
+      <li data-label="C">Agent 能自己<strong>创造</strong>新工具，工具是它自主发明的</li>
+      <li data-label="D">给 Agent 越多工具越好，因为工具越多能力越强</li>
+    </ol>
+    <details class="feedback">
+      <summary>✅ 正确答案与反馈（点开查看）</summary>
+      <table class="fb-table">
+        <tr><td class="ok">A ✅<br>（正确说法）</td><td>这是 Agent 能力边界的<strong>准确描述</strong>（来自第 4.4 节的"边界"）。</td></tr>
+        <tr><td class="ok">B ✅<br>（正确说法）</td><td>循环是 Agent 三件套之一，<strong>缺了就不是真 Agent</strong>。</td></tr>
+        <tr><td class="no">C ❌<br>（题目要的误区）</td><td>Agent 只能用<strong>被显式赋予</strong>的工具。<strong>它不会自己发明新工具</strong>——这是第 4.4 节误区 4。</td></tr>
+        <tr><td class="partial">D ⚠️<br>部分对部分错</td><td>"工具多能力强"<strong>有条件地成立</strong>。工具太多反而会让 LLM 选错（context overload）。<strong>关键是"工具覆盖任务需要"</strong>，不是"工具越多越好"。</td></tr>
+      </table>
+      <div class="point">📌 <strong>考点</strong>：Agent 的能力边界 = LLM ∪ 工具，且<strong>工具必须是人赋予的</strong>。</div>
+      <div class="tip">🤔 <strong>你如果选了 A</strong>：方向反了——A 是<strong>正确的边界描述</strong>，不是误区。题目要的是"错误说法"。读题要仔细。</div>
+    </details>
+  </div>
+
+  <!-- 题 5：机制题 -->
+  <div class="quiz-card">
+    <span class="q-num">题 5</span><span class="q-type">机制题</span>
+    <div class="q-stem">在 Agent 的 ReAct 循环中，"<strong>观察（Observation）</strong>"步骤的主要作用是什么？</div>
+    <ol class="options">
+      <li data-label="A">让用户看到 Agent 在干嘛（人机交互）</li>
+      <li data-label="B">把工具调用的结果<strong>写回历史</strong>，给 LLM 下一轮推理用</li>
+      <li data-label="C">检查 Agent 是否违反了 AI 安全规则</li>
+      <li data-label="D">让 LLM <strong>学习</strong>新的知识（参数被更新）</li>
+    </ol>
+    <details class="feedback">
+      <summary>✅ 正确答案与反馈（点开查看）</summary>
+      <table class="fb-table">
+        <tr><td class="no">A ❌</td><td>UI 展示是<strong>附加的</strong>，不是"观察"步骤的本职。观察是 Agent 内部机制，不是给人看的。</td></tr>
+        <tr><td class="ok">B ✅</td><td><strong>准确</strong>：观察 = 工具结果 → 写回历史 → LLM 下轮决策依据。这正是 ReAct 名字里"<strong>Rea</strong>soning + <strong>Act</strong>ing"循环的粘合剂。</td></tr>
+        <tr><td class="no">C ❌</td><td>安全检查是<strong>单独的 guardrail 机制</strong>，不是观察的职责。</td></tr>
+        <tr><td class="no">D ❌</td><td>观察是<strong>短期记忆</strong>（context），不是"学习"（参数不变）。LLM 的权重在 Agent 运行期间<strong>不会</strong>被工具结果更新。</td></tr>
+      </table>
+      <div class="point">📌 <strong>考点</strong>：观察 = 给 LLM 的<strong>短期记忆</strong>，不是给用户看、不是安全检查、不是学习。</div>
+      <div class="tip">🤔 <strong>你如果选了 D</strong>：混淆了"上下文工程"和"模型训练"。Agent 跑完一轮，模型参数<strong>没变</strong>——变的是下一轮的 prompt 内容。</div>
+    </details>
+  </div>
+
+  <!-- 综合点评 -->
+  <div style="background:linear-gradient(135deg,#e3f2fd 0%,#f3e5f5 100%);border:1px solid #bbdefb;border-radius:8px;padding:18px 22px;margin:24px 0;">
+    <h3 style="margin-top:0;color:#1a1a1a;">综合点评：做完这 5 题你应该记住的 3 件事</h3>
+    <ol style="margin-left:24px;">
+      <li><strong>Agent 是架构，不是能力等级</strong>——同样一个 LLM，套上"工具+循环"就是 Agent，不套就是 Chat。</li>
+      <li><strong>三大组件缺一不可</strong>——LLM（决策）、工具（执行）、循环（持续）。少哪个都不行。</li>
+      <li><strong>判断标准很硬</strong>——<strong>能否一步搞定？</strong> 能 → Chat；不能 → Agent。<strong>不靠感觉，靠问题结构</strong>。</li>
+    </ol>
+    <p style="margin-top:14px;margin-bottom:0;font-size:14px;color:#555;">
+      自我评估：5 题全对 = 掌握核心；错 1-2 题 = 正常，回看第 4 节；错 3 题以上 = 建议重读，对照"4.4 边界与误区"。
+    </p>
+  </div>
 
   <h2 id="refs">8. 参考来源（References）</h2>
   <p style="background:#fffbe6;border-left:4px solid #ffc107;padding:10px 14px;border-radius:0 6px 6px 0;margin:14px 0;">⚠️ <strong>核查状态</strong>：以下 5 条引用中 4 条已通过搜索引擎核实（标 ✅），1 条为概称（标 ⚠️）。</p>
