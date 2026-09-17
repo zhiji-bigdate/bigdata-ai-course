@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Python 学习地图 · 四节课速成版</title>
+<title>Python 与 AI 学习地图 · 四次课版</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -13,7 +13,7 @@ body {
   line-height: 1.75;
   font-size: 16px;
 }
-.wrap { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 40px 24px 80px; }
 header {
   background: linear-gradient(135deg, #306998 0%, #4b8bbe 50%, #ffd43b 100%);
   color: #fff;
@@ -21,7 +21,7 @@ header {
   padding: 40px 36px;
   margin-bottom: 32px;
 }
-header h1 { font-size: 32px; margin-bottom: 10px; }
+header h1 { font-size: 30px; margin-bottom: 10px; }
 header .sub { font-size: 15px; opacity: 0.95; }
 .tag {
   display: inline-block; background: rgba(255,255,255,0.25);
@@ -65,19 +65,42 @@ code {
   background: #fffbe6; border-left: 4px solid #ffd43b;
   padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0;
 }
-.highlight { background: #e8f4fd; padding: 2px 6px; border-radius: 4px; }
-.grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0;
+/* —— 总览网格：模仿老师那张「上下半场」表 —— */
+.map-table { width: 100%; border-collapse: separate; border-spacing: 10px; margin: 20px 0; }
+.map-table th.col-head {
+  background: #eef3f8; color: #306998; font-weight: 600;
+  border-radius: 10px; padding: 12px; text-align: center; font-size: 15px;
 }
-.grid .box { background: #fff; border-radius: 10px; padding: 18px 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
-.grid .box h4 { color: #306998; margin-bottom: 8px; font-size: 15px; }
+.map-table td.row-label {
+  background: #fff; border-radius: 10px; padding: 14px 16px; width: 130px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04); vertical-align: middle;
+}
+.map-table td.row-label .no { font-weight: 700; color: #1a1a1a; font-size: 16px; }
+.map-table td.row-label .stage { display: block; color: #888; font-size: 13px; margin-top: 4px; }
+.cell {
+  border-radius: 10px; padding: 16px 18px; text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05); border: 1px solid #e3ecf4;
+}
+.cell .t { font-weight: 700; color: #2b6cb0; font-size: 15px; margin-bottom: 6px; }
+.cell .d { color: #666; font-size: 13px; }
+.l1 .cell { background: #f3f8fd; }
+.l2 .cell { background: #f3f8fd; }
+.l3 .cell { background: #fff9f0; border-color: #f5e3c8; }
+.l3 .cell .t { color: #b7791f; }
+.l4 .cell { background: #f0faf4; border-color: #cfe8d8; }
+.l4 .cell .t { color: #276749; }
+.conclusion {
+  background: #eef6ff; border-left: 5px solid #4b8bbe; border-radius: 0 10px 10px 0;
+  padding: 16px 20px; margin: 16px 0;
+}
 .footer-note {
   margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc;
   color: #888; font-size: 13px; text-align: center;
 }
 @media (max-width: 640px) {
-  .grid { grid-template-columns: 1fr; }
   header h1 { font-size: 24px; }
+  .map-table { border-spacing: 6px; }
+  .cell .t { font-size: 13px; }
 }
 </style>
 </head>
@@ -85,175 +108,119 @@ code {
 <div class="wrap">
 
 <header>
-  <h1>🐍 Python 学习地图 · 四节课速成版</h1>
-  <div class="sub">面向新闻学专业大二学生 · 4 节课 × 45 分钟 = 180 分钟</div>
+  <h1>🐍 Python 与 AI 学习地图 · 四次课版</h1>
+  <div class="sub">面向新闻学专业大二学生 · 4 次课 × 上下半场各 45 分钟 = 8 单元（360 分钟）</div>
   <div>
-    <span class="tag">数据新闻</span>
-    <span class="tag">舆情分析</span>
-    <span class="tag">内容自动化</span>
+    <span class="tag">Python 核心 5 单元</span>
+    <span class="tag">AI 应用 3 单元</span>
+    <span class="tag">贯穿项目：新闻评论情感分析</span>
   </div>
 </header>
 
-<h2>为什么新闻学学生要学 Python？</h2>
-<table>
-  <tr><th>场景</th><th>传统做法</th><th>用 Python 后</th></tr>
-  <tr><td>整理 1000 条问卷数据</td><td>手动复制粘贴，几小时</td><td>一段代码，几秒钟</td></tr>
-  <tr><td>统计某关键词出现频率</td><td>用眼睛数，容易错</td><td><code>Counter</code> 一行搞定</td></tr>
-  <tr><td>从网页批量抓取新闻标题</td><td>一条条复制</td><td>爬虫自动抓</td></tr>
-  <tr><td>给数据做可视化图表</td><td>Excel 手工调</td><td><code>matplotlib</code> 直接出图</td></tr>
-  <tr><td>处理采访录音转的文字稿</td><td>手动整理</td><td>字符串处理自动清洗</td></tr>
+<h2>四次课总览</h2>
+<table class="map-table">
+  <tr>
+    <th class="col-head" style="width:130px;"></th>
+    <th class="col-head">上半场 45 min</th>
+    <th class="col-head">下半场 45 min</th>
+  </tr>
+  <tr class="l1">
+    <td class="row-label"><span class="no">第 1 次课</span><span class="stage">语法入门</span></td>
+    <td><div class="cell"><div class="t">变量 · 类型 · 字符串</div><div class="d">第一段能跑的代码</div></div></td>
+    <td><div class="cell"><div class="t">列表 · 循环 · 判断</div><div class="d">把一段新闻文本拆开</div></div></td>
+  </tr>
+  <tr class="l2">
+    <td class="row-label"><span class="no">第 2 次课</span><span class="stage">语法进阶</span></td>
+    <td><div class="cell"><div class="t">字典 · 集合 · 推导式</div><div class="d">从一条评论到一堆评论</div></div></td>
+    <td><div class="cell"><div class="t">函数 · 文件 · 模块</div><div class="d">读入一份评论 CSV</div></div></td>
+  </tr>
+  <tr class="l3">
+    <td class="row-label"><span class="no">第 3 次课</span><span class="stage">语法收口</span></td>
+    <td><div class="cell"><div class="t">pandas · 异常处理</div><div class="d">够用即止</div></div></td>
+    <td><div class="cell"><div class="t">jieba 分词 · 词频统计</div><div class="d">产出评论词频表</div></div></td>
+  </tr>
+  <tr class="l4">
+    <td class="row-label"><span class="no">第 4 次课</span><span class="stage">AI 应用</span></td>
+    <td><div class="cell"><div class="t">情感分析原理</div><div class="d">机器怎么分辨好评差评</div></div></td>
+    <td><div class="cell"><div class="t">sklearn 文本分类实战</div><div class="d">给新闻评论自动打分</div></div></td>
+  </tr>
 </table>
-<div class="tip">💡 <strong>一句话</strong>：Python 是新闻人的「效率外挂」，尤其适合 <strong>数据新闻、舆情分析、内容生产自动化</strong> 这三个方向。</div>
 
-<h2>四节课总览</h2>
-<div class="flow">第 1 课  ──►  地基：认识 Python + 变量 + 基础运算
-             │
-             ▼
-第 2 课  ──►  逻辑：条件判断 + 循环 + 列表
-             │
-             ▼
-第 3 课  ──►  实战：文件读写 + 处理真实新闻数据
-             │
-             ▼
-第 4 课  ──►  产出：数据可视化 + 一个小项目收尾</div>
+<div class="conclusion">
+  <strong>结论先行</strong>：8 个 45 分钟单元，按 <strong>Python 核心 5 + AI 应用 3</strong> 切分（225 min : 135 min）。
+  纯语法讲满 4 次，AI 就只剩演示；AI 给 2 次课，语法又不够写代码——<strong>5:3 是唯一能两头都落地的切法</strong>。
+  所有练习都围绕同一个贯穿项目——<strong>新闻评论情感分析</strong>。
+</div>
 
-<h2>第 1 课：地基 —— 和 Python 打个照面</h2>
+<h2>贯穿项目：新闻评论情感分析</h2>
+<div class="flow">第1次课       第2次课         第3次课           第4次课
+语法地基   →   批量处理数据  →  词频统计       →   情感自动分类
+(会写代码)     (读入CSV)      (jieba+词频表)     (sklearn分类器)</div>
+<p>学完你能独立回答：<strong>「1000 条新闻评论里，读者对这件事整体是支持还是反对？」</strong>——这正是数据新闻和舆情分析最常用的一步。</p>
+
+<h2>第 1 次课 · 语法入门</h2>
 <div class="card lesson1">
-  <h3>学习目标</h3>
+  <h3>上半场｜变量 · 类型 · 字符串（第一段能跑的代码）</h3>
   <ul>
-    <li>能用 Python 做基本计算，理解「变量」是什么</li>
-    <li>能写出第一行 <code>print()</code> 代码</li>
-    <li>知道 <code>int / float / str</code> 三种数据类型</li>
+    <li>知识点：<code>print()</code>、变量、<code>int / float / str</code>、字符串拼接</li>
+    <li>新闻落点：把「今日热点」和「：台风来袭」拼成完整标题</li>
+    <li>产出：第一段能运行的 Python 代码</li>
   </ul>
-  <h3>时间分配</h3>
-  <table>
-    <tr><th>时间</th><th>内容</th><th>要点</th></tr>
-    <tr><td>0–5 分钟</td><td>认识 Python</td><td>为什么学、能做什么（结合新闻场景）</td></tr>
-    <tr><td>5–15 分钟</td><td>环境准备</td><td>打开 IDLE 或 VS Code，运行第一行 <code>print("你好")</code></td></tr>
-    <tr><td>15–30 分钟</td><td>变量与运算</td><td><code>变量 = 值</code>、加减乘除、字符串拼接</td></tr>
-    <tr><td>30–40 分钟</td><td>数据类型</td><td>数字（int/float）、文字（str）、真假（bool）</td></tr>
-    <tr><td>40–45 分钟</td><td>小结 + 练习</td><td>三道小练习，巩固概念</td></tr>
-  </table>
-  <h3>核心知识点</h3>
+  <h3>下半场｜列表 · 循环 · 判断（把一段新闻文本拆开）</h3>
   <ul>
-    <li><code>print()</code> 输出</li>
-    <li>变量命名（<code>标题 = "新闻"</code>）</li>
-    <li>四则运算、取余 <code>%</code>、整除 <code>//</code></li>
-    <li>字符串用引号包裹，<code>+</code> 可拼接</li>
-    <li><code>type()</code> 查看类型</li>
+    <li>知识点：<code>if / elif / else</code>、<code>for</code> 循环、列表、比较运算符</li>
+    <li>新闻落点：给稿子字数打分（&lt;300 短讯 / 300–800 消息 / &gt;800 特稿）</li>
+    <li>产出：一个会判断、会重复的小程序</li>
   </ul>
-  <h3>练一练（新闻场景）</h3>
-  <ol>
-    <li>打印一句话自我介绍</li>
-    <li>计算：一篇 800 字的稿子，平均每段 100 字，共几段？</li>
-    <li>把「今日热点」和「：台风来袭」拼成完整标题</li>
-  </ol>
 </div>
 
-<h2>第 2 课：逻辑 —— 让程序会「判断」和「重复」</h2>
+<h2>第 2 次课 · 语法进阶</h2>
 <div class="card lesson2">
-  <h3>学习目标</h3>
+  <h3>上半场｜字典 · 集合 · 推导式（从一条评论到一堆评论）</h3>
   <ul>
-    <li>能写 <code>if / elif / else</code> 让程序做判断</li>
-    <li>能写 <code>for</code> 循环批量处理数据</li>
-    <li>掌握列表（list）这个「万能容器」</li>
+    <li>知识点：字典存键值对、集合去重、列表推导式</li>
+    <li>新闻落点：用字典记录每条评论的点赞数，按栏目去重</li>
+    <li>产出：能批量处理评论数据的小脚本</li>
   </ul>
-  <h3>时间分配</h3>
-  <table>
-    <tr><th>时间</th><th>内容</th><th>要点</th></tr>
-    <tr><td>0–5 分钟</td><td>回顾第 1 课</td><td>快速复习变量和类型</td></tr>
-    <tr><td>5–20 分钟</td><td>条件判断</td><td><code>if</code> 语句，比较运算符（<code>&gt;</code> <code>&lt;</code> <code>==</code>）</td></tr>
-    <tr><td>20–35 分钟</td><td>for 循环</td><td>遍历列表、<code>range()</code> 计数</td></tr>
-    <tr><td>35–43 分钟</td><td>列表</td><td>增删查改：<code>append</code> <code>[索引]</code> <code>len</code></td></tr>
-    <tr><td>43–45 分钟</td><td>小结 + 练习</td><td>用「新闻分类」场景做练习</td></tr>
-  </table>
-  <h3>核心知识点</h3>
+  <h3>下半场｜函数 · 文件 · 模块（读入一份评论 CSV）</h3>
   <ul>
-    <li>比较运算符：<code>==</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code></li>
-    <li><code>if / elif / else</code> 结构</li>
-    <li><code>for 变量 in 列表:</code> 循环</li>
-    <li><code>range(n)</code> 生成数字序列</li>
-    <li>列表的 <code>append()</code> 和索引访问</li>
+    <li>知识点：<code>def</code> 定义函数、<code>with open</code> 读写文件、<code>import</code> 模块</li>
+    <li>新闻落点：读入 100 条新闻评论的 CSV，封装成可复用的读取函数</li>
+    <li>产出：<code>comments.csv → 内存数据</code> 的读取管道</li>
   </ul>
-  <h3>练一练（新闻场景）</h3>
-  <ol>
-    <li>写程序：给一篇稿子的字数打分（少于 300 是「短讯」，300–800 是「消息」，大于 800 是「特稿」）</li>
-    <li>用一个列表存 5 个新闻标题，用循环逐个打印</li>
-    <li>统计列表里有多少条标题包含「台风」</li>
-  </ol>
 </div>
 
-<h2>第 3 课：实战 —— 读写文件 + 处理真实数据</h2>
+<h2>第 3 次课 · 语法收口</h2>
 <div class="card lesson3">
-  <h3>学习目标</h3>
+  <h3>上半场｜pandas · 异常处理（够用即止）</h3>
   <ul>
-    <li>能读取和写入 <code>.txt</code> 文本文件</li>
-    <li>能处理 CSV 数据（新闻数据常见格式）</li>
-    <li>学会「字符串处理」清洗文本</li>
+    <li>知识点：DataFrame、<code>read_csv</code>、分组统计、<code>try / except</code></li>
+    <li>新闻落点：一行代码算出各栏目的平均评论数</li>
+    <li>产出：一份评论数据的描述统计表</li>
   </ul>
-  <h3>时间分配</h3>
-  <table>
-    <tr><th>时间</th><th>内容</th><th>要点</th></tr>
-    <tr><td>0–5 分钟</td><td>回顾第 2 课</td><td>快速复习判断和循环</td></tr>
-    <tr><td>5–20 分钟</td><td>文件读写</td><td><code>open()</code> <code>read()</code> <code>write()</code>，记得 <code>close()</code></td></tr>
-    <tr><td>20–35 分钟</td><td>字符串处理</td><td><code>split</code> <code>replace</code> <code>lower</code> <code>strip</code>，正则入门</td></tr>
-    <tr><td>35–43 分钟</td><td>CSV 处理</td><td>用内置 <code>csv</code> 模块读取数据</td></tr>
-    <tr><td>43–45 分钟</td><td>小结 + 练习</td><td>用真实数据练手</td></tr>
-  </table>
-  <h3>核心知识点</h3>
+  <h3>下半场｜jieba 分词 · 词频统计（产出评论词频表）</h3>
   <ul>
-    <li><code>open("文件", "r", encoding="utf-8")</code> 读文件</li>
-    <li><code>with open(...) as f:</code> 优雅写法（自动关闭）</li>
-    <li>字符串方法：<code>split()</code> <code>strip()</code> <code>replace()</code> <code>count()</code></li>
-    <li><code>csv</code> 模块读取表格数据</li>
-    <li>编码问题：中文记得 <code>encoding="utf-8"</code></li>
+    <li>知识点：<code>jieba.lcut</code>、<code>Counter</code>、停用词过滤</li>
+    <li>新闻落点：1000 条评论里，读者最关心什么？词频 Top 20</li>
+    <li>产出：新闻评论词频表（也是第 4 次课的数据基础）</li>
   </ul>
-  <h3>练一练（新闻场景）</h3>
-  <ol>
-    <li>读取一段新闻文字稿，统计总字数和段落数</li>
-    <li>把文字里所有的「的」替换成「的✅」检查使用频率</li>
-    <li>读取一个 CSV（如新闻标题列表），打印前 10 条</li>
-  </ol>
 </div>
 
-<h2>第 4 课：产出 —— 可视化 + 收尾项目</h2>
+<h2>第 4 次课 · AI 应用</h2>
 <div class="card lesson4">
-  <h3>学习目标</h3>
+  <h3>上半场｜情感分析原理（机器怎么分辨好评差评）</h3>
   <ul>
-    <li>能用 <code>matplotlib</code> 画出基础图表</li>
-    <li>能独立完成一个「数据新闻」小项目</li>
-    <li>知道下一步该学什么</li>
+    <li>知识点：什么是机器学习、训练集 / 测试集、文本向量化（词袋模型）</li>
+    <li>新闻落点：为什么机器能判断一条新闻评论是赞同还是反对</li>
+    <li>产出：跑通第一个文本分类小实验</li>
   </ul>
-  <h3>时间分配</h3>
-  <table>
-    <tr><th>时间</th><th>内容</th><th>要点</th></tr>
-    <tr><td>0–5 分钟</td><td>回顾第 3 课</td><td>快速复习文件读写</td></tr>
-    <tr><td>5–25 分钟</td><td>matplotlib 入门</td><td>折线图、柱状图、饼图</td></tr>
-    <tr><td>25–40 分钟</td><td>综合小项目</td><td>从数据到图表的完整流程</td></tr>
-    <tr><td>40–45 分钟</td><td>总结 + 进阶路线</td><td>下一步学什么</td></tr>
-  </table>
-  <h3>核心知识点</h3>
+  <h3>下半场｜sklearn 文本分类实战（给新闻评论自动打分）</h3>
   <ul>
-    <li><code>import matplotlib.pyplot as plt</code></li>
-    <li><code>plt.plot()</code> 折线图、<code>plt.bar()</code> 柱状图、<code>plt.pie()</code> 饼图</li>
-    <li><code>plt.title()</code> <code>plt.xlabel()</code> 设置标题和标签</li>
-    <li><code>plt.show()</code> 显示图表</li>
+    <li>知识点：<code>CountVectorizer</code> + 朴素贝叶斯、准确率评估、预测新评论</li>
+    <li>新闻落点：训练一个「新闻评论情感分类器」，对新评论自动输出 正面 / 负面</li>
+    <li>产出：<strong>贯穿项目完工</strong> —— 评论词频表 + 情感自动分类</li>
   </ul>
-  <h3>综合小项目（数据新闻）</h3>
-  <p><strong>项目</strong>：统计近一周某新闻网站 5 个栏目的发稿量，画出柱状图。</p>
-  <ol>
-    <li>用一个列表存栏目名和对应发稿量</li>
-    <li>用 <code>plt.bar()</code> 画柱状图</li>
-    <li>加上标题「本周各栏目发稿量对比」</li>
-    <li>保存成图片，就是一张可以放进报道的数据图</li>
-  </ol>
 </div>
-
-<h2>学习路径与时间线总结</h2>
-<div class="flow">第1课 地基 ─── 第2课 逻辑 ─── 第3课 实战 ─── 第4课 产出
-(变量/运算)   (判断/循环)     (文件/数据)     (可视化/项目)
-    │              │              │              │
-    └── 每课都有「新闻场景」练习贯穿 ──────────────┘</div>
 
 <h2>建议的学习节奏</h2>
 <table>
@@ -261,26 +228,17 @@ code {
   <tr><td><strong>课前</strong></td><td>花 10 分钟看上一课笔记</td><td>温故知新，衔接更顺</td></tr>
   <tr><td><strong>课中</strong></td><td>跟着敲代码，别只看</td><td>动手是学编程唯一捷径</td></tr>
   <tr><td><strong>课后</strong></td><td>完成 3 道练习 + 记笔记</td><td>巩固当天知识点</td></tr>
-  <tr><td><strong>四课结束后</strong></td><td>做 1 个自己的小项目</td><td>把知识串起来</td></tr>
+  <tr><td><strong>四次课后</strong></td><td>换一批自己的评论数据重跑项目</td><td>检验是否真的学会</td></tr>
 </table>
 
-<h2>进阶路线（学完四课后）</h2>
-<div class="grid">
-  <div class="box"><h4>📊 数据新闻</h4>学 <code>pandas</code>（数据分析）→ 处理大型数据集、做数据调查报道</div>
-  <div class="box"><h4>🕷️ 爬虫</h4>学 <code>requests + BeautifulSoup</code> → 批量抓取新闻、监测舆情</div>
-  <div class="box"><h4>⚙️ 自动化</h4>学脚本 + 定时任务 → 自动整理稿子、自动生成日报</div>
-  <div class="box"><h4>📈 可视化进阶</h4>学 <code>plotly / pyecharts</code> → 交互式图表、数据大屏</div>
-  <div class="box"><h4>🧠 自然语言处理</h4>学 <code>jieba</code> 分词 → 词频分析、情感分析、自动摘要</div>
+<h2>与旧版的差异说明</h2>
+<div class="tip">
+  旧版按「每节课约 45 分钟」设计（共 180 分钟），只覆盖 Python 基础 + 可视化。<br>
+  新版对齐老师课上的设计：<strong>每次课上下半场各 45 分钟（共 8 单元）</strong>；Python 核心 5 单元 + AI 应用 3 单元；
+  贯穿项目从「发稿量柱状图」升级为「<strong>新闻评论情感分析</strong>」，工具栈与课程 <code>requirements.txt</code>（numpy / pandas / sklearn / jieba）保持一致。
 </div>
 
-<h2>给新闻学学生的三条建议</h2>
-<ol>
-  <li><strong>别追求「学完」，追求「会用」</strong>——四节课的目标不是背语法，而是能独立跑通一个「数据 → 图表」的小项目。</li>
-  <li><strong>把 Python 当「工具」而非「学科」</strong>——你不需要成为程序员，只需要让 Python 帮你做重复劳动。</li>
-  <li><strong>多拿新闻素材练手</strong>——用你真实的采访数据、稿子、问卷来练习，比课本例题记得牢十倍。</li>
-</ol>
-
-<div class="footer-note">学习地图生成完毕 · 祝你四节课学得顺利！</div>
+<div class="footer-note">学习地图已对齐老师课程设计 · 祝四次课学得顺利！</div>
 
 </div>
 </body>
