@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神经网络 / 深度学习概念学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f8fa; color: #1a1a1a; line-height: 1.8; font-size: 16px;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; background: #fff; border-right: 1px solid #eee;
+  padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar .logo { font-size: 15px; font-weight: 700; color: #306998; margin-bottom: 4px; }
+.sidebar .slug { font-size: 12px; color: #999; margin-bottom: 20px; }
+.sidebar a { display: block; color: #555; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+.sidebar a:hover { background: #f0f4f8; color: #306998; }
+.sidebar a.active { background: #e8f0f9; color: #306998; font-weight: 600; }
+.main { flex: 1; max-width: 780px; padding: 40px 48px 80px; }
+header.hero {
+  background: linear-gradient(135deg, #306998 0%, #4b8bbe 60%, #ffd43b 100%);
+  color: #fff; border-radius: 14px; padding: 34px 32px; margin-bottom: 30px;
+}
+header.hero h1 { font-size: 28px; margin-bottom: 8px; }
+header.hero .sub { font-size: 14px; opacity: 0.95; }
+h2 { font-size: 22px; color: #306998; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 3px solid #ffd43b; display: inline-block; }
+h3 { font-size: 18px; color: #1a1a1a; margin: 22px 0 8px; }
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 22px; }
+li { margin-bottom: 6px; }
+code { background: #f0f4f8; color: #c7254e; padding: 2px 7px; border-radius: 4px; font-family: Consolas, monospace; font-size: 14px; }
+pre { background: #1e2a3a; color: #d6e4f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 14px; margin: 14px 0; line-height: 1.6; }
+details { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 14px 18px; margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; color: #306998; }
+details p, details li { font-size: 14px; }
+.callout { background: #fffbe6; border-left: 4px solid #ffd43b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.blue { background: #eef6ff; border-left-color: #4b8bbe; }
+.footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc; color: #999; font-size: 13px; text-align: center; }
+@media (max-width: 720px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">神经网络 · 深度学习</div>
+  <div class="slug">notes/concepts/neural-network</div>
+  <nav>
+    <a href="#s1">1. 学习目标</a>
+    <a href="#s2">2. 核心问题</a>
+    <a href="#s3">3. 概念地图</a>
+    <a href="#s4">4. 结构化解释</a>
+    <a href="#s5">5. 应用案例</a>
+    <a href="#s6">6. 概念辨析</a>
+    <a href="#s7">7. 自测问题</a>
+    <a href="#s8">7.5 选择题练习</a>
+    <a href="#s9">8. 参考来源</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <h1>🧠 神经网络 / 深度学习</h1>
+  <div class="sub">面向 AI 小白 · 单个概念学习包 · 关联：Embedding / Transformer / Fine-tuning / 情感分析</div>
+</header>
+
+<h2 id="s1">1. 学习目标</h2>
+<p>学完本概念，你能：</p>
+<ul>
+  <li><strong>理解</strong> 神经网络是什么——它为什么被称为"深度学习的积木"</li>
+  <li><strong>能区分</strong> 神经网络、深度学习、人工智能三者谁大谁小</li>
+  <li><strong>能举例</strong> 说明"训练一个神经网络"到底在干什么</li>
+  <li><strong>能用自己的话解释</strong> 什么叫"权重"和"学习"，为什么调整它们模型就会变聪明</li>
+  <li><strong>能识别常见误区</strong> 例如"神经网络就是模拟人脑""层数越深就一定越好"</li>
+</ul>
+
+<h2 id="s2">2. 核心问题</h2>
+<ol>
+  <li>神经网络里的"神经元"和人的大脑神经元是一回事吗？</li>
+  <li>所谓"学习"，究竟是模型里的什么东西在改变？</li>
+  <li>为什么"层"叠得深，模型就能处理更复杂的事情？</li>
+  <li>深度学习、机器学习、人工智能，这三者是什么关系？</li>
+  <li>Transformer、情感分析这些概念，和神经网络有什么关系？</li>
+</ol>
+
+<h2 id="s3">3. 概念地图</h2>
+<pre>人工智能（AI）
+   └── 机器学习（Machine Learning）
+          └── 深度学习（Deep Learning）
+                 └── 神经网络（多层）
+                        ├── 卷积网络（看图）
+                        ├── 循环网络（处理序列）
+                        └── Transformer（处理文字，注意力机制）</pre>
+<ul>
+  <li>神经网络是<strong>深度学习的具体实现</strong>，由一层层"神经元"堆叠而成</li>
+  <li>所谓"学习"，就是<strong>反复调整连接之间的权重</strong></li>
+  <li>Transformer、情感分析、Embedding 的模型，底层都是神经网络</li>
+</ul>
+
+<h2 id="s4">4. 结构化解释</h2>
+
+<h3>4.1 一句话定义</h3>
+<p><strong>神经网络是一层一层堆起来的"数学函数"，它接收一堆数字输入，经过层层计算，输出一个结果；通过不断调整内部连接的"权重"，它能学会从输入里找出规律。</strong></p>
+
+<h3>4.2 直观类比</h3>
+<p>想象一个<strong>流水线工厂，专门给苹果分拣好坏</strong>。</p>
+<ul>
+  <li>流水线分好几道工序：第一道看"颜色"，第二道看"有没有斑点"，第三道看"大小"，最后综合给出结论"好苹果"或"坏苹果"。</li>
+  <li>每位工人对"哪个指标更重要"有自己的判断权重——看颜色的特别看重"红不红"，看斑点的特别看重"有没有虫眼"。</li>
+  <li>一开始大家判断不准会分错。但每分错一次，工厂就<strong>调整各道工序的"看重程度"</strong>——把"颜色"权重调高、"大小"调低。反复调，分拣越来越准。</li>
+</ul>
+<p>神经网络就是这条流水线：<strong>每层"工人"负责一个层次的判断，训练就是不断调整每层的"看重程度"（权重），直到整体分得准。</strong>层数越多，流水线越深，能处理的判断也越复杂。</p>
+
+<h3>4.3 机制原理</h3>
+<p><strong>一个"神经元"其实就是一个简单的数学计算。</strong>它接收上一层的多个数字，分别乘上各自的<strong>权重（weight）</strong>，加在一起，再加一个<strong>偏置（bias）</strong>，然后过一个<strong>激活函数</strong>决定"要不要往后传、传多少"。激活函数很关键——它给网络加入"非线性"，否则不管堆多少层，本质上都只能拟合直线关系。</p>
+<p><strong>神经网络靠"层层传递"来提炼特征。</strong>输入层拿到原始数据（一张图的像素值、一句话的 Embedding 向量），中间的<strong>隐藏层（hidden layer）</strong>一层层往上加工：低层识别简单特征，高层组合出抽象特征。到输出层给出最终结果（是猫还是狗、是正面还是负面）。</p>
+<p><strong>"学习"的过程叫训练，核心是"先犯错，再改"。</strong>训练时，模型先拿输入算输出，再和"标准答案"比较，算出一个<strong>损失（loss）</strong>——即"错得多离谱"。然后通过<strong>反向传播（Backpropagation）</strong>把误差一层层往回传，算出每个权重该往哪个方向改多少。最后用<strong>梯度下降（Gradient Descent）</strong>，把每个权重朝着"让损失变小"的方向挪一小步。<strong>如此循环成千上万次，权重被一点点调到最优，模型就"学会"了。</strong></p>
+<p><strong>"深度"指的就是层数。</strong>层数少只能拟合简单规律，层数多能拟合极复杂的关系——这也是"深度学习"名字的由来。不过层越深，要的数据、算力越多，还容易"过拟合"（训练数据上太完美，换新数据就失灵），所以不是越深越好。</p>
+<p><strong>它和你学过的其他概念是一体的。</strong><strong>Embedding</strong> 是神经网络里"把词变成向量"的那一步；<strong>Transformer</strong> 是一种特殊设计的神经网络；<strong>情感分析</strong>通常就是用神经网络搭分类器；<strong>微调（Fine-tuning）</strong>则是"在已训练好的神经网络上继续调整权重"。它们都建立在"层层计算 + 调整权重"这套思想之上。</p>
+
+<h3>4.4 边界与误区</h3>
+<ul>
+  <li><strong>误区 1：「神经网络就是模拟人脑」</strong>。它的"神经元"只是借了个名字，实际是数学函数。灵感来自生物神经元，不是复刻。</li>
+  <li><strong>误区 2：「层数越深一定越好」</strong>。更深未必更好，会带来算力暴涨、过拟合、训练困难，是工程权衡。</li>
+  <li><strong>误区 3：「模型"理解"了它看到的东西」</strong>。它学到的是<strong>统计规律</strong>，不是人类意义上的理解。</li>
+  <li><strong>误区 4：「训练完就永远正确」</strong>。数据变了、环境变了，模型可能失灵，需要持续更新或重新训练。</li>
+</ul>
+
+<h2 id="s5">5. 应用案例</h2>
+<h3>案例 A：真实场景——手机相册的人脸识别</h3>
+<p>你手机相册能自动按"人"分组，背后就是<strong>卷积神经网络（CNN）</strong>：它用一层层网络，从像素里先识别边缘、再识别五官、最后组合出"这张脸是谁"。整个过程没有人为它写"眼睛长什么样"的规则，而是<strong>靠海量照片反复训练，自动学会了这些特征</strong>。</p>
+<h3>案例 B：课堂练习——用可视化工具"玩"一个神经网络</h3>
+<p>不用写代码，打开浏览器访问 <strong>TensorFlow Playground</strong>（在线神经网络可视化工具）：</p>
+<ol>
+  <li>选择一个数据集（比如"蓝色点围成一圈、橙色点在中间"的螺旋图）。</li>
+  <li>先只加 1 个隐藏层、2 个神经元，点"运行"——它几乎<strong>分不开</strong>两种颜色。</li>
+  <li>再把隐藏层加到 3 层、每层 6 个神经元，重新运行——曲线会慢慢"拧"出来，把两种颜色分开。</li>
+</ol>
+<p><strong>你会直观看到：层数和神经元变多后，网络能"画"出更复杂的分界线——这就是"深度"带来的能力。</strong>注意观察训练时跳动的数字，那些就是被调整的权重。</p>
+
+<h2 id="s6">6. 概念辨析</h2>
+<ul>
+  <li><strong>神经网络 vs 深度学习</strong>：神经网络是<strong>具体模型结构</strong>（一层层神经元）；深度学习是<strong>用多层神经网络做学习的方法/领域</strong>。区别在于<strong>一个是"结构"，一个是"方法论"</strong>。</li>
+  <li><strong>深度学习 vs 机器学习</strong>：机器学习是"让计算机从数据里学规律"的大类；深度学习是其中<strong>用深层神经网络</strong>的那一支。区别在于<strong>是否依赖深层网络</strong>。</li>
+  <li><strong>人工智能 vs 机器学习</strong>：AI 是"让机器表现出智能"的<strong>总目标</strong>；机器学习是<strong>实现它的主要手段之一</strong>。AI 是最大的圈。</li>
+</ul>
+
+<h2 id="s7">7. 自测问题</h2>
+<details>
+<summary>Q1：神经网络"学习"的时候，具体是什么东西在改变？</summary>
+<p>提示：是权重（weight）和偏置（bias）。训练通过反向传播 + 梯度下降，反复调整这些参数，让损失越来越小。</p>
+</details>
+<details>
+<summary>Q2：为什么"激活函数"是必须的？去掉会怎样？</summary>
+<p>提示：它给网络加入"非线性"。去掉后，不管堆多少层，本质都只能拟合直线关系，无法表达复杂规律。</p>
+</details>
+<details>
+<summary>Q3：人工智能、机器学习、深度学习三者的关系是什么？</summary>
+<p>提示：AI 是总目标，机器学习是手段，深度学习是机器学习里"用深层神经网络"的那一支，三者是从大到小的包含关系。</p>
+</details>
+
+<h2 id="s8">7.5 选择题练习</h2>
+<details>
+<summary>点击展开 4 道选择题（先自己做，再看答案）</summary>
+
+<p><strong>第 1 题：神经网络"训练"的核心，是反复调整什么？</strong></p>
+<ul>
+  <li>A. 权重（weight）和偏置（bias）</li>
+  <li>B. 显示器亮度</li>
+  <li>C. 网线的颜色</li>
+  <li>D. 机箱的大小</li>
+</ul>
+<p>A <strong>对</strong>：训练就是不断调这些参数让损失变小。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：学习 = 调权重 + 偏置。<br><strong>你如果选了 B</strong>：把"模型参数"和"外设"混了，训练发生在模型内部。</div>
+
+<p><strong>第 2 题：人工智能、机器学习、深度学习三者的关系是？</strong></p>
+<ul>
+  <li>A. AI ⊃ 机器学习 ⊃ 深度学习</li>
+  <li>B. 三者完全相等</li>
+  <li>C. 深度学习 ⊃ AI</li>
+  <li>D. 机器学习 ⊃ AI</li>
+</ul>
+<p>A <strong>对</strong>：从大到小的包含关系。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：三者的层级关系。<br><strong>你如果选了 C</strong>：方向反了，深度学习只是 AI 大家族里的一个小分支。</div>
+
+<p><strong>第 3 题：神经网络里的"神经元"和人脑神经元的关系是？</strong></p>
+<ul>
+  <li>A. 只是借了名字，本质是一个数学函数</li>
+  <li>B. 完全复刻了人脑</li>
+  <li>C. 就是真的生物细胞</li>
+  <li>D. 毫无相似之处</li>
+</ul>
+<p>A <strong>对</strong>：灵感来自生物神经元，但本质是数学计算。B/C 错。D 错：确实有"灵感来源"的相似性。</p>
+<div class="callout blue"><strong>考点</strong>：别把"神经网络"神化成"人脑复制品"。<br><strong>你如果选了 B</strong>：这是最常见的误解，神经网络的"神经元"只是数学单元。</div>
+
+<p><strong>第 4 题：关于深度学习的说法，哪一项是误区？</strong></p>
+<ul>
+  <li>A. 层数越深，效果一定越好</li>
+  <li>B. 深度学习是机器学习的一个分支</li>
+  <li>C. 激活函数能引入非线性</li>
+  <li>D. Transformer 是一种神经网络</li>
+</ul>
+<p>A <strong>是误区（选它）</strong>：更深可能带来过拟合、算力暴涨等问题。B/C/D 都是正确认知。</p>
+<div class="callout blue"><strong>考点</strong>：识别"越深一定越好"这个误区。<br><strong>你如果选了 D</strong>：D 是对的——Transformer 正是为处理文字而设计的神经网络架构。</div>
+</details>
+
+<h2 id="s9">8. 参考来源</h2>
+<ul>
+  <li><strong>3Blue1Brown《Neural Networks》系列视频</strong>——用精美动画讲清神经网络、反向传播、梯度下降，公认最好的入门视频 [未验证具体 URL]</li>
+  <li><strong>《Deep Learning》（Goodfellow, Bengio &amp; Courville）</strong>——深度学习领域公认的"圣经"级教材，系统且权威</li>
+  <li><strong>Michael Nielsen《Neural Networks and Deep Learning》</strong>——面向初学者的免费在线教材，讲解细致</li>
+  <li><strong>TensorFlow Playground</strong>——可交互地"玩"神经网络，直观看到层数与训练过程</li>
+  <li><strong>本仓库 <code>notes/concepts/transformer.md</code></strong>——接着读，看"神经网络"思想如何演化成 Transformer</li>
+</ul>
+<div class="callout"><strong>推荐阅读顺序</strong>：先读本文（层 + 权重 + 训练）→ <code>transformer</code>（一种具体神经网络）→ <code>sentiment-analysis</code>（神经网络怎么用于判断情感）。</div>
+
+<div class="footer">本学习包由 concept-learning Skill 生成 · 2026-09-17</div>
+
+</main>
+</div>
+</body>
+</html>
