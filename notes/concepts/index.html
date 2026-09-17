@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念学习库 · 目录与索引</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f8fa; color: #1a1a1a; line-height: 1.75; font-size: 16px;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; background: #fff; border-right: 1px solid #eee;
+  padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar .logo { font-size: 16px; font-weight: 700; color: #306998; margin-bottom: 4px; }
+.sidebar .slug { font-size: 12px; color: #999; margin-bottom: 20px; }
+.sidebar .group { font-size: 12px; color: #aaa; margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 1px; }
+.sidebar a { display: block; color: #555; text-decoration: none; padding: 7px 12px; border-radius: 6px; font-size: 14px; }
+.sidebar a:hover { background: #f0f4f8; color: #306998; }
+.sidebar a.cur { background: #e8f0f9; color: #306998; font-weight: 600; }
+.main { flex: 1; max-width: 900px; padding: 40px 48px 80px; }
+header.hero {
+  background: linear-gradient(135deg, #306998 0%, #4b8bbe 60%, #ffd43b 100%);
+  color: #fff; border-radius: 14px; padding: 36px 36px; margin-bottom: 30px;
+}
+header.hero h1 { font-size: 28px; margin-bottom: 8px; }
+header.hero .sub { font-size: 14px; opacity: 0.95; }
+h2 { font-size: 22px; color: #306998; margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 3px solid #ffd43b; display: inline-block; }
+h3 { font-size: 18px; color: #1a1a1a; margin: 22px 0 10px; }
+p { margin-bottom: 12px; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; background: #fff; border-radius: 8px; overflow: hidden; font-size: 14px; }
+th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid #eee; vertical-align: top; }
+th { background: #eef3f8; color: #306998; font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+code { background: #f0f4f8; color: #c7254e; padding: 2px 6px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; }
+pre { background: #1e2a3a; color: #d6e4f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 13px; margin: 14px 0; line-height: 1.6; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin: 16px 0; }
+.card {
+  background: #fff; border-radius: 12px; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-top: 4px solid #306998; text-decoration: none; color: #1a1a1a; display: block;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.09); }
+.card .name { font-weight: 700; font-size: 16px; color: #306998; margin-bottom: 6px; }
+.card .en { font-size: 12px; color: #999; margin-bottom: 8px; }
+.card .desc { font-size: 13px; color: #555; line-height: 1.6; }
+.card.grpA { border-top-color: #306998; } .card.grpA .name { color: #306998; }
+.card.grpB { border-top-color: #2e8b57; } .card.grpB .name { color: #2e8b57; }
+.card.grpC { border-top-color: #ffa500; } .card.grpC .name { color: #b7791f; }
+.callout { background: #fffbe6; border-left: 4px solid #ffd43b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.blue { background: #eef6ff; border-left-color: #4b8bbe; }
+.footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc; color: #999; font-size: 13px; text-align: center; }
+@media (max-width: 720px) { .sidebar { display: none; } .main { padding: 24px 20px; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">概念学习库</div>
+  <div class="slug">notes/concepts · 目录</div>
+  <nav>
+    <div class="group">总览</div>
+    <a href="#overview">概念总目录</a>
+    <a href="#path">推荐学习路径</a>
+    <a href="#relation">概念关系网</a>
+    <div class="group">板块 A</div>
+    <a href="#grpA">打交道的方式</a>
+    <div class="group">板块 B</div>
+    <a href="#grpB">大脑原理</a>
+    <div class="group">板块 C</div>
+    <a href="#grpC">应用落地</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <h1>📚 概念学习库 · 目录与索引</h1>
+  <div class="sub">《大数据与人工智能》课程 · 12 个核心概念 · 三大板块 · 一键跳转</div>
+</header>
+
+<p>每个概念都有独立学习包（8 节结构 + 选择题 + 参考来源）。本页帮你<strong>看清概念之间的联系</strong>、按正确顺序学习。点击任意卡片即可进入对应概念的学习资料。</p>
+
+<h2 id="overview">概念总目录</h2>
+
+<h3 id="grpA">板块 A · 和 AI 打交道的方式（先学，建立全局观）</h3>
+<div class="card-grid">
+  <a class="card grpA" href="llm-context.html">
+    <div class="name">上下文 Context</div>
+    <div class="en">llm-context</div>
+    <div class="desc">大模型每轮"能看到的信息"，是所有概念的地基。</div>
+  </a>
+  <a class="card grpA" href="prompt.html">
+    <div class="name">提示词 Prompt</div>
+    <div class="en">prompt</div>
+    <div class="desc">你"怎么跟大模型说话"，决定答得好不好。</div>
+  </a>
+  <a class="card grpA" href="context-window-visualization.html">
+    <div class="name">上下文窗口可视化</div>
+    <div class="en">context-window-visualization</div>
+    <div class="desc">把"上下文塞了多少、还剩多少"画出来看。</div>
+  </a>
+  <a class="card grpA" href="agent.html">
+    <div class="name">智能体 Agent</div>
+    <div class="en">agent</div>
+    <div class="desc">能自己拿上下文、调工具、按步骤干活的程序。</div>
+  </a>
+  <a class="card grpA" href="skill.html">
+    <div class="name">技能 Skill</div>
+    <div class="en">skill</div>
+    <div class="desc">把"怎么干某类活"沉淀成可复用的说明书。</div>
+  </a>
+</div>
+
+<h3 id="grpB">板块 B · 大模型的"大脑"原理（搞懂它为什么聪明）</h3>
+<div class="card-grid">
+  <a class="card grpB" href="neural-network.html">
+    <div class="name">神经网络 / 深度学习</div>
+    <div class="en">neural-network</div>
+    <div class="desc">大模型的"大脑"，靠层层神经元学会规律。</div>
+  </a>
+  <a class="card grpB" href="embedding.html">
+    <div class="name">Embedding（词向量）</div>
+    <div class="en">embedding</div>
+    <div class="desc">把文字变成数字，机器才"看得懂"语义。</div>
+  </a>
+  <a class="card grpB" href="transformer.html">
+    <div class="name">Transformer</div>
+    <div class="en">transformer</div>
+    <div class="desc">现代大模型的底层骨架（注意力机制）。</div>
+  </a>
+  <a class="card grpB" href="fine-tuning.html">
+    <div class="name">微调 Fine-tuning</div>
+    <div class="en">fine-tuning</div>
+    <div class="desc">用你的数据把通用模型调成"懂行"的。</div>
+  </a>
+</div>
+
+<h3 id="grpC">板块 C · 应用与落地（把前面的串起来用）</h3>
+<div class="card-grid">
+  <a class="card grpC" href="rag.html">
+    <div class="name">RAG（检索增强生成）</div>
+    <div class="en">rag</div>
+    <div class="desc">让大模型"先查资料再回答"，减少瞎编。</div>
+  </a>
+  <a class="card grpC" href="big-data.html">
+    <div class="name">大数据基础</div>
+    <div class="en">big-data</div>
+    <div class="desc">数据怎么存、怎么算（Hadoop / Spark）。</div>
+  </a>
+  <a class="card grpC" href="sentiment-analysis.html">
+    <div class="name">情感分析</div>
+    <div class="en">sentiment-analysis</div>
+    <div class="desc">判断文字是正面还是负面（新闻场景落地）。</div>
+  </a>
+</div>
+
+<h2 id="path">推荐学习路径</h2>
+<pre>起点
+ │
+ ├─ 路线 1【先建立全局观】──► 上下文 → Prompt → Agent → Skill
+ │
+ ├─ 路线 2【再懂底层原理】──► 神经网络 → Embedding → Transformer → 微调
+ │
+ └─ 路线 3【最后落地应用】──► RAG → 情感分析 → 大数据基础
+                                    │
+                                    ▼
+                          回到课程贯穿项目：新闻评论情感分析</pre>
+<div class="callout">给新闻学学生的建议：先走路线 1（知道 AI 怎么用）→ 再走路线 2 的 Embedding + 情感分析（对应你的贯穿项目）→ Transformer、神经网络、微调、RAG、大数据按兴趣深入。</div>
+
+<h2 id="relation">概念关系网</h2>
+<h3>依赖关系（学习顺序）</h3>
+<pre>llm-context ──► prompt ──► agent ──► skill
+   │              │
+   └──► context-window-visualization
+   │
+   └──► rag（依赖 上下文 + embedding）
+
+neural-network ──► embedding ──► transformer ──► fine-tuning
+                        │              │
+                        └──► rag ──────┘
+                        │
+                        └──► sentiment-analysis（依赖 embedding + fine-tuning）</pre>
+<h3>协同关系（贯穿项目里怎么配合）</h3>
+<pre>大数据基础 ── 提供海量新闻评论数据
+      │
+      ▼
+Embedding ── 把每条评论变成数字向量
+      │
+      ▼
+情感分析 ── 用分类器判断 正面 / 负面
+      │
+      ▼
+（可选）微调 ── 用新闻评论数据把模型调得更准
+      │
+      ▼
+（可选）RAG ── 让模型"查证"后再给结论</pre>
+
+<h2>三大板块关系总结</h2>
+<table>
+  <tr><th>板块</th><th>回答什么问题</th><th>关键词</th></tr>
+  <tr><td>A · 打交道的方式</td><td>"我怎么用好 AI？"</td><td>上下文、Prompt、Agent、Skill</td></tr>
+  <tr><td>B · 大脑原理</td><td>"AI 为什么聪明？"</td><td>神经网络、Embedding、Transformer、微调</td></tr>
+  <tr><td>C · 应用落地</td><td>"AI 能帮我做什么？"</td><td>RAG、大数据、情感分析</td></tr>
+</table>
+<div class="callout blue">一句话串起来：<strong>A 教你"用"，B 教你"懂"，C 教你"落地到新闻工作"。</strong></div>
+
+<h2>如何使用本目录</h2>
+<ul>
+  <li><strong>想系统学</strong>：按「推荐学习路径」从上往下走。</li>
+  <li><strong>想快速查</strong>：点上方卡片进入对应概念的网页版（有左侧导航）。</li>
+  <li><strong>想建立联系</strong>：读每个概念开头的「关联概念」，再回到本页看「概念关系网」。</li>
+  <li><strong>想检验</strong>：每个概念资料末尾都有自测题 + 选择题。</li>
+</ul>
+
+<div class="footer">本目录由 WorkBuddy 生成 · 随概念库持续更新</div>
+
+</main>
+</div>
+</body>
+</html>
