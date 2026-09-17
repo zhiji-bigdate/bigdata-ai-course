@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG（检索增强生成）概念学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f8fa; color: #1a1a1a; line-height: 1.8; font-size: 16px;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; background: #fff; border-right: 1px solid #eee;
+  padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar .logo { font-size: 15px; font-weight: 700; color: #306998; margin-bottom: 4px; }
+.sidebar .slug { font-size: 12px; color: #999; margin-bottom: 20px; }
+.sidebar a { display: block; color: #555; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+.sidebar a:hover { background: #f0f4f8; color: #306998; }
+.sidebar a.active { background: #e8f0f9; color: #306998; font-weight: 600; }
+.main { flex: 1; max-width: 780px; padding: 40px 48px 80px; }
+header.hero {
+  background: linear-gradient(135deg, #306998 0%, #4b8bbe 60%, #ffd43b 100%);
+  color: #fff; border-radius: 14px; padding: 34px 32px; margin-bottom: 30px;
+}
+header.hero h1 { font-size: 28px; margin-bottom: 8px; }
+header.hero .sub { font-size: 14px; opacity: 0.95; }
+h2 { font-size: 22px; color: #306998; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 3px solid #ffd43b; display: inline-block; }
+h3 { font-size: 18px; color: #1a1a1a; margin: 22px 0 8px; }
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 22px; }
+li { margin-bottom: 6px; }
+code { background: #f0f4f8; color: #c7254e; padding: 2px 7px; border-radius: 4px; font-family: Consolas, monospace; font-size: 14px; }
+pre { background: #1e2a3a; color: #d6e4f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 14px; margin: 14px 0; line-height: 1.6; }
+details { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 14px 18px; margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; color: #306998; }
+details p, details li { font-size: 14px; }
+.callout { background: #fffbe6; border-left: 4px solid #ffd43b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.blue { background: #eef6ff; border-left-color: #4b8bbe; }
+.footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc; color: #999; font-size: 13px; text-align: center; }
+@media (max-width: 720px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">RAG · 检索增强生成</div>
+  <div class="slug">notes/concepts/rag</div>
+  <nav>
+    <a href="#s1">1. 学习目标</a>
+    <a href="#s2">2. 核心问题</a>
+    <a href="#s3">3. 概念地图</a>
+    <a href="#s4">4. 结构化解释</a>
+    <a href="#s5">5. 应用案例</a>
+    <a href="#s6">6. 概念辨析</a>
+    <a href="#s7">7. 自测问题</a>
+    <a href="#s8">7.5 选择题练习</a>
+    <a href="#s9">8. 参考来源</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <h1>📚 RAG（检索增强生成）</h1>
+  <div class="sub">面向 AI 小白 · 单个概念学习包 · 关联：Embedding / Transformer / Fine-tuning / 大数据</div>
+</header>
+
+<h2 id="s1">1. 学习目标</h2>
+<p>学完本概念，你能：</p>
+<ul>
+  <li><strong>理解</strong> RAG 是什么——它为什么能让大模型"照着资料回答"而不是"凭记忆瞎编"</li>
+  <li><strong>能区分</strong> RAG 和 Fine-tuning 这两种"让模型变强"方式的本质差别</li>
+  <li><strong>能举例</strong> 说清楚 RAG 的"检索 + 生成"两步分别在干什么</li>
+  <li><strong>能用自己的话解释</strong> 为什么大模型需要"外挂资料"，光靠记性不够</li>
+  <li><strong>能识别常见误区</strong> 例如"RAG 就是让模型联网""RAG 能修掉模型的所有毛病"</li>
+</ul>
+
+<h2 id="s2">2. 核心问题</h2>
+<ol>
+  <li>大模型明明背下了海量知识，为什么还会一本正经地胡说八道？</li>
+  <li>"检索"这一步，凭什么能找到"最相关"的那几条资料？</li>
+  <li>为什么说 RAG 是"先查资料，再动笔写答案"？</li>
+  <li>RAG 和 Fine-tuning 到底该选哪个？它们能一起用吗？</li>
+  <li>为什么新闻、法律、医疗这些"不能出错"的行业特别爱用 RAG？</li>
+</ol>
+
+<h2 id="s3">3. 概念地图</h2>
+<pre>用户提问："台风海葵今晚几点登陆？"
+        │
+        ▼
+   ┌──────────── RAG 流程 ────────────┐
+   │ ① 检索（Retrieve）                │
+   │    把问题 Embedding 成向量          │
+   │    → 去向量数据库搜最像的几条资料    │
+   │                                   │
+   │ ② 增强（Augment）                 │
+   │    把"问题 + 搜到的资料"拼成提示词   │
+   │                                   │
+   │ ③ 生成（Generate）                │
+   │    交给大模型（Transformer）        │
+   │    → 照着资料写出带出处的答案        │
+   └───────────────────────────────────┘</pre>
+<ul>
+  <li>RAG = <strong>检索（Retrieve）+ 增强（Augment）+ 生成（Generate）</strong> 三个词的缩写</li>
+  <li>核心思路：<strong>不靠模型死记，而是现场查资料、再照着答</strong></li>
+  <li>它把大模型的"能写"和向量数据库的"能查"拼在一起</li>
+</ul>
+
+<h2 id="s4">4. 结构化解释</h2>
+
+<h3>4.1 一句话定义</h3>
+<p><strong>RAG 是一套"先查后答"的方法：回答问题时，先从一个资料库里搜出最相关的几段内容，把它们塞给大模型当参考，让模型照着这些资料作答，而不是凭空瞎编。</strong></p>
+
+<h3>4.2 直观类比</h3>
+<p>想象你是一名<strong>参加开卷考试的学生</strong>。</p>
+<ul>
+  <li><strong>闭卷考试（只靠模型本身）</strong>：只能靠记忆答题，没背过或记岔了就只能硬编——这就是大模型"一本正经胡说八道"（幻觉）的来源。</li>
+  <li><strong>开卷考试（RAG）</strong>：允许你<strong>先翻课本</strong>，找到相关章节读一遍，<strong>再照着写答案</strong>，还能标出"答案出自第几页"。</li>
+</ul>
+<p>RAG 就是给大模型一场"开卷考试"：它不再只依赖训练时背下的旧知识，而是能<strong>现场查阅你提供的最新、可信资料</strong>。新闻、法律、医疗这些"必须准确、还得有出处"的场景，尤其需要这种能力。</p>
+
+<h3>4.3 机制原理</h3>
+<p><strong>第一步：检索（Retrieve）。</strong>你的资料库会先被预处理：每段文字用 <strong>Embedding</strong> 变成向量，存进<strong>向量数据库</strong>。用户提问时，系统也把问题向量化，再去数据库做<strong>相似度搜索</strong>，找出最接近的几条资料。因为这是"语义匹配"，哪怕资料里没有问题的原话，只要意思相近也能被捞出来。</p>
+<p><strong>第二步：增强（Augment）。</strong>把搜到的几条资料，连同用户原来的问题，一起<strong>拼成一条新的提示词（Prompt）</strong>——本质就是"喂上下文"，把模型不知道的事实临时塞进它"眼前"。</p>
+<p><strong>第三步：生成（Generate）。</strong>把拼好的提示词交给大模型（底层是 Transformer），模型读着参考资料，生成一个<strong>有依据的答案</strong>，通常还附上"参考了哪几条资料"。</p>
+<p><strong>为什么能减少"幻觉"？</strong>因为模型不再被要求"从零回忆"，而是被明确告知"答案就在这几段里，照着写"。它的角色从"背诵者"变成"阅读理解 + 转述者"。当然 RAG 也不是万能的——检索捞错、资料本身错、模型过度发挥时，照样可能答错，只是错误会被<strong>限定在资料范围内</strong>，而不是天马行空地编。</p>
+<p><strong>还有常被忽略的"切块（Chunking）"。</strong>长文档不能整篇塞进去，要先切成合适大小的"块"再分别 Embedding。块太大检索不精准，太小又丢上下文——这是 RAG 工程里很讲究的细节。</p>
+
+<h3>4.4 边界与误区</h3>
+<ul>
+  <li><strong>误区 1：「RAG 就是让模型联网」</strong>。联网只是数据来源之一，RAG 更常见是检索<strong>自建知识库</strong>（内部文档、新闻库），不一定要联网。</li>
+  <li><strong>误区 2：「RAG 能彻底消灭幻觉」</strong>。它只能<strong>大幅减少</strong>，检索错、资料错、模型过度发挥时照样可能出错。</li>
+  <li><strong>误区 3：「RAG 和 Fine-tuning 二选一」</strong>。两者解决不同问题，<strong>常一起用</strong>：微调管语气，RAG 管准确与时效。</li>
+  <li><strong>误区 4：「资料越多塞得越满越好」</strong>。塞太多挤占上下文，还引入噪声。精准的几条胜过海量的一堆。</li>
+</ul>
+
+<h2 id="s5">5. 应用案例</h2>
+<h3>案例 A：真实场景——企业客服与知识库问答</h3>
+<p>很多公司的智能客服不再让模型"背"产品手册，而是用 RAG：把最新的产品说明、退换货政策放进知识库，用户提问时先检索出相关条款，再让模型照着答。这样<strong>政策一更新，知识库一换，答案立刻跟上</strong>，不用重新训练模型。GitHub Copilot 的某些问答、"问你的文档"类产品，背后都是这套思路。</p>
+<h3>案例 B：课堂练习——用"先查后答"的提示词模拟 RAG</h3>
+<p>不用写代码也能体会 RAG 的威力。打开任意大模型对话，做两组对比：</p>
+<ol>
+  <li><strong>不检索版</strong>：直接问——"我校新闻学院本学期有哪些实践课程？"（模型只能瞎猜或拒绝。）</li>
+  <li><strong>手动 RAG 版</strong>：先把一份课程表文字粘贴给它，再说——"根据下面这份课程表，回答本学期有哪些实践课程。只依据这份资料，资料里没有的就说不知道。"</li>
+</ol>
+<p>你会发现第二版<strong>准确且有依据</strong>。<strong>这就是 RAG 的核心——把资料先"递到它眼前"，再让它回答。</strong></p>
+
+<h2 id="s6">6. 概念辨析</h2>
+<ul>
+  <li><strong>RAG vs Fine-tuning（微调）</strong>：RAG 是<strong>外部</strong>给模型查资料，不改模型本身，答案可溯源、可随时更新；Fine-tuning 是<strong>内部</strong>调整模型参数，让它更懂特定领域，但改不动"事实"且成本高。区别在于<strong>一个是"递资料"，一个是"改造大脑"</strong>。</li>
+  <li><strong>RAG vs 普通搜索</strong>：普通搜索返回一堆<strong>链接/网页</strong>，你自己去读；RAG 把搜到的内容<strong>加工成一段直接能用的答案</strong>。区别在于<strong>是否多一步"生成"</strong>。</li>
+  <li><strong>RAG vs 微调记忆</strong>：前者"现场查、用完即弃"；后者"把知识焊进模型权重"。RAG 更灵活，微调更"内化"。</li>
+</ul>
+
+<h2 id="s7">7. 自测问题</h2>
+<details>
+<summary>Q1：RAG 的"检索、增强、生成"三步分别做了什么？</summary>
+<p>提示：检索=把问题向量化后去库搜最像的资料；增强=把"问题+资料"拼成提示词；生成=让大模型照着资料写出带出处的答案。</p>
+</details>
+<details>
+<summary>Q2：为什么说 RAG 能把"幻觉"大幅减少，却不能彻底消灭？</summary>
+<p>提示：因为它把模型从"背诵"变成"照着资料转述"，但资料错、检索错、模型仍过度发挥时，错误依然可能存在。</p>
+</details>
+<details>
+<summary>Q3：RAG 和 Fine-tuning 能一起用吗？它们各管什么？</summary>
+<p>提示：能。微调管"领域语气/风格"，RAG 管"事实准确 + 时效更新"，两者互补。</p>
+</details>
+
+<h2 id="s8">7.5 选择题练习</h2>
+<details>
+<summary>点击展开 4 道选择题（先自己做，再看答案）</summary>
+
+<p><strong>第 1 题：RAG 三个字母代表什么？</strong></p>
+<ul>
+  <li>A. Retrieve（检索）+ Augment（增强）+ Generate（生成）</li>
+  <li>B. Read + Answer + Guess</li>
+  <li>C. Run + Apply + Get</li>
+  <li>D. 一种新的编程语言</li>
+</ul>
+<p>A <strong>对</strong>：这是 RAG 的准确展开。B/C 错：拼凑干扰项。D 错：RAG 是方法，不是编程语言。</p>
+<div class="callout blue"><strong>考点</strong>：RAG 全称 = 检索 + 增强 + 生成。<br><strong>你如果选了 B</strong>：B 里有个"Guess"（猜）——而 RAG 恰恰是为了<strong>减少</strong>瞎猜。</div>
+
+<p><strong>第 2 题：RAG 的"检索"这一步，最依赖哪个技术？</strong></p>
+<ul>
+  <li>A. Embedding + 向量数据库做相似度搜索</li>
+  <li>B. 彩色打印</li>
+  <li>C. 手写笔记</li>
+  <li>D. 人工翻书</li>
+</ul>
+<p>A <strong>对</strong>：把问题和资料都向量化，再算相似度。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：检索 = 向量化 + 相似度搜索。<br><strong>你如果选了 D</strong>：RAG 是把"翻书"自动化、语义化，不是真的人工去翻。</div>
+
+<p><strong>第 3 题：RAG 主要解决大模型的什么问题？</strong></p>
+<ul>
+  <li>A. 知识过时、无法溯源、容易"一本正经胡说八道"</li>
+  <li>B. 屏幕太暗</li>
+  <li>C. 键盘不好用</li>
+  <li>D. 网速太慢</li>
+</ul>
+<p>A <strong>对</strong>：时效性 + 可溯源 + 减少幻觉。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：RAG 的核心价值三件套。<br><strong>你如果选了 D</strong>：网速是基础设施问题，RAG 解决的是"答案准不准、有没有出处"。</div>
+
+<p><strong>第 4 题：关于 RAG 的说法，哪一项是误区？</strong></p>
+<ul>
+  <li>A. RAG 就等于让模型联网</li>
+  <li>B. RAG 能减少幻觉</li>
+  <li>C. RAG 可以和 Fine-tuning 一起用</li>
+  <li>D. RAG 的检索是"语义匹配"，不是字面匹配</li>
+</ul>
+<p>A <strong>是误区（选它）</strong>：联网只是数据来源之一，RAG 更常见是检索自建知识库。B/C/D 都是正确认知。</p>
+<div class="callout blue"><strong>考点</strong>：识别"RAG = 联网"这个误区。<br><strong>你如果选了 D</strong>：D 是对的——RAG 用 Embedding 做语义匹配，正是它能命中"字面不同但意思相同"的原因。</div>
+</details>
+
+<h2 id="s9">8. 参考来源</h2>
+<ul>
+  <li><strong>《Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks》（Lewis et al., 2020）</strong>——RAG 原始论文，定义了这套"检索+生成"框架</li>
+  <li><strong>OpenAI：RAG 开发指南 / Cookbook</strong>——官方给出的 RAG 实践示例与代码 [未验证具体 URL]</li>
+  <li><strong>LangChain：RAG 教程</strong>——最流行的 RAG 开发框架，含从切块到检索的完整流程</li>
+  <li><strong>Pinecone：What is Retrieval-Augmented Generation?</strong>——入门者友好的图解，讲清向量数据库的角色 [未验证具体 URL]</li>
+  <li><strong>本仓库 <code>notes/concepts/embedding.md</code></strong>——先读，理解"检索"那一步靠什么匹配</li>
+</ul>
+<div class="callout"><strong>推荐阅读顺序</strong>：先读 <code>embedding</code>（检索靠它）→ 本文（三件套怎么拼）→ <code>fine-tuning</code>（对比另一种"变强"方式）。</div>
+
+<div class="footer">本学习包由 concept-learning Skill 生成 · 2026-09-17</div>
+
+</main>
+</div>
+</body>
+</html>
