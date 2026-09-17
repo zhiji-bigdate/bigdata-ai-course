@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt（提示词）概念学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f8fa; color: #1a1a1a; line-height: 1.8; font-size: 16px;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; background: #fff; border-right: 1px solid #eee;
+  padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar .logo { font-size: 15px; font-weight: 700; color: #306998; margin-bottom: 4px; }
+.sidebar .slug { font-size: 12px; color: #999; margin-bottom: 20px; }
+.sidebar a { display: block; color: #555; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+.sidebar a:hover { background: #f0f4f8; color: #306998; }
+.sidebar a.active { background: #e8f0f9; color: #306998; font-weight: 600; }
+.main { flex: 1; max-width: 780px; padding: 40px 48px 80px; }
+header.hero {
+  background: linear-gradient(135deg, #306998 0%, #4b8bbe 60%, #ffd43b 100%);
+  color: #fff; border-radius: 14px; padding: 34px 32px; margin-bottom: 30px;
+}
+header.hero h1 { font-size: 28px; margin-bottom: 8px; }
+header.hero .sub { font-size: 14px; opacity: 0.95; }
+h2 { font-size: 22px; color: #306998; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 3px solid #ffd43b; display: inline-block; }
+h3 { font-size: 18px; color: #1a1a1a; margin: 22px 0 8px; }
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 22px; }
+li { margin-bottom: 6px; }
+code { background: #f0f4f8; color: #c7254e; padding: 2px 7px; border-radius: 4px; font-family: Consolas, monospace; font-size: 14px; }
+pre { background: #1e2a3a; color: #d6e4f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 14px; margin: 14px 0; line-height: 1.6; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; background: #fff; border-radius: 8px; overflow: hidden; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #eee; vertical-align: top; }
+th { background: #eef3f8; color: #306998; font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+details { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 14px 18px; margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; color: #306998; }
+details p, details li { font-size: 14px; }
+.callout { background: #fffbe6; border-left: 4px solid #ffd43b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.blue { background: #eef6ff; border-left-color: #4b8bbe; }
+.footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc; color: #999; font-size: 13px; text-align: center; }
+@media (max-width: 720px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">Prompt · 提示词</div>
+  <div class="slug">notes/concepts/prompt</div>
+  <nav>
+    <a href="#s1">1. 学习目标</a>
+    <a href="#s2">2. 核心问题</a>
+    <a href="#s3">3. 概念地图</a>
+    <a href="#s4">4. 结构化解释</a>
+    <a href="#s5">5. 应用案例</a>
+    <a href="#s6">6. 概念辨析</a>
+    <a href="#s7">7. 自测问题</a>
+    <a href="#s8">7.5 选择题练习</a>
+    <a href="#s9">8. 参考来源</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <h1>🐍 Prompt（提示词）</h1>
+  <div class="sub">面向 AI 小白 · 单个概念学习包 · 关联：上下文 / Agent / Skill</div>
+</header>
+
+<h2 id="s1">1. 学习目标</h2>
+<p>学完本概念，你能：</p>
+<ul>
+  <li><strong>理解</strong> Prompt 是什么、在大模型工作流程里的位置</li>
+  <li><strong>能区分</strong> Prompt 与「问题」「指令」之间的细微差别</li>
+  <li><strong>能举例</strong> 说明一条好的 Prompt 和一条差的 Prompt 差在哪</li>
+  <li><strong>能用自己的话解释</strong> 为什么「把话说清楚」能让大模型答得更好</li>
+  <li><strong>能识别常见误区</strong> 例如「Prompt 越长越好」「加一句请认真回答就能变强」</li>
+</ul>
+
+<h2 id="s2">2. 核心问题</h2>
+<ol>
+  <li>大模型真的能「听懂」你打的字吗？它到底收到了什么？</li>
+  <li>为什么同样问一个东西，换个说法答案质量天差地别？</li>
+  <li>Prompt 和「上下文（Context）」是什么关系？</li>
+  <li>「角色设定」（比如"你是一位资深记者"）为什么有效？</li>
+  <li>为什么说 Prompt 不是魔法咒语，而是沟通方式？</li>
+</ol>
+
+<h2 id="s3">3. 概念地图</h2>
+<pre>你（用户）
+   │  输入一段文字
+   ▼
+Prompt（提示词）
+   │  被组装进更大的「上下文」
+   ▼
+Context（上下文）── 一起喂给 ──► 大模型（LLM）
+   │                                  │
+   │                                  ▼
+   └── 影响大模型「怎么想」 ◄────── 生成回答</pre>
+<ul>
+  <li>Prompt 是<strong>输入</strong>，不是模型本身</li>
+  <li>Prompt 是上下文的一部分（通常是最新、最"新鲜"的那部分）</li>
+  <li>一条 Prompt 的质量，直接决定回答的起点高低</li>
+</ul>
+
+<h2 id="s4">4. 结构化解释</h2>
+
+<h3>4.1 一句话定义</h3>
+<p><strong>Prompt 是你发给大模型的一段文字指令，用来告诉它"你想要什么、按什么标准、用什么格式回答"。</strong></p>
+
+<h3>4.2 直观类比</h3>
+<p>把大模型想象成一位<strong>刚入职、能力很强但完全不了解你的新同事</strong>。</p>
+<ul>
+  <li>你跟他说"帮我弄一下那个报告"，他一脸懵，只能猜——这就是<strong>模糊的 Prompt</strong>。</li>
+  <li>你跟他说"帮我整理这份采访录音，把里面提到的三个数据点摘出来，用表格列成三行，第一列是数据、第二列是出处、第三列是原话"——他马上就能干，这就是<strong>清晰的 Prompt</strong>。</li>
+</ul>
+<p>同事能力没变，变的是你<strong>交代任务的清晰程度</strong>。Prompt 工程，本质就是学会"怎么把话说清楚"。</p>
+
+<h3>4.3 机制原理</h3>
+<p><strong>大模型不是"读心者"，它读的是"文字序列的概率"。</strong>你输入的每一个字，都会被拆成 token（词元），送进模型里参与一次"预测下一个词"的计算。Prompt 的作用，就是<strong>给这次预测一个明确的方向</strong>。</p>
+<p>一条好的 Prompt 通常靠这几个要素起作用：</p>
+<ul>
+  <li><strong>角色（Role）</strong>——"你是一位资深财经记者"，会让模型更倾向专业、克制的表达。这不是"赋予身份"，而是<strong>改变了它采样的概率分布</strong>。</li>
+  <li><strong>任务（Task）</strong>——明确要"做什么"，把"帮我看看"变成"总结成三点"。</li>
+  <li><strong>上下文/背景（Context）</strong>——把模型不知道的信息喂进去。</li>
+  <li><strong>约束与格式（Constraints &amp; Format）</strong>——"用 100 字以内""输出成 JSON""分三段"。</li>
+  <li><strong>示例（Few-shot）</strong>——给一两个"输入→输出"示范，模型照着这个模式继续。</li>
+</ul>
+<p>这些要素不是越多越好，而是<strong>越贴合当前任务越好</strong>。</p>
+
+<h3>4.4 边界与误区</h3>
+<ul>
+  <li><strong>误区 1：「Prompt 越长越好」</strong>。冗余信息会稀释重点，还可能触发"中间信息被忽略"。精准比冗长重要。</li>
+  <li><strong>误区 2：「加一句'请认真回答/你是专家'就能变强」</strong>。空话对概率分布影响很弱，远不如给<strong>具体的角色+任务+格式</strong>有效。</li>
+  <li><strong>误区 3：「Prompt 是一次性的」</strong>。好 Prompt 可以沉淀成模板、封装成 Skill 反复复用。</li>
+  <li><strong>误区 4：「Prompt 就是代码」</strong>。它不是编程语言，靠的是自然语言表达的清晰度。</li>
+</ul>
+
+<h2 id="s5">5. 应用案例</h2>
+<h3>案例 A：真实场景——系统提示词</h3>
+<p>ChatGPT、Claude、WorkBuddy 背后都有一条<strong>系统提示词（System Prompt）</strong>，规定 AI 的身份、行为边界、输出风格。这就是 Prompt 在真实产品里最硬核的应用——它决定了 AI 的"人设"。</p>
+<h3>案例 B：课堂练习——亲手对比两种问法</h3>
+<ol>
+  <li>先问模糊版："写点关于台风的。"</li>
+  <li>再问清晰版："你是一位地方都市报记者，请写一条 80 字以内的短消息，报道台风'海葵'今晚登陆，需包含登陆时间、地点、预计风力，语气客观，不要标题党。"</li>
+</ol>
+<p>对比两次输出——这个差距，就是 Prompt 的价值。</p>
+
+<h2 id="s6">6. 概念辨析</h2>
+<ul>
+  <li><strong>Prompt vs 上下文（Context）</strong>：Prompt 是你这一次输入的指令；上下文是模型这轮"能看到的一切"的合集，Prompt 只是其中最新的一部分。</li>
+  <li><strong>Prompt vs 问题（Question）</strong>：问题只是 Prompt 的一种形态；Prompt 还可以是命令、带格式要求的任务说明、带示例的模板。</li>
+  <li><strong>Prompt vs Skill</strong>：Prompt 是一次性输入；Skill 是"把一类好 Prompt 沉淀成可复用的工作说明书"——<strong>好 Prompt 被固定下来、长期维护，就成了 Skill</strong>。</li>
+</ul>
+
+<h2 id="s7">7. 自测问题</h2>
+<details>
+<summary>Q1：为什么「你是一位资深记者」会让模型写得更像新闻稿？它真的"变成"记者了吗？</summary>
+<p>提示：它没有变成记者，而是这句话改变了模型对不同措辞的"偏好概率"。本质是概率分布被引导，不是身份被赋予。</p>
+</details>
+<details>
+<summary>Q2：一条 Prompt 通常包含哪几个关键要素？至少说出三个。</summary>
+<p>提示：角色、任务、背景/上下文、约束与格式、示例（Few-shot）——任选三个。</p>
+</details>
+<details>
+<summary>Q3：为什么「加一句"请认真回答"」效果很弱？</summary>
+<p>提示：因为它是没有具体指向的"空话"，对概率分布的影响远不如"给出具体角色+任务+格式"。</p>
+</details>
+
+<h2 id="s8">7.5 选择题练习</h2>
+<details>
+<summary>点击展开 5 道选择题（先自己做，再看答案）</summary>
+
+<p><strong>第 1 题：以下哪一项最能描述 Prompt 的本质？</strong></p>
+<ul>
+  <li>A. 一种严格的编程语言</li>
+  <li>B. 一段用来引导大模型输出方向的自然语言指令</li>
+  <li>C. 大模型内部的一个模块</li>
+  <li>D. 只有 ChatGPT 才有的功能</li>
+</ul>
+<p>A 错：靠自然语言，无严格语法。B <strong>对</strong>：本质就是"引导输出的文字指令"。C 错：是输入不是零件。D 错：几乎所有大模型都吃 Prompt。</p>
+<div class="callout blue"><strong>考点</strong>：Prompt 的定位——外部输入，不是模型的一部分。<br><strong>你如果选了 C</strong>：把它当成了模型"身体里的器官"，其实它是你递给模型的"纸条"。</div>
+
+<p><strong>第 2 题：哪条 Prompt 最可能得到"直接能用的新闻短消息"？</strong></p>
+<ul>
+  <li>A. "写点关于台风的。"</li>
+  <li>B. "你是一位都市报记者，请写一条 80 字以内的短消息，报道台风今晚登陆，含时间、地点、风力，语气客观。"</li>
+  <li>C. "请认真、仔细、专业地回答我关于台风的问题。"</li>
+  <li>D. "台风。"</li>
+</ul>
+<p>A 错：太模糊。B <strong>对</strong>：要素齐全。C 错：形容词是空话。D 错：信息严重不足。</p>
+<div class="callout blue"><strong>考点</strong>：好 Prompt = 具体要素齐全，而不是堆形容词。<br><strong>你如果选了 C</strong>：被"礼貌用语"迷惑了——真诚的形容词不等于清晰的指令。</div>
+
+<p><strong>第 3 题：Prompt 和"上下文（Context）"是什么关系？</strong></p>
+<ul>
+  <li>A. 完全是一回事</li>
+  <li>B. Prompt 是上下文的一部分（通常是最新输入）</li>
+  <li>C. 上下文是 Prompt 的一部分</li>
+  <li>D. 两者毫无关系</li>
+</ul>
+<p>A 错。B <strong>对</strong>：上下文 = system prompt + 历史 + 工具返回 + 当前 Prompt 的合集。C 错：方向反了。D 错。</p>
+<div class="callout blue"><strong>考点</strong>：部分与整体的关系。<br><strong>你如果选了 C</strong>：把包含关系记反了，记住"上下文是更大的那个筐"。</div>
+
+<p><strong>第 4 题：把好 Prompt 沉淀成长期可复用的模板，更接近哪个概念？</strong></p>
+<ul>
+  <li>A. Skill</li>
+  <li>B. 变量</li>
+  <li>C. 缓存</li>
+  <li>D. 报错</li>
+</ul>
+<p>A <strong>对</strong>：Skill 正是把最佳 Prompt/流程固定下来反复用。B 错。C 错：缓存是临时存结果，不是存方法。D 错。</p>
+<div class="callout blue"><strong>考点</strong>：Prompt（一次性）→ Skill（长期复用）的演进。<br><strong>你如果选了 C</strong>：缓存是"临时存结果"，Skill 是"存方法"，别混淆。</div>
+
+<p><strong>第 5 题：关于 Prompt 的说法，哪一项是"误区"？</strong></p>
+<ul>
+  <li>A. Prompt 越长一定越好</li>
+  <li>B. 好的 Prompt 要贴合具体任务</li>
+  <li>C. 给一两个示例（Few-shot）常常很有效</li>
+  <li>D. Prompt 是自然语言，不是代码</li>
+</ul>
+<p>A <strong>是误区（选它）</strong>：冗余会稀释重点。B/C/D 都是正确认知。</p>
+<div class="callout blue"><strong>考点</strong>：识别"越长越好"这个最普遍的误区。<br><strong>你如果选了 B/C/D</strong>：已经理解正确做法，只是没注意题目问的是"误区"。</div>
+</details>
+
+<h2 id="s9">8. 参考来源</h2>
+<ul>
+  <li><strong>OpenAI：Prompt engineering 官方指南</strong>——官方对"如何写好 Prompt"的系统说明 [未验证具体 URL，可在官方文档站搜索 "prompt engineering"]</li>
+  <li><strong>Anthropic：Prompt engineering interactive tutorial</strong>——交互式教程，边看边练 [未验证具体 URL]</li>
+  <li><strong>《Prompt Engineering Guide》（DAIR.AI）</strong>——社区最完整的入门资料，覆盖零样本/少样本/思维链</li>
+  <li><strong>Lilian Weng《Prompt Engineering》博文</strong>——从"上下文工程"角度讲 Prompt 与上下文的关系</li>
+  <li><strong>本仓库 <code>notes/concepts/llm-context.md</code></strong>——先读它理解上下文全貌，再回来看本文</li>
+</ul>
+<div class="callout"><strong>推荐阅读顺序</strong>：先读 <code>llm-context</code>（知道 Prompt 在哪）→ 再读本文（知道 Prompt 怎么写好）→ 最后读 <code>skill</code>（知道好 Prompt 怎么沉淀复用）。</div>
+
+<div class="footer">本学习包由 concept-learning Skill 生成 · 2026-09-17</div>
+
+</main>
+</div>
+</body>
+</html>

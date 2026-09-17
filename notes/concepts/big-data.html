@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大数据基础（Big Data）概念学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f8fa; color: #1a1a1a; line-height: 1.8; font-size: 16px;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; background: #fff; border-right: 1px solid #eee;
+  padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar .logo { font-size: 15px; font-weight: 700; color: #306998; margin-bottom: 4px; }
+.sidebar .slug { font-size: 12px; color: #999; margin-bottom: 20px; }
+.sidebar a { display: block; color: #555; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+.sidebar a:hover { background: #f0f4f8; color: #306998; }
+.sidebar a.active { background: #e8f0f9; color: #306998; font-weight: 600; }
+.main { flex: 1; max-width: 780px; padding: 40px 48px 80px; }
+header.hero {
+  background: linear-gradient(135deg, #306998 0%, #4b8bbe 60%, #ffd43b 100%);
+  color: #fff; border-radius: 14px; padding: 34px 32px; margin-bottom: 30px;
+}
+header.hero h1 { font-size: 28px; margin-bottom: 8px; }
+header.hero .sub { font-size: 14px; opacity: 0.95; }
+h2 { font-size: 22px; color: #306998; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 3px solid #ffd43b; display: inline-block; }
+h3 { font-size: 18px; color: #1a1a1a; margin: 22px 0 8px; }
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 22px; }
+li { margin-bottom: 6px; }
+code { background: #f0f4f8; color: #c7254e; padding: 2px 7px; border-radius: 4px; font-family: Consolas, monospace; font-size: 14px; }
+pre { background: #1e2a3a; color: #d6e4f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 14px; margin: 14px 0; line-height: 1.6; }
+details { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 14px 18px; margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; color: #306998; }
+details p, details li { font-size: 14px; }
+.callout { background: #fffbe6; border-left: 4px solid #ffd43b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.blue { background: #eef6ff; border-left-color: #4b8bbe; }
+.footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc; color: #999; font-size: 13px; text-align: center; }
+@media (max-width: 720px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">Big Data · 大数据基础</div>
+  <div class="slug">notes/concepts/big-data</div>
+  <nav>
+    <a href="#s1">1. 学习目标</a>
+    <a href="#s2">2. 核心问题</a>
+    <a href="#s3">3. 概念地图</a>
+    <a href="#s4">4. 结构化解释</a>
+    <a href="#s5">5. 应用案例</a>
+    <a href="#s6">6. 概念辨析</a>
+    <a href="#s7">7. 自测问题</a>
+    <a href="#s8">7.5 选择题练习</a>
+    <a href="#s9">8. 参考来源</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <h1>📊 大数据基础（Big Data）</h1>
+  <div class="sub">面向 AI 小白 · 单个概念学习包 · 关联：Embedding / 神经网络 / 情感分析 / RAG</div>
+</header>
+
+<h2 id="s1">1. 学习目标</h2>
+<p>学完本概念，你能：</p>
+<ul>
+  <li><strong>理解</strong> "大数据"到底"大"在哪——它不只是"数据多"</li>
+  <li><strong>能区分</strong> 大数据和"数据多"这种口语说法的差别</li>
+  <li><strong>能举例</strong> 说出大数据的经典特征（4V）分别指什么</li>
+  <li><strong>能用自己的话解释</strong> 为什么大数据是 AI 的"燃料"，没有它模型学不会</li>
+  <li><strong>能识别常见误区</strong> 例如"数据越多模型就一定越准""大数据就是一堆 Excel 表格"</li>
+</ul>
+
+<h2 id="s2">2. 核心问题</h2>
+<ol>
+  <li>多大才算"大数据"？有没有一条明确的分界线？</li>
+  <li>为什么说大数据的价值不在"多"，而在"怎么用"？</li>
+  <li>大数据和人工智能到底是什么关系？谁离不开谁？</li>
+  <li>为什么新闻、电商、医疗都在疯狂收集数据？</li>
+  <li>"数据多"为什么也可能带来麻烦（隐私、噪声、偏见）？</li>
+</ol>
+
+<h2 id="s3">3. 概念地图</h2>
+<pre>大数据（Big Data）
+   │  特点：量大 / 速度快 / 种类多 / 价值密度低（4V）
+   │
+   ├──► 数据来源：社交网络 / 传感器 / 新闻 / 交易记录 / 手机定位
+   │
+   ├──► 处理技术：分布式存储（HDFS） / 分布式计算（Spark） / 数据仓库
+   │
+   └──► 下游消费：AI 训练（神经网络） / 情感分析 / 推荐系统 / RAG 知识库</pre>
+<ul>
+  <li>大数据是<strong>"燃料"</strong>，AI 是<strong>"发动机"</strong>——没有燃料，发动机转不起来</li>
+  <li>它的价值在于<strong>从海量、杂乱的数据里挖出规律</strong>，而不是"把数据存起来"</li>
+  <li>你在前面学的神经网络、情感分析，训练时吃的都是大数据</li>
+</ul>
+
+<h2 id="s4">4. 结构化解释</h2>
+
+<h3>4.1 一句话定义</h3>
+<p><strong>大数据是指规模大到传统工具难以处理、种类繁杂、产生速度又极快的数据，它的价值不在于"存得多"，而在于能从中分析出有用的规律。</strong></p>
+
+<h3>4.2 直观类比</h3>
+<p>想象你要<strong>了解一座城市的交通状况</strong>。</p>
+<ul>
+  <li>只问一个路人"今天堵不堵"，你得到的是一句<strong>片面的个人感受</strong>，可能是错的。</li>
+  <li>但如果你同时拿到<strong>全城几十万辆车的 GPS、几百万条刷卡记录、几千个路口摄像头数据</strong>，你就能准确算出"哪条路最堵、几点开始堵、堵多久"。</li>
+</ul>
+<p>单个人的一句话是"小数据"；全城海量、实时、多种多样的信息合在一起才是"大数据"。<strong>关键不在"数量大"，而在"种类全 + 更新快 + 能交叉印证"，让你看到单个样本永远看不到的整体规律。</strong>AI 模型也需要"看全城"级别的海量数据，才能学会靠谱的规律。</p>
+
+<h3>4.3 机制原理</h3>
+<p><strong>先看大数据的经典"4V"特征。</strong><strong>Volume（量大）</strong>：数据量从 GB 级跳到 TB、PB 级，大到一台电脑装不下、算不动。<strong>Velocity（速度快）</strong>：数据源源不断产生，需"边来边处理"。<strong>Variety（种类多）</strong>：有结构化表格、半结构化 JSON、还有非结构化的文字图片视频。 <strong>Value（价值密度低）</strong>：海量数据里真正有用的占比很低，像大海捞针。</p>
+<p><strong>因为一台机器搞不定，所以有了"分布式"。</strong>数据太大就<strong>切成块存到很多台机器</strong>（分布式存储，典型如 <strong>HDFS</strong>）；计算太慢就<strong>拆成任务让很多台机器同时算</strong>（分布式计算，典型如 <strong>Spark</strong>）。核心不是造超级计算机，而是<strong>用一堆普通机器协同干活</strong>。</p>
+<p><strong>大数据的价值要靠"分析"兑现。</strong>光存没用，值钱的是<strong>找规律、做预测</strong>：电商从海量购买记录里分析"买了尿布的人也常买啤酒"这类关联；新闻平台从海量阅读数据里算出"什么标题、什么时间发点击率最高"。这些分析现在大量由<strong>机器学习/深度学习</strong>接管——而深度学习恰恰是<strong>数据越足、效果越好</strong>的技术。</p>
+<p><strong>这就是大数据和 AI 的共生关系。</strong>神经网络要学得准，必须喂海量数据；大数据要发挥价值，最有力的工具就是 AI。没有大数据的 AI 是"巧妇难为无米之炊"，没有 AI 的大数据是"守着金矿不会挖"。你在本课程学的情感分析就是最典型的例子——要训练"判断评论正负面"的模型，前提是<strong>成千上万条已标注的评论</strong>当燃料。</p>
+
+<h3>4.4 边界与误区</h3>
+<ul>
+  <li><strong>误区 1：「数据越多，模型一定越准」</strong>。数据<strong>质量</strong>比数量更重要，噪声、错误、偏见喂进去反而带偏模型。</li>
+  <li><strong>误区 2：「大数据就是一堆 Excel 表格」</strong>。表格只是最结构化的一小部分；大数据更多是文字、图片、视频、日志这些<strong>非结构化</strong>的东西。</li>
+  <li><strong>误区 3：「数据越大越好，不用管隐私」</strong>。海量收集个人数据带来严重的<strong>隐私与伦理</strong>问题，是各国监管重点。</li>
+  <li><strong>误区 4：「有了大数据就能自动得到答案」</strong>。数据不会自己"说话"，需要<strong>分析方法和目标</strong>，否则只是堆在仓库吃灰。</li>
+</ul>
+
+<h2 id="s5">5. 应用案例</h2>
+<h3>案例 A：真实场景——新闻平台的内容推荐</h3>
+<p>你刷新闻 App 时，为什么每个人首页都不一样？因为平台在<strong>持续收集海量数据</strong>：你点开哪条、停留多久、划走哪条、几点在刷、用什么手机……这些数据量大、产生快、种类多。平台用<strong>分布式系统</strong>存储处理，再用<strong>推荐算法（背后是机器学习）</strong>分析你的偏好，实时推送"你更可能想看"的内容。<strong>这就是大数据 + AI 在新闻行业最直接的落地。</strong></p>
+<h3>案例 B：课堂练习——亲手感受"样本量"对结论的影响</h3>
+<p>不用写代码，做一个"小数据 vs 大数据"的思想实验：</p>
+<ol>
+  <li>打开朋友圈或微博，只翻<strong>最近 3 条</strong>评论，试着判断"大家最近对某部电影的整体态度"。</li>
+  <li>再打开一个新闻 App，看某条电影新闻下<strong>前 100 条</strong>评论，重新判断整体态度。</li>
+</ol>
+<p>你会发现：<strong>样本从 3 条变成 100 条后，结论可能完全变了</strong>——3 条里有 2 条吐槽让你以为"口碑崩了"，100 条里其实好评占多数。<strong>这个差距，就是大数据分析存在的意义：样本足够大，才不容易被个别极端声音带偏。</strong></p>
+
+<h2 id="s6">6. 概念辨析</h2>
+<ul>
+  <li><strong>大数据 vs 数据多</strong>：数据多是口语，指"数量不少"；大数据是一个<strong>有明确特征（4V）和专门技术栈的领域</strong>。区别在于<strong>是否"大到传统工具扛不住"</strong>。</li>
+  <li><strong>大数据 vs 数据库</strong>：数据库是"把结构化数据<strong>整齐存起来、方便查询</strong>"的技术；大数据技术是"把<strong>海量、多种、快速</strong>的数据<strong>存下并算得动</strong>"的一整套方案。区别在于<strong>数据规模与处理方式</strong>。</li>
+  <li><strong>大数据 vs 人工智能</strong>：大数据是"<strong>原料/燃料</strong>"；AI 是"<strong>方法/发动机</strong>"。大数据提供样本，AI 从样本里学规律、做预测。两者<strong>互相成就</strong>，但不相等。</li>
+</ul>
+
+<h2 id="s7">7. 自测问题</h2>
+<details>
+<summary>Q1：大数据的"4V"分别指什么？</summary>
+<p>提示：Volume（量大）、Velocity（速度快）、Variety（种类多）、Value（价值密度低）。</p>
+</details>
+<details>
+<summary>Q2：为什么大数据往往要用"分布式"技术来处理？</summary>
+<p>提示：因为数据大到一台机器存不下、算不动，所以要切成块存到多台机器、拆成任务让多台机器并行算。</p>
+</details>
+<details>
+<summary>Q3：为什么说"数据越多模型不一定越准"？</summary>
+<p>提示：数据质量比数量重要，噪声、错误、偏见会随数据一起喂进去，反而把模型带偏。</p>
+</details>
+
+<h2 id="s8">7.5 选择题练习</h2>
+<details>
+<summary>点击展开 4 道选择题（先自己做，再看答案）</summary>
+
+<p><strong>第 1 题：大数据的经典"4V"是指什么？</strong></p>
+<ul>
+  <li>A. Volume、Velocity、Variety、Value</li>
+  <li>B. 就是"数据很多"的口语说法</li>
+  <li>C. 一台超级计算机的名字</li>
+  <li>D. 一种编程语言</li>
+</ul>
+<p>A <strong>对</strong>：量大、速度快、种类多、价值密度低。B 错：大数据不只是"数据多"。C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：4V 是判断"是不是大数据"的经典标尺。<br><strong>你如果选了 B</strong>：把"大数据"和"数据多"划等号了，这是最常见的误区。</div>
+
+<p><strong>第 2 题：为什么大数据常需要"分布式"技术？</strong></p>
+<ul>
+  <li>A. 因为数据大到一台机器存不下、算不动，需多台机器协同</li>
+  <li>B. 因为想省电</li>
+  <li>C. 因为一台机器更贵</li>
+  <li>D. 因为用户喜欢</li>
+</ul>
+<p>A <strong>对</strong>：分布式就是"切块存储 + 并行计算"。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：大数据技术栈的核心思路。<br><strong>你如果选了 C</strong>：方向反了，恰恰是"多台普通机器"比"一台超级机器"更省钱。</div>
+
+<p><strong>第 3 题：大数据和人工智能的关系，最准确的是？</strong></p>
+<ul>
+  <li>A. 大数据是燃料，AI 是发动机，两者互相成就</li>
+  <li>B. 完全是一回事</li>
+  <li>C. AI 是大数据的一种存储方式</li>
+  <li>D. 两者毫无关系</li>
+</ul>
+<p>A <strong>对</strong>：数据供样本，AI 挖规律。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：大数据与 AI 的共生关系。<br><strong>你如果选了 C</strong>：关系记反了，AI 不是存储方式，它要"吃"大数据。</div>
+
+<p><strong>第 4 题：关于大数据的说法，哪一项是误区？</strong></p>
+<ul>
+  <li>A. 数据越多，模型一定越准</li>
+  <li>B. 大数据包含大量非结构化数据（文字、图片、视频）</li>
+  <li>C. 大数据的价值在于"分析出规律"，不是"存起来"</li>
+  <li>D. 新闻推荐背后用到了大数据 + AI</li>
+</ul>
+<p>A <strong>是误区（选它）</strong>：数据质量比数量重要，噪声和偏见会带偏模型。B/C/D 都是正确认知。</p>
+<div class="callout blue"><strong>考点</strong>：识别"越多越准"这个误区。<br><strong>你如果选了 D</strong>：D 是对的——新闻推荐正是"海量数据 + 推荐算法"的典型结合。</div>
+</details>
+
+<h2 id="s9">8. 参考来源</h2>
+<ul>
+  <li><strong>《大数据时代》（Viktor Mayer-Schönberger）</strong>——大数据领域经典入门读物，讲清"相关关系"与思维转变</li>
+  <li><strong>Google：BigQuery 文档 / 大数据介绍</strong>——官方对大数据处理服务的说明 [未验证具体 URL]</li>
+  <li><strong>Apache Spark 官方文档</strong>——最主流的分布式计算框架，文档清晰</li>
+  <li><strong>Apache Hadoop 官方文档</strong>——分布式存储（HDFS）的代表项目</li>
+  <li><strong>本仓库 <code>notes/concepts/sentiment-analysis.md</code></strong>——接着读，看"大数据"如何被用来训练情感分析模型</li>
+</ul>
+<div class="callout"><strong>推荐阅读顺序</strong>：先读本文（燃料从哪来）→ <code>sentiment-analysis</code>（燃料怎么"烧"成判断评论的能力）→ 回看 <code>neural-network</code>（理解"吃数据"的发动机）。</div>
+
+<div class="footer">本学习包由 concept-learning Skill 生成 · 2026-09-17</div>
+
+</main>
+</div>
+</body>
+</html>

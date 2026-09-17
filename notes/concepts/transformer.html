@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformer（变换器架构）概念学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f8fa; color: #1a1a1a; line-height: 1.8; font-size: 16px;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; background: #fff; border-right: 1px solid #eee;
+  padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar .logo { font-size: 15px; font-weight: 700; color: #306998; margin-bottom: 4px; }
+.sidebar .slug { font-size: 12px; color: #999; margin-bottom: 20px; }
+.sidebar a { display: block; color: #555; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+.sidebar a:hover { background: #f0f4f8; color: #306998; }
+.sidebar a.active { background: #e8f0f9; color: #306998; font-weight: 600; }
+.main { flex: 1; max-width: 780px; padding: 40px 48px 80px; }
+header.hero {
+  background: linear-gradient(135deg, #306998 0%, #4b8bbe 60%, #ffd43b 100%);
+  color: #fff; border-radius: 14px; padding: 34px 32px; margin-bottom: 30px;
+}
+header.hero h1 { font-size: 28px; margin-bottom: 8px; }
+header.hero .sub { font-size: 14px; opacity: 0.95; }
+h2 { font-size: 22px; color: #306998; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 3px solid #ffd43b; display: inline-block; }
+h3 { font-size: 18px; color: #1a1a1a; margin: 22px 0 8px; }
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 22px; }
+li { margin-bottom: 6px; }
+code { background: #f0f4f8; color: #c7254e; padding: 2px 7px; border-radius: 4px; font-family: Consolas, monospace; font-size: 14px; }
+pre { background: #1e2a3a; color: #d6e4f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 14px; margin: 14px 0; line-height: 1.6; }
+details { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 14px 18px; margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; color: #306998; }
+details p, details li { font-size: 14px; }
+.callout { background: #fffbe6; border-left: 4px solid #ffd43b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.blue { background: #eef6ff; border-left-color: #4b8bbe; }
+.footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc; color: #999; font-size: 13px; text-align: center; }
+@media (max-width: 720px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">Transformer · 变换器</div>
+  <div class="slug">notes/concepts/transformer</div>
+  <nav>
+    <a href="#s1">1. 学习目标</a>
+    <a href="#s2">2. 核心问题</a>
+    <a href="#s3">3. 概念地图</a>
+    <a href="#s4">4. 结构化解释</a>
+    <a href="#s5">5. 应用案例</a>
+    <a href="#s6">6. 概念辨析</a>
+    <a href="#s7">7. 自测问题</a>
+    <a href="#s8">7.5 选择题练习</a>
+    <a href="#s9">8. 参考来源</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <h1>🔄 Transformer（变换器架构）</h1>
+  <div class="sub">面向 AI 小白 · 单个概念学习包 · 关联：Embedding / 神经网络 / RAG / Fine-tuning</div>
+</header>
+
+<h2 id="s1">1. 学习目标</h2>
+<p>学完本概念，你能：</p>
+<ul>
+  <li><strong>理解</strong> Transformer 是什么——它为什么能成为几乎所有大模型的底座</li>
+  <li><strong>能区分</strong> Transformer 和循环神经网络（RNN）在处理文字上的根本不同</li>
+  <li><strong>能举例</strong> 说出生活中哪几个产品（ChatGPT、翻译软件）背后跑着 Transformer</li>
+  <li><strong>能用自己的话解释</strong> 什么叫"注意力机制"，为什么它让模型能"抓住重点"</li>
+  <li><strong>能识别常见误区</strong> 例如"Transformer 就是 ChatGPT""它只能处理文字"</li>
+</ul>
+
+<h2 id="s2">2. 核心问题</h2>
+<ol>
+  <li>为什么 2017 年那篇论文出来之后，几乎整个 AI 圈都换了底座？</li>
+  <li>"注意力机制"到底在"注意"什么？它解决了什么问题？</li>
+  <li>为什么 Transformer 能同时看一整句话，而不是一个字一个字地读？</li>
+  <li>Transformer 和"神经网络"是什么关系？它俩谁更大？</li>
+  <li>为什么说 Transformer 是"积木"，ChatGPT 是"用积木搭成的房子"？</li>
+</ol>
+
+<h2 id="s3">3. 概念地图</h2>
+<pre>输入句子（"猫 坐在 垫子 上"）
+        │
+        ▼
+   Embedding（每个词变成向量）+ 位置编码
+        │
+        ▼
+   ┌─────────────────────────┐
+   │  Transformer（多层堆叠）  │
+   │  ├─ 注意力机制（看重点）  │
+   │  └─ 前馈网络（加工信息）  │
+   └─────────────────────────┘
+        │
+        ▼
+   输出（下一个词的预测 / 整句的表示）</pre>
+<ul>
+  <li>Transformer 是一种<strong>神经网络架构</strong>，不是某一个具体产品</li>
+  <li>它的核心创新是<strong>注意力机制</strong>，能"同时看全句、并抓住重点"</li>
+  <li>ChatGPT、BERT、GPT 系列、主流翻译模型，底层都是它</li>
+</ul>
+
+<h2 id="s4">4. 结构化解释</h2>
+
+<h3>4.1 一句话定义</h3>
+<p><strong>Transformer 是一种处理文字（也扩展到了图片、语音）的神经网络架构，它的绝活是"注意力机制"，能一次性看完整段内容，并自动判断哪些词对理解当前词最重要。</strong></p>
+
+<h3>4.2 直观类比</h3>
+<p>想象你在开一场<strong>多人会议，要总结每个人的发言</strong>。</p>
+<ul>
+  <li>传统的老办法（循环神经网络）像是一个字一个字地<strong>复述</strong>：听完 A 才听 B，句子一长，前面 A 的内容就模糊了。</li>
+  <li>Transformer 让每个发言的人<strong>同时看向全场所有人</strong>，并给每个人打一个"重要程度分"——总结 C 时重点看 A 和 B，对无关的 D 基本不看。</li>
+</ul>
+<p>这就是"注意力"：<strong>不是从头听到尾，而是随时判断"此刻我该重点听谁"</strong>。它让模型能抓住长句里的关键关系，也不会因内容太长而"忘词"。</p>
+
+<h3>4.3 机制原理</h3>
+<p><strong>先解决"机器读文字"的第一步。</strong>Transformer 先把每个词通过 <strong>Embedding</strong> 变成向量，再加一个<strong>位置编码</strong>，告诉模型"这个词在第几个位置"。因为注意力是"同时看全句"的，它分不清先后顺序，必须靠位置编码补上。</p>
+<p><strong>核心是注意力机制（Attention），最著名的是"自注意力（Self-Attention）"。</strong>计算分三步：每个词算出 <strong>Query（查询）</strong>、<strong>Key（键）</strong>、<strong>Value（值）</strong>。你可以这样理解：每个词都在"问"（Query）全场其他词，每个词也有"身份标签"（Key）和"实际内容"（Value）。拿 Query 去和所有 Key 算匹配分数，分数越高越该被关注，最后按分数加权汇总所有 Value，作为这个词"看过全场后的新理解"。</p>
+<p><strong>多头注意力（Multi-Head Attention）让模型同时从多个角度看。</strong>不是只用一套 Query/Key/Value，而是好几套（如 8 个"头"），有的头关注语法关系，有的头关注"谁和谁是同一个人"，多角度并行，理解更全面。</p>
+<p><strong>注意力之后再过前馈网络（Feed-Forward）加工。</strong>这一层对每个词的新向量做一次非线性变换，相当于"消化"刚注意到的东西。这套"注意力 + 前馈"会<strong>重复堆叠很多层</strong>，层数越多，能学到的抽象关系越深。</p>
+<p><strong>另一个杀手锏是"并行计算"。</strong>它不依赖前一个词算完才算后一个，整句话所有词可以<strong>同时</strong>算，比旧方法快得多。如今的大模型几乎都建立在这套架构上，区别主要是"只读前面的字"（GPT）还是"前后都能看"（BERT）。</p>
+
+<h3>4.4 边界与误区</h3>
+<ul>
+  <li><strong>误区 1：「Transformer 就是 ChatGPT」</strong>。错。Transformer 是"发动机"，ChatGPT 是"装上发动机的整车"。</li>
+  <li><strong>误区 2：「它只能处理文字」</strong>。它已扩展到图片（Vision Transformer）、语音等领域，是通用架构。</li>
+  <li><strong>误区 3：「注意力就是人类那样专心」</strong>。它不是意识，只是一套<strong>数学上的加权平均</strong>，只是效果上像"抓重点"。</li>
+  <li><strong>误区 4：「层数越多一定越好」</strong>。层越多越强，但也越贵、越慢、越难训练，是工程权衡。</li>
+</ul>
+
+<h2 id="s5">5. 应用案例</h2>
+<h3>案例 A：真实场景——ChatGPT 与机器翻译</h3>
+<p>你现在用的 ChatGPT、Claude 等大模型，底层都是 Transformer。它们能"读懂上下文、接着往下写"，靠的就是注意力机制在每一层里反复"看整段话、抓重点"。主流机器翻译（DeepL、Google 翻译的神经引擎）也早已换成 Transformer——这就是为什么现在整句翻译的语感比过去"逐词硬翻"自然得多。</p>
+<h3>案例 B：课堂练习——观察模型的"注意力"</h3>
+<p>打开一个在线的 Transformer 可视化工具（如 BertViz，或 Hugging Face 上的注意力可视化 Demo）：</p>
+<ol>
+  <li>输入："The animal didn't cross the street because it was too tired."</li>
+  <li>观察模型在理解 <code>it</code> 时注意力落在哪里——你会看到它强烈地"看"向 <code>animal</code>，而不是 <code>street</code>。</li>
+  <li>把 <code>tired</code> 换成 <code>wide</code>（"因为街太宽"），再观察，<code>it</code> 的注意力会转向 <code>street</code>。</li>
+</ol>
+<p><strong>这个变化，就是注意力机制在"根据上下文自动判断该看谁"。</strong></p>
+
+<h2 id="s6">6. 概念辨析</h2>
+<ul>
+  <li><strong>Transformer vs 循环神经网络（RNN）</strong>：RNN 是"一个字一个字按顺序读"，句子长易忘、难并行；Transformer 是"同时看全句 + 注意力抓重点"。区别在于<strong>处理顺序与长距离记忆能力</strong>。</li>
+  <li><strong>Transformer vs 神经网络</strong>：神经网络是"大类"，Transformer 是其中<strong>一种具体架构</strong>，就像"汽车"是类、"电动车"是其中一种。</li>
+  <li><strong>Transformer vs 大语言模型（LLM）</strong>：Transformer 是"结构/骨架"；LLM 是用这个骨架 + 海量数据 + 训练得到的<strong>成品模型</strong>。</li>
+</ul>
+
+<h2 id="s7">7. 自测问题</h2>
+<details>
+<summary>Q1：为什么 Transformer 能"同时看一整句话"，而旧方法做不到？</summary>
+<p>提示：因为它不依赖"上一个词算完才能算下一个"的顺序依赖，而是用注意力让每个词直接和全句其他词建立联系，因此可并行计算。</p>
+</details>
+<details>
+<summary>Q2：注意力机制里的 Query、Key、Value 大致各起什么作用？</summary>
+<p>提示：Query 是"我要找什么"，Key 是"我是什么标签"，Value 是"我的实际内容"——用 Query 匹配所有 Key 得权重，再按权重加权 Value。</p>
+</details>
+<details>
+<summary>Q3：既然注意力能同时看全句，它怎么知道词的前后顺序？</summary>
+<p>提示：靠"位置编码"——额外给每个词加一个表示位置的信号，补上注意力本身不感知顺序的短板。</p>
+</details>
+
+<h2 id="s8">7.5 选择题练习</h2>
+<details>
+<summary>点击展开 4 道选择题（先自己做，再看答案）</summary>
+
+<p><strong>第 1 题：Transformer 最核心的创新是什么？</strong></p>
+<ul>
+  <li>A. 注意力机制（Attention）</li>
+  <li>B. 更大的硬盘</li>
+  <li>C. 更快的网速</li>
+  <li>D. 彩色显示器</li>
+</ul>
+<p>A <strong>对</strong>：注意力是它的灵魂。B/C/D 错：都是无关干扰项。</p>
+<div class="callout blue"><strong>考点</strong>：Transformer 的核心 = 注意力机制。<br><strong>你如果选了 B</strong>：把"硬件"和"算法架构"混了，Transformer 是一种算法结构。</div>
+
+<p><strong>第 2 题：Transformer 和 ChatGPT 是什么关系？</strong></p>
+<ul>
+  <li>A. Transformer 是架构底座，ChatGPT 是用它训练出来的产品</li>
+  <li>B. 完全是一回事</li>
+  <li>C. ChatGPT 是 Transformer 的一种型号</li>
+  <li>D. 两者毫无关系</li>
+</ul>
+<p>A <strong>对</strong>：架构（骨架）与产品（成品）的关系。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：Transformer 是"发动机"，ChatGPT 是"整车"。<br><strong>你如果选了 C</strong>：记反了包含关系，Transformer 是更大的框架。</div>
+
+<p><strong>第 3 题：旧方法 RNN 的痛点，Transformer 靠什么解决？</strong></p>
+<ul>
+  <li>A. 同时看全句 + 并行计算，解决"长句子易忘、难并行"</li>
+  <li>B. 用更贵的 CPU</li>
+  <li>C. 把句子截短</li>
+  <li>D. 让用户少输入几个字</li>
+</ul>
+<p>A <strong>对</strong>：注意力 + 并行，正是对 RNN 短板的突破。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：Transformer 相比 RNN 的两大优势。<br><strong>你如果选了 C</strong>：截断句子是"回避问题"，Transformer 是"解决问题"。</div>
+
+<p><strong>第 4 题：关于 Transformer 的说法，哪一项是误区？</strong></p>
+<ul>
+  <li>A. Transformer 只能处理文字</li>
+  <li>B. 它能并行处理整句话</li>
+  <li>C. 它的注意力本质是数学上的加权计算</li>
+  <li>D. GPT 和 BERT 都基于 Transformer</li>
+</ul>
+<p>A <strong>是误区（选它）</strong>：它已扩展到图片、语音等领域。B/C/D 都是正确认知。</p>
+<div class="callout blue"><strong>考点</strong>：识别"只能处理文字"这个误区。<br><strong>你如果选了 C</strong>：C 是正确认知——别把注意力神化成"人类专心"。</div>
+</details>
+
+<h2 id="s9">8. 参考来源</h2>
+<ul>
+  <li><strong>《Attention Is All You Need》（Vaswani et al., 2017）</strong>——Transformer 开山之作，定义了注意力机制和整套架构</li>
+  <li><strong>Jay Alammar《The Illustrated Transformer》</strong>——大量动画逐层拆解，公认最好懂的图解入门 [未验证具体 URL]</li>
+  <li><strong>Hugging Face：Transformers 文档</strong>——最大的 Transformer 模型库，含模型列表和教程</li>
+  <li><strong>Google：Transformer 架构介绍（Cloud 博客）</strong>——面向工程师的通俗讲解 [未验证具体 URL]</li>
+  <li><strong>本仓库 <code>notes/concepts/embedding.md</code></strong>——先读它，理解 Transformer 输入端"词怎么变向量"</li>
+</ul>
+<div class="callout"><strong>推荐阅读顺序</strong>：先读 <code>embedding</code>（输入怎么来）→ 本文（注意力怎么工作）→ <code>neural-network</code>（它属于哪一类）。</div>
+
+<div class="footer">本学习包由 concept-learning Skill 生成 · 2026-09-17</div>
+
+</main>
+</div>
+</body>
+</html>

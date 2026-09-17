@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embedding（词向量/嵌入）概念学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f8fa; color: #1a1a1a; line-height: 1.8; font-size: 16px;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; background: #fff; border-right: 1px solid #eee;
+  padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar .logo { font-size: 15px; font-weight: 700; color: #306998; margin-bottom: 4px; }
+.sidebar .slug { font-size: 12px; color: #999; margin-bottom: 20px; }
+.sidebar a { display: block; color: #555; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+.sidebar a:hover { background: #f0f4f8; color: #306998; }
+.sidebar a.active { background: #e8f0f9; color: #306998; font-weight: 600; }
+.main { flex: 1; max-width: 780px; padding: 40px 48px 80px; }
+header.hero {
+  background: linear-gradient(135deg, #306998 0%, #4b8bbe 60%, #ffd43b 100%);
+  color: #fff; border-radius: 14px; padding: 34px 32px; margin-bottom: 30px;
+}
+header.hero h1 { font-size: 28px; margin-bottom: 8px; }
+header.hero .sub { font-size: 14px; opacity: 0.95; }
+h2 { font-size: 22px; color: #306998; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 3px solid #ffd43b; display: inline-block; }
+h3 { font-size: 18px; color: #1a1a1a; margin: 22px 0 8px; }
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 22px; }
+li { margin-bottom: 6px; }
+code { background: #f0f4f8; color: #c7254e; padding: 2px 7px; border-radius: 4px; font-family: Consolas, monospace; font-size: 14px; }
+pre { background: #1e2a3a; color: #d6e4f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 14px; margin: 14px 0; line-height: 1.6; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; background: #fff; border-radius: 8px; overflow: hidden; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #eee; vertical-align: top; }
+th { background: #eef3f8; color: #306998; font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+details { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 14px 18px; margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; color: #306998; }
+details p, details li { font-size: 14px; }
+.callout { background: #fffbe6; border-left: 4px solid #ffd43b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.blue { background: #eef6ff; border-left-color: #4b8bbe; }
+.footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc; color: #999; font-size: 13px; text-align: center; }
+@media (max-width: 720px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">Embedding · 词向量</div>
+  <div class="slug">notes/concepts/embedding</div>
+  <nav>
+    <a href="#s1">1. 学习目标</a>
+    <a href="#s2">2. 核心问题</a>
+    <a href="#s3">3. 概念地图</a>
+    <a href="#s4">4. 结构化解释</a>
+    <a href="#s5">5. 应用案例</a>
+    <a href="#s6">6. 概念辨析</a>
+    <a href="#s7">7. 自测问题</a>
+    <a href="#s8">7.5 选择题练习</a>
+    <a href="#s9">8. 参考来源</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <h1>🧭 Embedding（词向量 / 嵌入）</h1>
+  <div class="sub">面向 AI 小白 · 单个概念学习包 · 关联：Transformer / RAG / 情感分析</div>
+</header>
+
+<h2 id="s1">1. 学习目标</h2>
+<p>学完本概念，你能：</p>
+<ul>
+  <li><strong>理解</strong> Embedding 是什么——它为什么要把文字变成一串数字</li>
+  <li><strong>能区分</strong> Embedding 和「查字典」「关键词匹配」之间的本质差别</li>
+  <li><strong>能举例</strong> 说明「意思相近的词，在向量空间里离得近」这件事</li>
+  <li><strong>能用自己的话解释</strong> 为什么计算机没法直接"读"文字，必须先转成数字</li>
+  <li><strong>能识别常见误区</strong> 例如「维度越多越好」「向量就是词的唯一正确含义」</li>
+</ul>
+
+<h2 id="s2">2. 核心问题</h2>
+<ol>
+  <li>计算机只认识 0 和 1，它到底是怎么"理解"一个词的？</li>
+  <li>为什么说「猫」和「狗」的向量比「猫」和「桌子」的向量更接近？</li>
+  <li>一个词真的只有一个固定的向量吗？还是看上下文会变？</li>
+  <li>Embedding 是怎么"学会"的？它从哪里获得这些数字？</li>
+  <li>为什么 RAG、推荐系统、情感分析都离不开 Embedding？</li>
+</ol>
+
+<h2 id="s3">3. 概念地图</h2>
+<pre>一段文字（词 / 句子 / 图片）
+        │
+        ▼
+   Embedding 模型（比如 BERT）
+        │  输出一串固定长度的数字
+        ▼
+   [0.12, -0.83, 0.45, ... , 0.07]   ← 这就是「向量」
+        │
+        ├──► 算距离 ──► 判断「像不像」
+        ├──► 喂给下游 ──► RAG 检索 / 情感分析 / 推荐
+        └──► 存进向量数据库 ──► 快速搜「最接近的几条」</pre>
+<ul>
+  <li>Embedding 是<strong>数字化的意义表示</strong>，是文字和数学之间的桥梁</li>
+  <li>它本身不做判断，判断靠"算向量之间的距离"</li>
+  <li>同一个词，在不同上下文里向量可以不同（上下文相关）</li>
+</ul>
+
+<h2 id="s4">4. 结构化解释</h2>
+
+<h3>4.1 一句话定义</h3>
+<p><strong>Embedding 是把文字（或图片等）转换成一串数字的方法，让意思相近的东西，数字也相近，从而让计算机能"算"出它们像不像。</strong></p>
+
+<h3>4.2 直观类比</h3>
+<p>想象你在给一个城市的餐厅<strong>按口味打分</strong>。</p>
+<ul>
+  <li>你给一家川菜馆打「辣度 9 分、麻度 8 分、甜度 1 分」，给重庆火锅打「辣度 8 分、麻度 9 分、甜度 1 分」——这两串分数很接近，说明它们<strong>口味像</strong>。</li>
+  <li>而广式甜品店是「辣度 0、麻度 0、甜度 10」，跟川菜馆差得远，说明<strong>完全不像</strong>。</li>
+</ul>
+<p>Embedding 干的正是这件事：它用几十到上千个"口味分"去描述一个词，分数接近就代表意思接近。计算机不会"读"字，但它特别会"算两个分数串差多少"。</p>
+
+<h3>4.3 机制原理</h3>
+<p><strong>核心思路：把意义塞进坐标里。</strong>计算机处理文字，第一步永远是把它变成数字。最笨的办法是<strong>独热编码（one-hot）</strong>——词典有 10 万个词，每个词就给一个 10 万位的向量，只有自己那一位是 1，其余全是 0。它有两个致命问题：向量巨大且稀疏，而且任何两个词的距离都一样，<strong>表达不了"猫和狗更近"</strong>。</p>
+<p><strong>Embedding 换了个思路：用少量、稠密的数字来"挤"出语义。</strong>比如只给每个词 300 个数字（300 维），但这 300 个数字不是随便填的，而是<strong>靠"看大量文本"训练出来的</strong>。早期经典的 <strong>Word2Vec</strong> 遵循一条朴素直觉：<strong>经常出现在相似语境里的词，意思也相似</strong>。</p>
+<p><strong>训练怎么发生？</strong>以 Word2Vec 的"跳字模型"为例：模型反复做一个猜词游戏——给你一个词，让你猜它前后窗口里的词。模型一开始乱猜，然后不断根据"猜对/猜错"来<strong>微调每个词向量里的数字</strong>。猜得多了，词与词之间的近义关系就被记了下来。</p>
+<p><strong>现代的 Embedding 是"上下文相关"的。</strong>早期 Word2Vec 给每个词一个固定向量，导致"苹果"在"吃苹果"和"苹果公司"里是同一个向量。而 <strong>BERT</strong> 这类模型会先看整句话，再给每个词算一个<strong>当下的</strong>向量——同一个"苹果"，两句话里的向量不一样。</p>
+<p><strong>最后一步是"算距离"。</strong>拿到两个向量后，最常用的是算<strong>余弦相似度</strong>（看两个箭头指向的夹角，夹角越小越像），得到一个 -1 到 1 的分数。检索系统就靠这个分数把"最像"的资料捞出来。</p>
+
+<h3>4.4 边界与误区</h3>
+<ul>
+  <li><strong>误区 1：「维度越多越好」</strong>。维度太高会浪费存储和算力，还可能让距离计算不可靠（维度灾难）。300 到 1024 维通常够用。</li>
+  <li><strong>误区 2：「向量就是这个词的完整、正确含义」</strong>。向量是从训练文本里学到的<strong>统计规律</strong>，数据有偏见，向量就有偏见，它不是客观真理。</li>
+  <li><strong>误区 3：「Embedding 是在查字典」</strong>。查字典是精确匹配，Embedding 是算相似度，它能处理<strong>从没见过的表达</strong>。</li>
+  <li><strong>误区 4：「有了 Embedding 就不需要原始文字了」</strong>。向量会丢信息（精确数字、专有名词拼写），很多任务仍要回到原始文本。</li>
+</ul>
+
+<h2 id="s5">5. 应用案例</h2>
+<h3>案例 A：真实场景——搜索引擎的"语义搜索"</h3>
+<p>早期 Google 搜索基本靠"关键词匹配"：搜"如何治疗失眠"，只能找到包含这几个字的网页。如今搜索引擎底层大量使用 Embedding：把你的查询变成向量，再在几十亿网页向量里找<strong>意思最接近</strong>的，所以哪怕网页里没有"治疗失眠"这四个字，只要内容是讲"改善睡眠"，也能被找到。这就是从"匹配字"到"匹配意思"的跨越。</p>
+<h3>案例 B：课堂练习——亲手算两句话像不像</h3>
+<p>打开 VS Code，新建一个 <code>embedding_demo.py</code>，用 <code>sentence-transformers</code> 库体验：</p>
+<pre>from sentence_transformers import SentenceTransformer, util
+
+model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+
+s1 = "今天的比赛非常精彩"
+s2 = "这场球踢得太漂亮了"
+s3 = "明天要交房租"
+
+e1, e2, e3 = model.encode([s1, s2, s3])
+
+print("s1 vs s2 相似度：", round(util.cos_sim(e1, e2).item(), 3))
+print("s1 vs s3 相似度：", round(util.cos_sim(e1, e3).item(), 3))</pre>
+<p>运行后你会看到：<code>s1</code> 和 <code>s2</code> 的分数明显高于 <code>s1</code> 和 <code>s3</code>。<strong>这两个分数，就是 Embedding 在"用数字衡量意思有多近"。</strong></p>
+
+<h2 id="s6">6. 概念辨析</h2>
+<ul>
+  <li><strong>Embedding vs 独热编码（One-hot）</strong>：独热编码是"一个词占一个坑、只有 1 和 0"，稀疏且无法表达相似；Embedding 是"少量稠密数字"，能表达"猫狗更近"。区别在于<strong>是否能捕捉语义关系</strong>。</li>
+  <li><strong>Embedding vs 向量数据库</strong>：Embedding 是把东西变成向量的方法/结果；向量数据库是专门存放和快速搜索大量向量的存储系统。一个是"数字"，一个是"装数字的仓库"。</li>
+  <li><strong>Embedding vs 关键词匹配</strong>：关键词匹配是"字面上有没有这几个字"；Embedding 是"意思上像不像"。区别在于<strong>能否命中字面不同但意思相同的内容</strong>。</li>
+</ul>
+
+<h2 id="s7">7. 自测问题</h2>
+<details>
+<summary>Q1：为什么计算机不能直接"读"文字，必须先 Embedding？</summary>
+<p>提示：计算机底层只做数值运算。文字必须被转成数字，它才能用"算距离/算相似度"的方式去处理"意思"。</p>
+</details>
+<details>
+<summary>Q2：说"猫和狗的向量更接近"，这里的"接近"具体是怎么算出来的？</summary>
+<p>提示：常用"余弦相似度"——把两个向量看成两个箭头，看它们指向的夹角，夹角越小越接近，得分越接近 1。</p>
+</details>
+<details>
+<summary>Q3：为什么同一个"苹果"，在"吃苹果"和"苹果公司"里向量可能不一样？</summary>
+<p>提示：因为现代模型（如 BERT）是"上下文相关"的，会先读完整句话，再给词算一个"当下"的向量。</p>
+</details>
+
+<h2 id="s8">7.5 选择题练习</h2>
+<details>
+<summary>点击展开 4 道选择题（先自己做，再看答案）</summary>
+
+<p><strong>第 1 题：Embedding 最核心的作用是什么？</strong></p>
+<ul>
+  <li>A. 把文字/图片等转换成能表达"相似关系"的数字向量</li>
+  <li>B. 把文字存进数据库</li>
+  <li>C. 直接生成回答</li>
+  <li>D. 给文档加密</li>
+</ul>
+<p>A <strong>对</strong>：本质就是"数字化的意义表示"。B 错：存储是向量数据库的事。C 错：生成回答是语言模型的事。D 错：与加密无关。</p>
+<div class="callout blue"><strong>考点</strong>：Embedding 的定位——文字与数学之间的桥梁。<br><strong>你如果选了 C</strong>：把"表示"和"生成"混了，Embedding 不产出文字，只产出向量。</div>
+
+<p><strong>第 2 题：早期 Word2Vec 是依据什么直觉训练出词向量的？</strong></p>
+<ul>
+  <li>A. 出现在相似语境里的词，意思往往也相似</li>
+  <li>B. 字母拼写越像，意思越近</li>
+  <li>C. 词越长，意思越丰富</li>
+  <li>D. 出现次数越多的词越重要</li>
+</ul>
+<p>A <strong>对</strong>：这是 Word2Vec 的核心假设。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：语义来自"语境共现"，不是拼写或频率。<br><strong>你如果选了 B</strong>：被"外形"误导了，向量捕捉的是"用法"，不是"长相"。</div>
+
+<p><strong>第 3 题：关于 Embedding 的说法，哪一项是误区？</strong></p>
+<ul>
+  <li>A. 向量维度越高一定越好</li>
+  <li>B. Embedding 能处理字面不同但意思相近的内容</li>
+  <li>C. 现代模型能给同一个词在不同上下文里不同的向量</li>
+  <li>D. 向量可能带有训练数据的偏见</li>
+</ul>
+<p>A <strong>是误区（选它）</strong>：过高维度会浪费算力，还可能引发维度灾难。B/C/D 都是正确认知。</p>
+<div class="callout blue"><strong>考点</strong>：识别"维度越高越好"这个误区。<br><strong>你如果选了 D</strong>：D 是正确的——偏见确实会被学进去，这恰提醒我们要注意数据质量。</div>
+
+<p><strong>第 4 题：RAG 检索、语义搜索、推荐系统为什么都离不开 Embedding？</strong></p>
+<ul>
+  <li>A. 因为它们都需要"把东西变成向量，再算相似度"</li>
+  <li>B. 因为它们都需要加密</li>
+  <li>C. 因为它们都是数据库</li>
+  <li>D. 因为它们都要生成图片</li>
+</ul>
+<p>A <strong>对</strong>：共同点就是"向量 + 相似度计算"。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：Embedding 是多个下游应用的公共底座。<br><strong>你如果选了 C</strong>：它们"用"数据库，但它们本身不是数据库。</div>
+</details>
+
+<h2 id="s9">8. 参考来源</h2>
+<ul>
+  <li><strong>Google Developers：Machine Learning Crash Course - Embeddings</strong>——官方图文讲解，含交互示例，最适合入门 [可在官方站搜索 "Embeddings"]</li>
+  <li><strong>《Efficient Estimation of Word Representations in Vector Space》（Mikolov et al., 2013）</strong>——Word2Vec 原始论文，讲清"语境共现"这条核心直觉</li>
+  <li><strong>Jay Alammar《The Illustrated Word2vec》</strong>——大量示意图讲 Word2Vec 训练过程，公认最好懂的图解 [未验证具体 URL]</li>
+  <li><strong>Hugging Face：Sentence Transformers 文档</strong>——课堂练习用的库，含预训练模型列表和用法</li>
+  <li><strong>本仓库 <code>notes/concepts/transformer.md</code></strong>——接着读，理解 BERT 这类"上下文相关 Embedding"背后的架构</li>
+</ul>
+<div class="callout"><strong>推荐阅读顺序</strong>：先读本文（文字怎么变数字）→ 再读 <code>transformer</code>（上下文相关向量怎么算）→ 最后读 <code>rag</code>（向量怎么用来检索）。</div>
+
+<div class="footer">本学习包由 concept-learning Skill 生成 · 2026-09-17</div>
+
+</main>
+</div>
+</body>
+</html>
