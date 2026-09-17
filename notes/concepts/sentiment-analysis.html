@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情感分析（Sentiment Analysis）概念学习资料</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f8fa; color: #1a1a1a; line-height: 1.8; font-size: 16px;
+}
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 260px; background: #fff; border-right: 1px solid #eee;
+  padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.sidebar .logo { font-size: 15px; font-weight: 700; color: #306998; margin-bottom: 4px; }
+.sidebar .slug { font-size: 12px; color: #999; margin-bottom: 20px; }
+.sidebar a { display: block; color: #555; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+.sidebar a:hover { background: #f0f4f8; color: #306998; }
+.sidebar a.active { background: #e8f0f9; color: #306998; font-weight: 600; }
+.main { flex: 1; max-width: 780px; padding: 40px 48px 80px; }
+header.hero {
+  background: linear-gradient(135deg, #306998 0%, #4b8bbe 60%, #ffd43b 100%);
+  color: #fff; border-radius: 14px; padding: 34px 32px; margin-bottom: 30px;
+}
+header.hero h1 { font-size: 28px; margin-bottom: 8px; }
+header.hero .sub { font-size: 14px; opacity: 0.95; }
+h2 { font-size: 22px; color: #306998; margin: 36px 0 14px; padding-bottom: 8px; border-bottom: 3px solid #ffd43b; display: inline-block; }
+h3 { font-size: 18px; color: #1a1a1a; margin: 22px 0 8px; }
+p { margin-bottom: 12px; }
+ul, ol { margin: 8px 0 16px 22px; }
+li { margin-bottom: 6px; }
+code { background: #f0f4f8; color: #c7254e; padding: 2px 7px; border-radius: 4px; font-family: Consolas, monospace; font-size: 14px; }
+pre { background: #1e2a3a; color: #d6e4f0; padding: 16px 20px; border-radius: 8px; overflow-x: auto; font-size: 14px; margin: 14px 0; line-height: 1.6; }
+details { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 14px 18px; margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; color: #306998; }
+details p, details li { font-size: 14px; }
+.callout { background: #fffbe6; border-left: 4px solid #ffd43b; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+.callout.blue { background: #eef6ff; border-left-color: #4b8bbe; }
+.footer { margin-top: 50px; padding-top: 20px; border-top: 1px dashed #ccc; color: #999; font-size: 13px; text-align: center; }
+@media (max-width: 720px) { .sidebar { display: none; } .main { padding: 24px 20px; } }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="logo">Sentiment Analysis · 情感分析</div>
+  <div class="slug">notes/concepts/sentiment-analysis</div>
+  <nav>
+    <a href="#s1">1. 学习目标</a>
+    <a href="#s2">2. 核心问题</a>
+    <a href="#s3">3. 概念地图</a>
+    <a href="#s4">4. 结构化解释</a>
+    <a href="#s5">5. 应用案例</a>
+    <a href="#s6">6. 概念辨析</a>
+    <a href="#s7">7. 自测问题</a>
+    <a href="#s8">7.5 选择题练习</a>
+    <a href="#s9">8. 参考来源</a>
+  </nav>
+</aside>
+
+<main class="main">
+
+<header class="hero">
+  <h1>💬 情感分析（Sentiment Analysis）</h1>
+  <div class="sub">面向 AI 小白 · 单个概念学习包 · 关联：Embedding / 神经网络 / Fine-tuning / 大数据</div>
+</header>
+
+<h2 id="s1">1. 学习目标</h2>
+<p>学完本概念，你能：</p>
+<ul>
+  <li><strong>理解</strong> 情感分析是什么——它为什么能"看懂"一段话是夸还是骂</li>
+  <li><strong>能区分</strong> 情感"极性"（正/负）和更细的"情绪类别"（愤怒/喜悦/悲伤）</li>
+  <li><strong>能举例</strong> 说出情感分析在新闻、电商、舆情里的实际用途</li>
+  <li><strong>能用自己的话解释</strong> 从"一句评论"到"一个情感标签"，中间发生了什么</li>
+  <li><strong>能识别常见误区</strong> 例如"情感分析能读懂反讽""只要有词典就能分析准确"</li>
+</ul>
+
+<h2 id="s2">2. 核心问题</h2>
+<ol>
+  <li>计算机怎么判断"这电影太烂了"是负面、"真不错"是正面？</li>
+  <li>为什么"光靠一本正负面词典"常常不够用？</li>
+  <li>情感分析模型是怎么"学会"判断情感的？它吃了什么数据？</li>
+  <li>一句话里的反讽（"真是好极了"其实是讽刺）能被识别吗？</li>
+  <li>为什么新闻机构关心"读者对这条新闻的评论是正面还是负面"？</li>
+</ol>
+
+<h2 id="s3">3. 概念地图</h2>
+<pre>新闻评论区的一条留言："这个政策真是雪中送炭！"
+        │
+        ▼
+   ① 文本预处理（分词 / 清洗）
+        │
+        ▼
+   ② 表示（Embedding 把文字变成向量）
+        │
+        ▼
+   ③ 分类器（神经网络 / 微调后的模型）
+        │  输出一个"正面/负面"的分数或标签
+        ▼
+   ［正面：0.92，负面：0.08］
+        │
+        ▼
+   ④ 下游应用：舆情监测 / 产品口碑 / 新闻倾向分析</pre>
+<ul>
+  <li>情感分析 = <strong>文本分类的一个具体任务</strong>：给文字打情感标签</li>
+  <li>它通常由"<strong>表示（Embedding）+ 分类器（神经网络）</strong>"两步组成</li>
+  <li>训练它需要<strong>大数据</strong>（成千上万条已标注评论），也常靠<strong>微调</strong>提升效果</li>
+</ul>
+
+<h2 id="s4">4. 结构化解释</h2>
+
+<h3>4.1 一句话定义</h3>
+<p><strong>情感分析是让计算机自动判断一段文字（比如一条评论）表达的是正面还是负面情绪，有时还能细分出愤怒、喜悦、悲伤等具体情绪。</strong></p>
+
+<h3>4.2 直观类比</h3>
+<p>想象你是<strong>新闻编辑部里专门看读者来信的实习生</strong>。</p>
+<ul>
+  <li>主编交给你一堆读者评论，让你按"夸我们"还是"骂我们"分成两摞。</li>
+  <li>评论少还行，一天来几万条你根本读不完。于是你总结出一套判断标准——看到"太棒了""点赞""感动"往"夸"那摞，看到"失望""胡扯""垃圾"往"骂"那摞。</li>
+</ul>
+<p>情感分析就是把这个过程<strong>自动化</strong>：让计算机学会你那套"判断标准"，然后<strong>一秒处理几万条评论</strong>，自动归到"正面"或"负面"，还能统计出"这条新闻下 70% 好评、30% 差评"。</p>
+
+<h3>4.3 机制原理</h3>
+<p><strong>最朴素的做法是"词典法"。</strong>准备一份情感词典，标好哪些词正面（"优秀""温暖""给力"）、哪些负面（"糟糕""愤怒""失望"），再看一句话里正面词多还是负面词多，简单投票。它<strong>简单、快、可解释</strong>，但有致命短板：<strong>不懂语境</strong>。"这电影一点都不烂"里有"烂"，词典法可能误判成负面；"真是好极了"这种反讽，它也完全看不出来。</p>
+<p><strong>现代主流做法是"机器学习法"——把情感分析当成分类任务。</strong>你需要一批<strong>已标注数据</strong>：成千上万条评论，每条有人工标好的"正面/负面"标签。然后训练一个<strong>分类器</strong>（通常是<strong>神经网络</strong>）去学"什么样的文字 → 什么情感"。</p>
+<p><strong>具体流程分三步。</strong>第一步<strong>文本预处理</strong>：分词、去掉无意义符号。第二步<strong>表示（Embedding）</strong>：把每条评论变成向量，让"意思相近的话，向量也相近"（正是你在 <code>embedding</code> 里学到的）。第三步<strong>分类</strong>：让神经网络（或微调后的预训练模型）读这个向量，输出"正面""负面"各自的概率，取高的那个作为结果。</p>
+<p><strong>为什么现在准确率高了很多？</strong>因为人们越来越多地<strong>拿预训练语言模型（如 BERT）做情感分析</strong>：这些模型已"懂中文"，你只需加一个分类头，再用标注数据<strong>微调（Fine-tuning）</strong>一下，它就能把"通用语言理解"转化为"判断情感"的能力——还能捕捉语境和部分反讽，效果远超词典法。</p>
+<p><strong>它和大数据的关系也很直接。</strong>情感分析模型的"聪明"，<strong>完全来自训练数据的数量和质量</strong>。没有成千上万条标注评论，模型学不会；数据里偏见多，模型也跟着偏。</p>
+
+<h3>4.4 边界与误区</h3>
+<ul>
+  <li><strong>误区 1：「情感分析能完全读懂反讽和幽默」</strong>。反讽、阴阳怪气、双关，至今仍是难点，模型经常翻车。</li>
+  <li><strong>误区 2：「只要有本好词典，就能分析得很准」</strong>。词典法不懂语境，现代高精度靠<strong>机器学习 + 大量标注数据</strong>，不是词典。</li>
+  <li><strong>误区 3：「情感只有"正"和"负"两种」</strong>。还有"中性"，以及更细的"愤怒/喜悦/悲伤/恐惧"等多分类。</li>
+  <li><strong>误区 4：「模型给的分就是绝对客观的真相」</strong>。判断受训练数据影响会有偏见，而且"情感"本身也常<strong>模糊、多义</strong>。</li>
+</ul>
+
+<h2 id="s5">5. 应用案例</h2>
+<h3>案例 A：真实场景——舆情监测与品牌口碑</h3>
+<p>很多新闻机构、政府部门、企业会用情感分析系统<strong>实时扫描全网</strong>：抓取某条新闻、某个事件、某款产品下的海量评论，自动判断每条是正面还是负面，再汇总成"舆情曲线"。比如一款手机发布后，系统能快速告诉你"微博上关于它续航的讨论，负面情绪占比突然上升了 20%"，帮你<strong>第一时间发现危机</strong>。这就是情感分析 + 大数据在真实世界的典型组合。</p>
+<h3>案例 B：课堂练习——用大模型判断新闻评论的情感（贯穿项目）</h3>
+<p>这是本课程贯穿项目的核心练习。打开 VS Code，新建 <code>sentiment_demo.py</code>，用你已经会的"提示词"思路，让一个大模型帮你判断新闻评论的情感：</p>
+<pre>reviews = [
+    "这条新闻说得太实在了，终于有人讲真话！",
+    "看完只想说，这是什么乱七八糟的报道。",
+    "纯属标题党，浪费我时间。",
+    "写得很客观，把两边观点都摆出来了。",
+]
+
+prompt = (
+    "你是新闻评论情感分析助手。请判断下面每条评论的情感，"
+    "只输出「正面 / 负面」之一，一行一条：\n" + "\n".join(reviews)
+)
+print(prompt)</pre>
+<p>运行后，把这段 <code>prompt</code> 复制到任意大模型对话里，你会看到它逐条给出"正面/负面"。<strong>再和你的直觉核对：它有没有把"标题党"判断成负面？有没有把"客观"判断成正面？</strong>如果换成"用 0-10 表示情感强度"，输出又会不同——这正呼应了"提示词"和"情感分析"两个概念。</p>
+
+<h2 id="s6">6. 概念辨析</h2>
+<ul>
+  <li><strong>情感分析 vs 文本分类</strong>：文本分类是"给文字打标签"的<strong>大类</strong>（主题分类、垃圾邮件识别）；情感分析是其中<strong>专门打"情感标签"</strong>的一种。区别在于<strong>标签是否与情绪相关</strong>。</li>
+  <li><strong>情感极性 vs 情绪类别</strong>：极性是"正/负/中性"的<strong>粗粒度</strong>；情绪类别是"愤怒/喜悦/悲伤"的<strong>细粒度多分类</strong>。区别在于<strong>颗粒度粗细</strong>。</li>
+  <li><strong>词典法 vs 机器学习法</strong>：词典法是"查词投票"，快但不懂语境；机器学习法是"用标注数据训练分类器"，准但需数据和算力。区别在于<strong>是否依赖训练数据与模型</strong>。</li>
+</ul>
+
+<h2 id="s7">7. 自测问题</h2>
+<details>
+<summary>Q1：从"一条新闻评论"到"一个情感标签"，中间大致经过哪几步？</summary>
+<p>提示：文本预处理 → 表示（Embedding 变向量）→ 分类器（神经网络/微调模型）输出正负概率 → 取最高者作为标签。</p>
+</details>
+<details>
+<summary>Q2：为什么"词典法"常常判断不准？举一个它会翻车的例子。</summary>
+<p>提示：因为它不懂语境。比如"一点都不烂"里有"烂"，词典法可能误判负面；反讽"真是好极了"它也看不出来。</p>
+</details>
+<details>
+<summary>Q3：为什么说情感分析模型"聪不聪明"，很大程度取决于训练数据？</summary>
+<p>提示：因为它是机器学习出来的，判断能力来自标注数据的数量与质量；数据少、有偏见，模型就学不好、学偏。</p>
+</details>
+
+<h2 id="s8">7.5 选择题练习</h2>
+<details>
+<summary>点击展开 4 道选择题（先自己做，再看答案）</summary>
+
+<p><strong>第 1 题：情感分析最本质的任务是什么？</strong></p>
+<ul>
+  <li>A. 自动判断一段文字表达的是正面、负面（或更细的情绪）</li>
+  <li>B. 把文字翻译成英文</li>
+  <li>C. 给文档加密</li>
+  <li>D. 统计一篇文章的字数</li>
+</ul>
+<p>A <strong>对</strong>：情感分析就是"给文字打情感标签"。B/C/D 错。</p>
+<div class="callout blue"><strong>考点</strong>：情感分析 = 文本分类里"打情感标签"的一种。<br><strong>你如果选了 B</strong>：那是机器翻译，和判断情绪无关。</div>
+
+<p><strong>第 2 题：现代高精度的情感分析，通常靠什么方法？</strong></p>
+<ul>
+  <li>A. 用大量标注数据训练分类器（神经网络 / 微调预训练模型）</li>
+  <li>B. 只靠一本正负面词典投票</li>
+  <li>C. 人工一条条读</li>
+  <li>D. 掷硬币</li>
+</ul>
+<p>A <strong>对</strong>：机器学习法，能捕捉语境。B 错：词典法不懂语境。C 错：人工太慢。D 错。</p>
+<div class="callout blue"><strong>考点</strong>：词典法 vs 机器学习法的优劣。<br><strong>你如果选了 B</strong>：词典法能用，但"不懂语境"是硬伤，现代方案靠训练。</div>
+
+<p><strong>第 3 题：哪句话，纯词典法最容易判断错？</strong></p>
+<ul>
+  <li>A. "这电影一点都不烂。"</li>
+  <li>B. "这电影太烂了。"</li>
+  <li>C. "这电影真差劲。"</li>
+  <li>D. "这电影烂透了。"</li>
+</ul>
+<p>A <strong>最容易错（选它）</strong>：里面有"烂"，但整体是"否定+烂"，意思其实是夸。B/C/D 都是明确负面。</p>
+<div class="callout blue"><strong>考点</strong>：词典法不懂"否定"和"语境"。<br><strong>你如果选了 D</strong>：D 是明确负面，词典法不会错；真正难的是带否定词的 A。</div>
+
+<p><strong>第 4 题：关于情感分析的说法，哪一项是误区？</strong></p>
+<ul>
+  <li>A. 情感分析能完全读懂反讽和幽默</li>
+  <li>B. 情感不只有"正/负"，还有"中性"和更细的情绪</li>
+  <li>C. 训练情感分析模型需要大量标注数据</li>
+  <li>D. 新闻舆情监测常用到情感分析</li>
+</ul>
+<p>A <strong>是误区（选它）</strong>：反讽、双关至今仍是难点，模型经常翻车。B/C/D 都是正确认知。</p>
+<div class="callout blue"><strong>考点</strong>：识别"能读懂反讽"这个误区。<br><strong>你如果选了 C</strong>：C 是对的——模型"聪明"全靠标注数据的数量和质量。</div>
+</details>
+
+<h2 id="s9">8. 参考来源</h2>
+<ul>
+  <li><strong>《Thumbs up? Sentiment Classification using Machine Learning Techniques》（Pang et al., 2002）</strong>——情感分析开创性论文之一，定义了"用机器学习做情感分类"的框架</li>
+  <li><strong>Hugging Face：Text classification 教程</strong>——用预训练模型微调做情感分类的完整教程，含代码</li>
+  <li><strong>Stanford：Sentiment Analysis（Speech and Language Processing 章节）</strong>——权威教材里对情感分析的系统讲解 [未验证具体 URL]</li>
+  <li><strong>《Sentiment Analysis and Opinion Mining》（Bing Liu）</strong>——情感分析与观点挖掘领域的经典专著</li>
+  <li><strong>本仓库 <code>notes/concepts/embedding.md</code> 与 <code>notes/concepts/fine-tuning.md</code></strong>——先读，理解"文字怎么变向量"和"模型怎么被微调成分类器"</li>
+</ul>
+<div class="callout"><strong>推荐阅读顺序</strong>：先读 <code>embedding</code>（表示）→ <code>neural-network</code>（分类器）→ <code>fine-tuning</code>（怎么调优）→ 回到本文，你会发现情感分析把前面几个概念串成了一条完整的链。</div>
+
+<div class="footer">本学习包由 concept-learning Skill 生成 · 2026-09-17</div>
+
+</main>
+</div>
+</body>
+</html>
