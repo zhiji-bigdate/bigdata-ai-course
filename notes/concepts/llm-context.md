@@ -122,7 +122,7 @@ def truncate_to_tokens(text, max_tokens=2000):
 
 > 同一个事实，可以同时在**训练数据**（→ 知识，存进权重）和**当前 prompt**（→ 上下文，输入给模型）两处。但**更新成本完全不同**：改知识要重新训练（百万美元级），改上下文只要改 prompt（零成本）。
 
-## 7. 自检问题（Self-Check）
+## 7. 自测问题（Self-Check）
 
 <details>
 <summary>1. 上下文窗口是越大越好吗？</summary>

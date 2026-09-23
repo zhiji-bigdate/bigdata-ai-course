@@ -73,7 +73,7 @@ ol.refs li { margin-bottom: 12px; }
     <li><a href="#exp">4. 结构化解释</a></li>
     <li><a href="#app">5. 应用案例</a></li>
     <li><a href="#dis">6. 概念辨析</a></li>
-    <li><a href="#check">7. 自检问题</a></li>
+    <li><a href="#check">7. 自测问题</a></li>
     <li><a href="#refs">8. 参考来源</a></li>
   </ol>
 </aside>
@@ -178,7 +178,7 @@ def truncate_to_tokens(text, max_tokens=2000):
   <p><strong>最容易混的一对：上下文 vs 知识</strong></p>
   <div class="quote">同一个事实，可以同时在<strong>训练数据</strong>（→ 知识，存进权重）和<strong>当前 prompt</strong>（→ 上下文，输入给模型）两处。但<strong>更新成本完全不同</strong>：改知识要重新训练（百万美元级），改上下文只要改 prompt（零成本）。</div>
 
-  <h2 id="check">7. 自检问题（Self-Check）</h2>
+  <h2 id="check">7. 自测问题（Self-Check）</h2>
   <details>
     <summary>1. 上下文窗口是越大越好吗？</summary>
     <p>不是。越大意味着慢、贵、还容易"失焦"（lost in the middle）。应根据任务精度需求<strong>精选内容</strong>塞进去，而不是无脑堆。</p>

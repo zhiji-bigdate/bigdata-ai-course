@@ -127,7 +127,7 @@ Anthropic 在 Claude 产品中把"工作流经验"打包成 Skill 发布。比�
 > Skill 是"AI 遇到什么场景该怎么用工具的工作手册"（比如"客服场景下，先查订单库再查物流再发邮件"）。
 > **Skill 用 Tool，但不等于 Tool**。很多 Skill 不依赖任何 Tool（纯文档型），纯 Tool 也不需要 Skill（直接被调用）。
 
-## 7. 自检问题（Self-Check）
+## 7. 自测问题（Self-Check）
 
 <details>
 <summary>1. Skill 和 Prompt（提示词）有什么区别？</summary>

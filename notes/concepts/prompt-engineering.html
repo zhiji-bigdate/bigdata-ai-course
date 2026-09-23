@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提示词工程（Prompt Engineering）— 学习资料</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --text:#1f2328; --muted:#6b7280;
+    --accent:#2563eb; --accent-soft:#eef4ff; --border:#e5e7eb;
+    --good:#16a34a; --bad:#dc2626; --warn:#d97706;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7;}
+  .wrap{display:flex;max-width:1100px;margin:0 auto;min-height:100vh;}
+  /* 左侧目录 */
+  aside{width:260px;flex-shrink:0;background:var(--card);border-right:1px solid var(--border);padding:28px 20px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+  aside h2{font-size:15px;margin-bottom:16px;color:var(--muted);}
+  aside a{display:block;padding:7px 12px;border-radius:8px;color:var(--text);text-decoration:none;font-size:14px;margin-bottom:2px;}
+  aside a:hover{background:var(--accent-soft);color:var(--accent);}
+  /* 右侧内容 */
+  main{flex:1;padding:32px 40px;max-width:800px;}
+  h1{font-size:26px;margin-bottom:6px;}
+  .meta{color:var(--muted);font-size:13px;margin-bottom:28px;}
+  h2{font-size:20px;margin:32px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--accent-soft);}
+  h3{font-size:16px;margin:22px 0 10px;color:var(--accent);}
+  p{margin-bottom:12px;}
+  ul,ol{margin:0 0 14px 22px;}
+  li{margin-bottom:6px;}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14px;}
+  th,td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+  pre{background:#0f172a;color:#e2e8f0;padding:16px;border-radius:10px;overflow-x:auto;font-size:13px;margin:14px 0;line-height:1.6;}
+  code{font-family:"SF Mono",Consolas,"Courier New",monospace;}
+  blockquote{border-left:4px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;color:#334155;font-size:14px;}
+  .callout{border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14px;}
+  .callout.tip{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;}
+  .callout.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+  details{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin:10px 0;}
+  summary{cursor:pointer;font-weight:600;color:var(--accent);}
+  .ok{color:var(--good);font-weight:600;}
+  .no{color:var(--bad);font-weight:600;}
+  .warn-tag{color:var(--warn);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <h2>目录</h2>
+    <a href="#s1">1. 学习目标</a>
+    <a href="#s2">2. 核心问题</a>
+    <a href="#s3">3. 概念地图</a>
+    <a href="#s4">4. 结构化解释</a>
+    <a href="#s5">5. 应用案例</a>
+    <a href="#s6">6. 概念辨析</a>
+    <a href="#s7">7. 自测问题</a>
+    <a href="#s8">8. 参考来源</a>
+  </aside>
+
+  <main>
+    <h1>提示词工程（Prompt Engineering）— 学习资料</h1>
+    <div class="meta">由 concept-learning Skill 生成 · 2026-09-23 · 主题：如何写出更好的 AI 提示词</div>
+
+    <h2 id="s1">1. 学习目标</h2>
+    <p>学完这份资料，你将能够：</p>
+    <ul>
+      <li><strong>用一句话</strong>说出"提示词工程"是什么，它和"聊天"有什么不同</li>
+      <li><strong>掌握</strong>一个万能的提示词写作框架，并套用到任何任务</li>
+      <li><strong>写出</strong>结构完整、信息充分的提示词，而不是一句模糊的话</li>
+      <li><strong>识别</strong> 3 个最常犯的提示词错误，并知道怎么改</li>
+      <li><strong>迭代</strong>：把一次不太好的回答，通过追问逐步优化成好答案</li>
+    </ul>
+
+    <h2 id="s2">2. 核心问题</h2>
+    <p>在开始之前，请你先带着这些问题阅读：</p>
+    <ul>
+      <li>为什么同样的问题，别人问 AI 得到好答案，我却得到废话？</li>
+      <li>提示词里到底应该写哪些信息，AI 才听得懂我要什么？</li>
+      <li>「角色扮演」真的有用吗？还是只是花架子？</li>
+      <li>一次没答好，我是重新问，还是继续追问？</li>
+    </ul>
+
+    <h2 id="s3">3. 概念地图</h2>
+    <pre>和 AI 打交道的方式
+  ├── 随便问一句      → 结果看运气（信息太少，AI 只能猜）
+  └── 提示词工程       → 把需求"结构化地写清楚"
+         ├── 核心：角色 + 任务 + 背景 + 格式 + 约束
+         ├── 技巧：给例子、分步骤、设边界、要求自检
+         └── 心态：不是"一次命中"，而是"反复迭代"</pre>
+    <p><strong>一句话定位</strong>：提示词工程 = 把你想让 AI 做的事，<strong>像给下属布置任务一样，讲清楚、讲具体、讲边界</strong>，从而稳定地得到好结果。</p>
+
+    <h2 id="s4">4. 结构化解释</h2>
+    <h3>4.1 一句话定义</h3>
+    <p><strong>提示词工程</strong>（Prompt Engineering）= 有方法地设计输入给 AI 的文字，通过「角色设定 + 明确任务 + 补充背景 + 规定格式 + 划定边界」，让 AI 稳定地产出高质量结果的一套技巧。</p>
+    <h3>4.2 直观类比</h3>
+    <p>想象你给一位<strong>能力很强但完全不了解你的新助理</strong>派活。</p>
+    <ul>
+      <li>你说「帮我做个方案」——他会懵，做出来的东西大概率不是你想要的。</li>
+      <li>你说「你是资深市场经理，帮我们的奶茶品牌做一个 5 月新品推广方案，预算 5 万，目标人群是大学生，最后给我一个 500 字的执行摘要 + 一个分周计划表」——他立刻知道该干什么、怎么干、交什么。</li>
+    </ul>
+    <p><strong>AI 就是那个"能力很强但不了解你"的助理</strong>。提示词写得越清楚，它越能发挥能力。差别不在 AI，在于你<strong>有没有把话说清楚</strong>。</p>
+    <h3>4.3 机制原理</h3>
+    <ul>
+      <li><strong>大模型是"按上下文补全"的</strong>：AI 不是"理解你的心思"，而是根据你给的所有文字，预测最合适的回答。你给的信息越少，它可"猜"的空间越大，就越容易跑偏。<strong>信息充分 = 它猜得准。</strong></li>
+      <li><strong>角色设定会激活特定知识</strong>：大模型在训练时"读"过海量不同身份的表达方式。你说"你是医生"，它会调用医学相关的表达；说"你是小学老师"，它会把话讲得更浅显。本质是<strong>缩小了它该用什么风格、什么深度来回答的范围</strong>。</li>
+      <li><strong>格式约束能减少"自由发挥"</strong>：如果你说"列一个表""分三步""用 Markdown 的标题"，AI 就会按这个骨架组织输出。<strong>给结构 = 输出更整齐、更好用。</strong></li>
+      <li><strong>约束和边界能防止它越界</strong>：明确说"不要编造数据""超过 300 字就精简"，AI 会主动避开这些坑。</li>
+    </ul>
+    <p><strong>核心心法</strong>：AI 的输出质量，≈ 你输入信息的质量 × 迭代次数。写得清楚是第一层，反复追问是第二层。</p>
+    <h3>4.4 边界与误区</h3>
+    <ul>
+      <li>❌ <strong>误区 1：「提示词越长越好」</strong><br>不是越长越好，是<strong>信息密度</strong>越高越好。写一堆无关背景，反而会稀释重点。</li>
+      <li>❌ <strong>误区 2：「角色扮演是玄学，没用」</strong><br>角色扮演有用，但<strong>前提是角色和任务匹配</strong>。</li>
+      <li>❌ <strong>误区 3：「提示词有万能模板，背一个走天下」</strong><br>没有万能模板。<strong>框架可以复用，内容必须按任务定制。</strong></li>
+      <li>❌ <strong>误区 4：「一次没答好就是 AI 不行，换个工具」</strong><br>大多数"AI 不行"其实是"提示词没说清"。先优化提示词、再追问迭代，往往比换工具更有效。</li>
+      <li>✅ <strong>边界</strong>：提示词工程能<strong>大幅提高</strong>输出质量，但不能让 AI 做它<strong>根本做不了</strong>的事。</li>
+    </ul>
+
+    <h2 id="s5">5. 应用案例</h2>
+    <h3>案例 1：一条"万能框架"提示词</h3>
+    <p>业界最常用的框架「<strong>角色-任务-背景-格式-约束</strong>」五要素：</p>
+    <pre>【角色】你是一位短视频脚本策划，擅长 3 秒抓人眼球的爆款开头。
+【任务】为我的"AI 入门"短视频写一个 60 秒的脚本。
+【背景】观众是零基础的上班族，完全不懂技术；我的视频风格是轻松幽默。
+【格式】按"前 3 秒钩子 → 正文 3 个要点 → 结尾引导关注"的结构输出。
+【约束】避免专业术语，每句话不超过 15 个字，不要用谐音梗。</pre>
+    <div class="callout tip">💡 这个框架可以直接套用到写周报、写教案、写小红书文案、写代码注释等几乎所有场景。</div>
+    <h3>案例 2：动手练一遍（课堂练习）</h3>
+    <p><strong>任务</strong>：用同一件事，对比"模糊提问"和"结构化提问"的差别。</p>
+    <ol>
+      <li>打开任意 AI 工具（豆包、ChatGPT、WorkBuddy 都行）。</li>
+      <li>先问一句模糊的：「帮我写个自我介绍。」</li>
+      <li>看它给的答案——是不是很空、很套话？</li>
+      <li>再问一句结构化的：「你是资深 HR，帮我写一份 100 字的求职自我介绍。我叫小张，应届毕业生，新闻学专业，应聘新媒体运营岗，优势是会用 AI 工具做图文和短视频，语气要真诚、不浮夸。」</li>
+      <li>对比两次结果，你会直观感受到"信息充分"带来的巨大差别。</li>
+    </ol>
+
+    <h2 id="s6">6. 概念辨析</h2>
+    <table>
+      <tr><th>概念</th><th>本质</th><th>核心区别</th></tr>
+      <tr><td><strong>提示词工程 vs 普通提问</strong></td><td>结构化设计 vs 随口一问</td><td>提示词工程有框架、讲边界；普通提问信息少、靠运气</td></tr>
+      <tr><td><strong>提示词工程 vs 上下文</strong></td><td>方法 vs 机制</td><td>提示词工程是"怎么设计输入"的方法，上下文是"AI 实际看到什么"的机制</td></tr>
+      <tr><td><strong>提示词工程 vs Skill</strong></td><td>一次性输入 vs 可复用流程</td><td>提示词是单次写的；Skill 是把"某类任务的写法"沉淀下来反复用</td></tr>
+      <tr><td><strong>提示词工程 vs Fine-tuning</strong></td><td>改输入 vs 改模型</td><td>提示词工程零成本、即时生效；微调要训练、成本高</td></tr>
+    </table>
+    <div class="callout warn">最容易混的一对：<strong>提示词工程 vs Skill</strong>——提示词工程是"这次怎么把话说清楚"；Skill 是"把某类任务的说话方式固化下来，下次自动套用"。你的 concept-learning Skill 本质上就是"一套写好提示词的方法"被沉淀成了可复用的文件。</div>
+
+    <h2 id="s7">7. 自测问题</h2>
+    <details><summary>1. 为什么同样的问题，别人问 AI 能得好答案，我却得不到？</summary><p>多数情况下不是 AI 的问题，而是<strong>输入信息不足</strong>。AI 是根据你给的信息"补全"答案的，信息越少它越靠猜。试着补充角色、任务、背景、格式、约束五要素，答案质量会立刻提升。</p></details>
+    <details><summary>2. 提示词是不是越长越好？</summary><p>不是。关键是<strong>信息密度</strong>——每句话都该是有用的信息。堆砌无关背景反而会稀释重点。宁可"精而准"，不要"多而杂"。</p></details>
+    <details><summary>3. AI 第一次没答好，我该怎么办？</summary><p>不要急着换工具，先<strong>追问迭代</strong>：指出哪里不满意 → 补充刚才漏掉的背景/约束 → 让它重来。绝大多数"答得不好"都能通过 2-3 轮追问解决。</p></details>
+
+    <h2 id="s8">8. 参考来源</h2>
+    <ol>
+      <li><span class="ok">✅</span> <strong>OpenAI 官方：Prompt engineering 指南</strong> — platform.openai.com/docs/guides/prompt-engineering<br>为什么推荐：提示词工程最权威的一手资料，讲了"写清晰指令""给参考文本""拆分复杂任务"等 6 大策略。</li>
+      <li><span class="ok">✅</span> <strong>Anthropic 官方：Prompt engineering 指南</strong> — docs.anthropic.com<br>为什么推荐：Claude 官方写的实战指南，尤其强调"给模型角色""给示例""明确输出格式"。</li>
+      <li><span class="warn-tag">⚠️</span> <strong>吴恩达 & OpenAI《ChatGPT Prompt Engineering for Developers》短课</strong> — deeplearning.ai<br>为什么推荐：免费入门短课，适合零基础。课程名与链接以官网为准。</li>
+      <li><span class="ok">✅</span> <strong>《The Prompt Report》</strong>（综述论文，Schulhoff et al., 2024）— arXiv:2406.06608<br>为什么推荐：学术界最系统的提示词技巧综述，覆盖 58 种技术。</li>
+      <li><span class="warn-tag">⚠️</span> <strong>Learn Prompting 社区教程</strong> — learnprompting.org<br>为什么推荐：免费、系统、面向初学者的教程社区。具体章节以官网为准。</li>
+    </ol>
+  </main>
+</div>
+</body>
+</html>
