@@ -68,3 +68,18 @@
   - 引用资料部分已逐条搜索验证，发现 2 条不准确
 - 发现问题后**主动修正**，并把不准确的部分标注 [未验证] 或改为更保守的描述
 - **没有任何整段照搬 AI 对话**的情况——所有文字都是基于对概念的理解后重新组织
+
+---
+
+## 五、后续补充核查（2026-09-24）
+
+在作业最终收尾阶段，我又做了一次**更严格的复查**，把之前"标注为概称、没有完整链接"的参考来源，**全部替换成了真实、可点击、逐条搜索核实过的完整 URL**：
+
+| 资料 | 复查后的结果 |
+|------|-------------|
+| agent.md | 5 条引用全部补齐真实链接（OpenAI Agents 文档、LangChain 文档、ReAct 论文 arXiv、吴恩达短课、Lilian Weng 博客） |
+| llm-context.md | 5 条引用全部补齐真实链接（OpenAI 上下文窗口文档、Anthropic 博客、Lost in the Middle 论文、Lilian Weng、The Prompt Report） |
+| skill.md | 5 条引用全部补齐真实链接（Anthropic Introducing Skills、WorkBuddy 文档、Anthropic 工程博客、Simon Willison、Lilian Weng） |
+| concept-relationship.md | 5 条引用全部补齐真实链接 |
+
+**这一轮修正的原则**：不编造任何链接，每一条 URL 都先通过搜索引擎确认其真实存在、且内容与引用主题匹配，才写入资料。修正后，三份概念资料 + 概念关系说明的"参考来源"全部是**可点击、可核查的真实链接**，满足"资料来源不得伪造"的要求。
