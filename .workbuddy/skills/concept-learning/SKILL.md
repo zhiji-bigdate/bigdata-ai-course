@@ -62,7 +62,11 @@ Each study pack **must** contain at least one inline **SVG diagram** so the lear
 ### SVG 绘制规范（必须遵守）
 
 - **Self-contained**: inline `<svg>` with `viewBox`, no `<image href=...>`, no external fonts, no CDN.
-- **配色与主题**：跟随 IDE 主题。浅色主题用浅色背景 + 深色文字（`#1f2937` 文字、`#f8fafc` 节点填充、`#e2e8f0` 边框）；深色主题用深色背景 + 浅色文字。**每个形状都必须显式写 `fill` 和 `stroke`**，不要依赖默认黑色。
+- **配色与主题（克制，尽量少用颜色）**：跟随 IDE 主题，但**整张图只允许用 1 个强调色 + 中性灰**，禁止多色混用（避免黄、绿、红、蓝等五花八门显得杂乱）。
+  - 浅色主题：文字 `#1f2937`，节点填充统一 `#f8fafc`，边框 `#cbd5e1`，连线 `#94a3b8`，**唯一强调色**用某个单一品牌色（如蓝色 `#2563eb`，仅用于中心节点或关键结论节点）。
+  - 深色主题：文字浅色，节点填充 `#1e293b`，边框 `#475569`，连线 `#64748b`，同样只保留一个强调色。
+  - 强调色只用在「中心概念」或「最终结论」这一个地方做突出，其余一律中性灰。
+  - **每个形状都必须显式写 `fill` 和 `stroke`**，不要依赖默认黑色。
 - **字体**：`font-family="system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif"`，中文字号 13–15px 保证可读。
 - **布局**：宽约 640–680（用 `viewBox="0 0 680 H"`），节点间距充足，连线用 `marker-end` 箭头表示方向。
 - **说明**：SVG 下方用一行文字点明"这张图怎么看"，方便新手。
