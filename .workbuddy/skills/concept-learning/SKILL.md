@@ -1,6 +1,6 @@
 ---
 name: concept-learning
-description: This skill generates a complete, structured study pack for ANY single technical concept (e.g., "Agent", "大模型的上下文", "Skill", "RAG", "Transformer") — not a one-paragraph definition. Input: a single concept name (Chinese or English). Output: a Markdown study pack in `notes/concepts/SLUG.md` plus a single-file HTML preview at `notes/concepts/SLUG.html`, both following a mandatory 8-section structure (learning objectives → driving questions → concept map → structured explanation → application cases → concept disambiguation → self-check → references). Use this skill whenever the user says "学一下 X"、"给我讲讲 X"、"学习 X 这个概念"、"整理 X 的学习材料" or asks for a study note on a named concept. NOT for cross-concept comparisons (use a separate comparison skill) and NOT for code implementation.
+description: This skill generates a complete, structured, VISUAL study pack for ANY single technical concept (e.g., "Agent", "大模型的上下文", "Skill", "RAG", "Transformer") — not a one-paragraph definition. Input: a single concept name (Chinese or English). Output: a Markdown study pack in `notes/concepts/SLUG.md` plus a single-file HTML preview at `notes/concepts/SLUG.html`, both following a mandatory 8-section structure (learning objectives → driving questions → concept map → structured explanation → application cases → concept disambiguation → self-check → references) and including at least one inline SVG diagram (mind map + optional flow/comparison diagrams) for visualization. Use this skill whenever the user says "学一下 X"、"给我讲讲 X"、"学习 X 这个概念"、"整理 X 的学习材料" or asks for a study note on a named concept. NOT for cross-concept comparisons (use a separate comparison skill) and NOT for code implementation.
 agent_created: true
 ---
 
@@ -27,16 +27,16 @@ Every study pack **must** contain the following 8 sections, in this exact order.
 
 1. **学习目标（Learning Objectives）** — 3–5 bullet points, each starting with a verb ("理解", "能区分", "能举例", "能用自己的话解释", "能识别常见误区"). These are what the learner can DO after reading.
 2. **核心问题（Driving Questions）** — 3–5 open questions the learner should be able to answer after reading. Phrased as real questions, with `?` at the end. These pre-frame the material.
-3. **概念地图（Concept Map）** — A short bulleted list or ASCII tree showing how this concept relates to its surrounding context. Goal: 30-second mental model.
+3. **概念地图（Concept Map）** — A short bulleted list or ASCII tree showing how this concept relates to its surrounding context. Goal: 30-second mental model. **Plus an inline SVG mind-map diagram** (see "可视化要求" below) that renders this same structure as an actual graphic.
 4. **结构化解释（Structured Explanation）** — The main body. Three sub-blocks:
    - 4.1 一句话定义（Definition）— One sentence, plain language, no jargon.
    - 4.2 直观类比（Intuition）— A non-technical analogy from everyday life (cooking, traveling, office, sports). NOT another technical concept.
-   - 4.3 机制原理（Mechanism）— How it actually works, in 3–5 short paragraphs, with concrete technical detail.
+   - 4.3 机制原理（Mechanism）— How it actually works, in 3–5 short paragraphs, with concrete technical detail. **Plus an inline SVG flow/process diagram** when the mechanism is a chain of steps or a causal loop (see "可视化要求").
    - 4.4 边界与误区（Boundaries）— What it is NOT, and the most common misconceptions (≥ 3).
 5. **应用案例（Application Cases）** — 2 cases:
    - 一个**真实场景** where the concept is used (named product / paper / workflow).
    - 一个**课堂/练习** where the learner can try it themselves (e.g., "打开 VS Code，新建一个 .py 文件…").
-6. **概念辨析（Concept Disambiguation）** — A short table or 2–3 mini-blocks that contrast this concept with **nearby concepts** the learner might confuse it with. Format: "X vs Y：X 是……，Y 是……；区别在于……".
+6. **概念辨析（Concept Disambiguation）** — A short table or 2–3 mini-blocks that contrast this concept with **nearby concepts** the learner might confuse it with. Format: "X vs Y：X 是……，Y 是……；区别在于……". Optionally add a compact inline SVG side-by-side comparison diagram (see "可视化要求").
 7. **自测问题（Self-Check）** — 3 questions, each in a `details` block with an answer hint (NOT the full answer — just a hint or one-line summary that the learner can reveal after thinking).
 7.5 **选择题练习（Multiple Choice with Feedback）— 可选扩展** — 3–5 multiple-choice questions, each with 4 options (A/B/C/D). For each option, give a concrete feedback (why it's right or wrong). End with a "考点" callout and a "你如果选了 X" tip for the most common wrong answer. The foldable `details` block holds the answer + feedback so the learner tries first, then reveals. This is great for fast self-testing and for concepts with strong "right vs wrong" boundaries (definitions, components, common mistakes).
 8. **参考来源（References）** — 3–5 references the learner can read next. Mix of:
@@ -45,6 +45,30 @@ Every study pack **must** contain the following 8 sections, in this exact order.
    - Books / papers (with full citation)
    - For each: a one-line "为什么推荐" explanation.
    - If a reference is uncertain, mark it as `[未验证]` rather than fabricating.
+
+## 可视化要求（Visualization Requirements）
+
+Each study pack **must** contain at least one inline **SVG diagram** so the learner gets a visual, not just text. SVG (not PNG/JPG) is required because it is self-contained, crisp at any zoom, and renders directly inside the HTML preview without external assets.
+
+### Mandatory SVG (至少 1 张，必须)
+
+1. **概念地图（Mind Map）** — one SVG placed in section 3. Structure: a central rounded box with the concept name, connected by lines/arrows to 3–6 surrounding boxes (its components, inputs, outputs, related concepts). This is the "30-second mental model" turned into a picture.
+
+### Optional SVGs (强烈建议，机制类概念必做)
+
+2. **机制流程图（Flow / Process）** — for concepts whose mechanism is a chain of steps or a loop (e.g., Agent 的"思考→行动→观察"循环、丁达尔效应的"颗粒→散射→光路"). A horizontal or vertical flow of 3–6 nodes with arrows.
+3. **对比图（Comparison）** — for section 6, a side-by-side two-column visual of "X vs Y" with a divider and a "区别" callout.
+
+### SVG 绘制规范（必须遵守）
+
+- **Self-contained**: inline `<svg>` with `viewBox`, no `<image href=...>`, no external fonts, no CDN.
+- **配色与主题**：跟随 IDE 主题。浅色主题用浅色背景 + 深色文字（`#1f2937` 文字、`#f8fafc` 节点填充、`#e2e8f0` 边框）；深色主题用深色背景 + 浅色文字。**每个形状都必须显式写 `fill` 和 `stroke`**，不要依赖默认黑色。
+- **字体**：`font-family="system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif"`，中文字号 13–15px 保证可读。
+- **布局**：宽约 640–680（用 `viewBox="0 0 680 H"`），节点间距充足，连线用 `marker-end` 箭头表示方向。
+- **说明**：SVG 下方用一行文字点明"这张图怎么看"，方便新手。
+- **Markdown 与 HTML 一致性**：SVG 同时写进 `.md`（用 fenced 的 `<svg>` 或 HTML 块）和 `.html` 预览中，保证两个版本都有图。
+
+If a diagram genuinely adds no value (rare), it is acceptable to omit the *optional* SVGs, but the *mandatory* mind-map SVG is never omitted.
 
 ## File Layout
 
@@ -78,6 +102,7 @@ Create `notes/concepts/<slug>.html` as a single-file HTML. Requirements:
 - Self-contained (no external CDN, no external CSS, no JS).
 - Light theme (white-ish background, dark text) — matches the user's IDE theme.
 - Layout: a left sidebar that mirrors the 8-section TOC, a right main column with the rendered content.
+- **Embed the SVG diagram(s) directly** in the HTML (same SVGs as the Markdown), so the preview shows the visuals rendered.
 - Use inline CSS in a single `<style>` block.
 - Filename: same slug as the Markdown.
 
@@ -97,6 +122,7 @@ Before finishing, check the Markdown against this checklist:
 - [ ] 3 self-check questions, each with a hint in `<details>`
 - [ ] 3–5 references, each with a "为什么推荐" line; uncertain refs marked `[未验证]`
 - [ ] No invented paper titles, fake API names, or fabricated URLs
+- [ ] **At least 1 mandatory SVG mind-map in section 3**; every shape has explicit `fill`/`stroke`; SVG present in BOTH `.md` and `.html`
 
 If any box is unchecked, fix the Markdown before calling `present_files`.
 
@@ -114,6 +140,6 @@ If any box is unchecked, fix the Markdown before calling `present_files`.
 - It does not produce comparison tables across multiple concepts (use a comparison skill).
 - It does not write or modify code.
 - It does not fetch web pages or call external APIs.
-- It does not generate images or videos.
+- It does not generate bitmap images (PNG/JPG), photos, or videos — the visualizations it produces are hand-written inline SVG diagrams (mind map, flow, comparison), not AI-generated pictures.
 
 If the user's request needs any of the above, mention it and suggest the right tool instead.
