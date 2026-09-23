@@ -149,15 +149,20 @@ Prompt 是一条**单次指令**；Skill 是**完整工作流**（含触发条�
 
 ## 8. 参考来源（References）
 
-> ⚠️ **核查状态**：以下 5 条引用中 2 条已通过搜索引擎核实（标 ✅），3 条为概称（标 ⚠️）。
+> ✅ **核查状态**：以下 5 条引用均已通过搜索引擎核实，附真实可点击链接。
 
-1. ✅ **Anthropic：Introducing Agent Skills**（官方博客）— https://www.anthropic.com/news/skills
-   - 为什么推荐：Skill 概念的官方定义来源。发布于 2025 年 10 月 16 日，2025 年 12 月 18 日有更新，宣布 Agent Skills 成为开放标准。
-2. ⚠️ **WorkBuddy Skill 开发者文档**（官方文档）— workbuddy.cn/docs
-   - 为什么推荐：本作业用的就是这个体系，但**官方文档的具体章节标题请以官网为准**。建议搜索 "WorkBuddy skill 项目级" 找到相关章节。
-3. ⚠️ **Anthropic 工程博客：Equipping agents for the real world with Agent Skills**（官方工程博客）— anthropic.com/engineering
-   - 为什么推荐：Anthropic 工程师团队（Barry Zhang, Keith Lazuka, Mahesh Murag）写的技术深度解读，讨论 Skill 的架构设计。**注意**：Anthropic 实际发布的工程博客是 "Equipping agents for the real world with Agent Skills"，而不是 "System Card"。
-4. ✅ **Simon Willison 关于 Skills 的系列博客**（博客）— simonwillison.net/tags/skills/
-   - 为什么推荐：独立开发者 Simon Willison 持续跟踪 Skills 生态，写过多篇深度分析。**注意**：他写过的文章包括 "Claude Skills are awesome, maybe a bigger deal than MCP"，但**不是 "Skills are the new prompts"**（这个标题是 AI 生成时混淆的，请以他的博客 tags 页为准）。
-5. ⚠️ **Lilian Weng 关于 AI Agent 抽象的系列博客**（博客）— lilianweng.github.io
-   - 为什么推荐：学术视角讨论 Agent / Tool / Subagent 等抽象。**注意**：请直接访问她的博客主页查找相关文章，没有确切名为 "Why we need new abstractions for AI agents" 的固定文章。
+1. ✅ **Anthropic：Introducing Agent Skills**（官方博客）
+   - 链接：https://www.anthropic.com/news/skills
+   - 为什么推荐：Skill 概念的官方定义来源。发布于 2025 年 10 月 16 日，2025 年 12 月 18 日更新，宣布 Agent Skills 成为开放标准。文中明确说明"Skill = 含 instructions、scripts、resources 的文件夹，Claude 按需加载"。
+2. ✅ **WorkBuddy 文档：Skill 概览**（官方文档）
+   - 链接：https://www.workbuddy.cn/docs/workbuddy/Overview
+   - 为什么推荐：本作业用的就是这个体系，讲清 Skill 如何作为项目级/用户级能力在 WorkBuddy 中工作。
+3. ✅ **Anthropic 工程博客：Equipping agents for the real world with Agent Skills**（官方工程博客）
+   - 链接：https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+   - 为什么推荐：Anthropic 工程师团队（Barry Zhang 等）写的技术深度解读，讨论 Skill 的"渐进式披露（progressive disclosure）"架构设计——SKILL.md 的 name + description 元数据先被加载，正文按需读取。
+4. ✅ **Simon Willison：Claude Skills are awesome, maybe a bigger deal than MCP**（博客）
+   - 链接：https://simonwillison.net/2025/Oct/16/claude-skills/
+   - 为什么推荐：独立开发者 Simon Willison 对 Skills 的深度分析，指出"Skill 就是一个 Markdown 文件夹，不绑定特定模型"，是理解 Skill 可移植性的好文。发布于 2025 年 10 月 16 日。
+5. ✅ **Lilian Weng：LLM Powered Autonomous Agents**（博客）
+   - 链接：https://lilianweng.github.io/posts/2023-06-23-agent/
+   - 为什么推荐：学术视角系统讨论 Agent 的规划、记忆、工具使用三大抽象，是理解"Skill 作为工具/能力封装"背后思想的经典综述。
