@@ -166,8 +166,13 @@ Skill   = "怎么干"被沉淀下来    （长期、可复用、可版本管理�
 
 ## 参考来源
 
-- **Anthropic：Effective context engineering for AI agents**（官方工程博客）— 关于"如何塞上下文给 Agent"的实战经验
-- **Lilian Weng "LLM Powered Autonomous Agents"**（博客）— Agent 规划/记忆/工具三件套的经典框架
-- **《ReAct: Synergizing Reasoning and Acting in Language Models》**（论文，Yao et al., 2022）— Agent 循环（思考→观察→行动）的原始定义
-- **Anthropic：Equipping agents for the real world with Agent Skills**（官方工程博客）— Skill 在生产 Agent 中的实际用法
-- **WorkBuddy Skill 开发者文档**（官方文档）— 本作业用到的 Skill 体系
+- **Anthropic：Building effective agents**（官方工程博客）— https://www.anthropic.com/engineering/building-effective-agents
+  - 关于"如何组织上下文给 Agent"的实战经验。
+- **Lilian Weng "LLM Powered Autonomous Agents"**（博客）— https://lilianweng.github.io/posts/2023-06-23-agent/
+  - Agent 规划 / 记忆 / 工具三件套的经典框架。
+- **《ReAct: Synergizing Reasoning and Acting in Language Models》**（论文，Yao et al., 2022）— https://arxiv.org/abs/2210.03629
+  - Agent 循环（思考 → 观察 → 行动）的原始定义。
+- **Anthropic：Equipping agents for the real world with Agent Skills**（官方工程博客）— https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+  - Skill 在生产 Agent 中的实际用法。
+- **WorkBuddy 文档**（官方文档）— https://www.workbuddy.cn/docs/workbuddy/Overview
+  - 本作业用到的 Skill 体系。
